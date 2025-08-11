@@ -1,10 +1,12 @@
 import { LoaderCircle, Lock, MailIcon } from 'lucide-react'
 import { useState } from 'react'
-import { cn } from '../lib/utils'
+import { cn } from '../../lib/utils'
+import Logo from '../../components/logo'
+import { Link } from 'react-router-dom'
 
 
 
-const Login = () => {
+const LoginOrganizer = () => {
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -29,9 +31,11 @@ const Login = () => {
         <>
             <div className='flex min-h-screen items-center justify-center'>
 
-                <div className='w-full max-w-md rounded-lg bg-white p-6'>
+                <div className='w-full max-w-md rounded-lg bg-gray-100 p-6'>
 
-                    <h2 className='mb-8 text-center text-2xl font-semibold text-gray-800'>Login to Your Account</h2>
+                    <h1 className='text-center mb-8'><Logo size="text-4xl" /></h1>
+
+                    <h2 className='mb-8 text-center text-2xl font-semibold text-gray-800'>Login As Event Manager</h2>
 
                     <form onSubmit={handleSubmit}>
                         {/* Email */}
@@ -41,7 +45,7 @@ const Login = () => {
                             </label>
                             <div className="relative flex items-center">
                                 <span className="absolute left-3 text-[#667085]"><MailIcon size={20} /></span>
-                                <input type="input" name="email" id="email"
+                                <input type="email" name="email" id="email"
                                     placeholder='Enter your Email' value={email}
                                     onChange={(e) => setEmail(e.target.value)}
                                     className={cn("w-full rounded-lg border border-[#D0D5DD]",
@@ -83,7 +87,7 @@ const Login = () => {
                             className={cn(
                                 'h-10 w-full rounded-lg py-2 px-4 font-medium transition duration-300 ease-in-out',
                                 'inline-flex items-center justify-center gap-2',
-                                'bg-neutral-800 text-white hover:bg-neutral-700',
+                                'bg-slate-900 text-white hover:bg-slate-700',
                                 'disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed'
                             )}
                         >
@@ -99,12 +103,11 @@ const Login = () => {
                     {/* Sign-up Link */}
                     <div className="mt-4 text-center">
                         <span className="text-sm text-gray-600">New here? </span>
-                        <a
-                            href="javascript:void(0)"
-                            className="text-sm font-medium text-blue-600 hover:underline"
-                        >
+
+                        <Link to='/organizer/register' className="text-sm font-medium text-blue-600 hover:underline">
+
                             Sign up
-                        </a>
+                        </Link>
                     </div>
                 </div>
             </div>
@@ -112,4 +115,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default LoginOrganizer
