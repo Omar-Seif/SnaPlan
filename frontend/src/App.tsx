@@ -28,7 +28,7 @@ function App() {
           <Route path='/organizer/CreateEvent' element={<CreateEventOrganizer />} />
           <Route path='/organizer/Explore' element={<ExploreOrganizer />} />
           <Route path='/organizer/Account' element={<AccountOrganizer />} />
-          <Route path='/organizer/EventDetails' element={<EventDetailsOrganizer />} />
+          <Route path='/organizer/EventDetails/:id' element={<EventDetailsOrganizer />} />
 
 
         </Routes>
