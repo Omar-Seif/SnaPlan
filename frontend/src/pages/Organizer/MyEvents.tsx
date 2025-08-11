@@ -39,7 +39,7 @@ const MyEventsOrganizer = () => {
         <>
             <Navbar />
 
-            <div className="mt-8 pb-6 border-b-4 pl-5">
+            <div className="mt-8 pb-6 border-b-4 pl-8">
 
                 <h1 className="text-3xl text-slate-900 font-bold">My Events</h1>
 
