@@ -31,7 +31,7 @@ function App() {
           <Route path='/organizer/explore' element={<ExploreOrganizer />} />
           <Route path='/organizer/account' element={<AccountOrganizer />} />
           <Route path='/organizer/eventDetails/:id' element={<EventDetailsOrganizer />} />
-          <Route path='/organizer/admin' element={<HomeAdmin />} /> {/* Will likely not be used */}
+          <Route path='/organizer/admin' element={<HomeAdmin />} /> 
           
 
         </Routes>
