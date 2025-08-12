@@ -8,6 +8,8 @@ import CreateEventOrganizer from './pages/Organizer/CreateEvent'
 import ExploreOrganizer from './pages/Organizer/Explore'
 import AccountOrganizer from './pages/Organizer/Account'
 import EventDetailsOrganizer from './pages/Organizer/EventDetails'
+import HomeAdmin from './pages/Admin/Home'
+
 
 function App() {
 
@@ -23,13 +25,14 @@ function App() {
 
           <Route path='/organizer/login' element={<LoginOrganizer />} />
           <Route path='/organizer/register' element={<RegisterOrganizer />} />
-          <Route path='/organizer/Home' element={<HomeOrganizer />} />
-          <Route path='/organizer/MyEvents' element={<MyEventsOrganizer />} />
-          <Route path='/organizer/CreateEvent' element={<CreateEventOrganizer />} />
-          <Route path='/organizer/Explore' element={<ExploreOrganizer />} />
-          <Route path='/organizer/Account' element={<AccountOrganizer />} />
-          <Route path='/organizer/EventDetails/:id' element={<EventDetailsOrganizer />} />
-
+          <Route path='/organizer/home' element={<HomeOrganizer />} />
+          <Route path='/organizer/myEvents' element={<MyEventsOrganizer />} />
+          <Route path='/organizer/createEvent' element={<CreateEventOrganizer />} />
+          <Route path='/organizer/explore' element={<ExploreOrganizer />} />
+          <Route path='/organizer/account' element={<AccountOrganizer />} />
+          <Route path='/organizer/eventDetails/:id' element={<EventDetailsOrganizer />} />
+          <Route path='/organizer/admin' element={<HomeAdmin />} /> {/* Will likely not be used */}
+          
 
         </Routes>
       </BrowserRouter>
