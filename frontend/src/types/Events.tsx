@@ -5,4 +5,5 @@ export interface Event {
     dateRange: string
     venue: string
     status: 'Accepted' | 'Pending' | 'Rejected'
+    ticket?: 'Standard' | 'VIP'
 }
