@@ -8,8 +8,10 @@ import CreateEventOrganizer from './pages/Organizer/CreateEvent'
 import ExploreOrganizer from './pages/Organizer/Explore'
 import AccountOrganizer from './pages/Organizer/Account'
 import EventDetailsOrganizer from './pages/Organizer/EventDetails'
-import HomeAdmin from './pages/Admin/Home'
-
+import AdminHome from './pages/Admin/AdminHome'
+import AdminEvents from './pages/Admin/Events'
+import Organizers from './pages/Admin/Organizers'
+import Settings from './pages/Admin/Settings'
 
 function App() {
 
@@ -31,8 +33,13 @@ function App() {
           <Route path='/organizer/explore' element={<ExploreOrganizer />} />
           <Route path='/organizer/account' element={<AccountOrganizer />} />
           <Route path='/organizer/eventDetails/:id' element={<EventDetailsOrganizer />} />
-          <Route path='/organizer/admin' element={<HomeAdmin />} /> 
-          
+
+          {/* Admin */}
+          <Route path='/admin/home' element={<AdminHome />} /> 
+          <Route path='/admin/events' element={<AdminEvents />} />
+          <Route path='/admin/organizers' element={<Organizers/>} />
+          {/* <Route path='/admin/settings' element={</>} /> */}
+           
 
         </Routes>
       </BrowserRouter>
