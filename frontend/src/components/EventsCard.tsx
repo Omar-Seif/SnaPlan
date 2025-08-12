@@ -1,9 +1,9 @@
 import { Link } from 'react-router-dom';
-import type { Event } from '../types/Events'
+import type { Event } from '../types/Event'
 import { Calendar, MapPin } from 'lucide-react';
 
 interface EventCardProps {
-    event: Omit<Event, 'ticket'>
+    event: Omit<Event, 'ticket' | 'sessions'>
 }
 
 const EventsCard = ({ event }: EventCardProps) => {

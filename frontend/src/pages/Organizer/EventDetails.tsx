@@ -2,8 +2,30 @@ import Navbar from "../../components/Navbar"
 import { Calendar, MapPin, Ticket } from "lucide-react";
 import SessionCard from "../../components/SessionCard";
 
+import { events } from '../../data/events'
+import { useParams } from "react-router-dom";
+
+
+
 
 const EventDetailsOrganizer = () => {
+
+    const { id } = useParams();
+    const event = events.find((e) => id === e.id.toString())
+
+    const getStatusColor = () => {
+        switch (event?.status) {
+            case 'Accepted':
+                return 'bg-green-100 text-green-800';
+            case 'Rejected':
+                return 'bg-red-100 text-red-800';
+            case 'Pending':
+            default:
+                return 'bg-yellow-100 text-yellow-800';
+        }
+    };
+
+
     return (
         <>
             <Navbar />
@@ -16,8 +38,8 @@ const EventDetailsOrganizer = () => {
 
                     <div className="w-full h-64 rounded-lg overflow-hidden mb-6">
                         <img
-                            src="https://images.unsplash.com/photo-1505373877841-8d25f7d46678"
-                            alt="Tech Innovation Summit 2023"
+                            src={event?.image}
+                            alt={event?.title}
                             className="w-full h-full object-cover"
                         />
                     </div>
@@ -25,12 +47,15 @@ const EventDetailsOrganizer = () => {
                     {/* Title */}
 
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between mb-4">
-                        <h1 className="text-3xl font-bold text-gray-800">Tech Innovation Summit 2023</h1>
-                        <span
-                            className={`px-2 py-1 text-sm rounded-full mt-4 `}
-                        >
-                            Accepted
+                        <h1 className="text-3xl font-bold text-gray-800">{event?.title}</h1>
+
+
+                        {/* Status   */}
+
+                        <span className={`px-2 py-1 text-sm rounded-full mt-4 ${getStatusColor()}`}>
+                            {event?.status}
                         </span>
+
                     </div>
 
                     {/* Date & Venue */}
@@ -38,11 +63,11 @@ const EventDetailsOrganizer = () => {
                     <div className="flex flex-wrap gap-6 text-gray-600 mb-6">
                         <div className="flex items-center gap-2">
                             <Calendar size={18} />
-                            <span>15/11 - 17/11</span>
+                            <span>{event?.dateRange}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <MapPin size={18} />
-                            <span>Grand Convention Center, Dubai</span>
+                            <span>{event?.venue}</span>
                         </div>
                     </div>
 
@@ -51,7 +76,7 @@ const EventDetailsOrganizer = () => {
                     <div className="flex justify-center">
                         <div className="flex items-center gap-2 text-orange-600 mb-6">
                             <Ticket size={18} />
-                            <span>VIP - Standard</span>
+                            <span>{event?.ticket?.map((t) => t.type).join(" - ")}</span>
                         </div>
                     </div>
 
@@ -62,7 +87,7 @@ const EventDetailsOrganizer = () => {
                         <h2 className="text-xl font-semibold text-gray-800 mb-2">
                             Description
                         </h2>
-                        <p className="text-gray-600">This is Innovatiion Summit</p>
+                        <p className="text-gray-600">{event?.description}</p>
                     </div>
 
 
@@ -74,7 +99,10 @@ const EventDetailsOrganizer = () => {
                             Sessions
                         </h2>
 
-                        <SessionCard />
+
+                        {event?.sessions?.map((session) => (
+                            <div className="mb-4"><SessionCard session={session} /></div>
+                        ))}
 
                     </div>
 

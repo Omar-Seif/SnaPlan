@@ -1,3 +1,6 @@
+import type { Session } from "./Session"
+import type { Ticket } from "./Ticket"
+
 export interface Event {
     id: string | number
     image: string
@@ -5,5 +8,7 @@ export interface Event {
     dateRange: string
     venue: string
     status: 'Accepted' | 'Pending' | 'Rejected'
-    ticket?: 'Standard' | 'VIP'
+    description?: string
+    ticket?: Ticket[]
+    sessions?: Session[]
 }

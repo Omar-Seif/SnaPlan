@@ -1,41 +1,10 @@
 import EventsCard from "../../components/EventsCard"
 import Navbar from "../../components/Navbar"
-import type { Event } from '../../types/Events'
 
-const events: Event[] = [
-    {
-        id: 1,
-        image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678",
-        title: "Tech Innovation Summit 2023",
-        dateRange: "15/11 - 17/11",
-        venue: "Grand Convention Center, Dubai",
-        status: "Accepted"
-    },
-    {
-        id: 2,
-        image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
-        title: "Digital Marketing Conference",
-        dateRange: "22/11 - 23/11",
-        venue: "Marriott Hotel, London",
-        status: "Pending"
-    },
-    {
-        id: 3,
-        image: "https://images.unsplash.com/photo-1511578314322-379afb476865",
-        title: "AI & Machine Learning Workshop",
-        dateRange: "05/12 - 07/12",
-        venue: "Innovation Hub, Singapore",
-        status: "Rejected"
-    },
-    {
-        id: 4,
-        image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4",
-        title: "Blockchain Revolution Forum",
-        dateRange: "10/12 - 12/12",
-        venue: "Convention Center, New York",
-        status: "Accepted"
-    }
-];
+
+import { events } from '../../data/events'
+
+
 
 
 const MyEventsOrganizer = () => {
