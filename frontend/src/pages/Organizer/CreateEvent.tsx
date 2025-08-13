@@ -1,9 +1,14 @@
-import Navbar from "../../components/Navbar"
+import EventForm from "../../components/EventForm";
+import Navbar from "../../components/Navbar";
 
 const CreateEventOrganizer = () => {
+
+
     return (
         <>
             <Navbar />
+
+            <EventForm />;
         </>
     )
 }
