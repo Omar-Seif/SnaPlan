@@ -5,9 +5,10 @@ export interface Event {
     id: string | number
     image: string
     title: string
-    dateRange: string
+    startDate: string
+    endDate: string
     venue: string
-    status: 'Accepted' | 'Pending' | 'Rejected'
+    status: 'Active' | 'Pending' | 'Cancelled'
     description?: string
     ticket?: Ticket[]
     sessions?: Session[]

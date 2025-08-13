@@ -15,9 +15,9 @@ const EventDetailsCard = () => {
 
     const getStatusColor = () => {
         switch (event?.status) {
-            case 'Accepted':
+            case 'Active':
                 return 'bg-green-100 text-green-800';
-            case 'Rejected':
+            case 'Cancelled':
                 return 'bg-red-100 text-red-800';
             case 'Pending':
             default:
@@ -62,7 +62,7 @@ const EventDetailsCard = () => {
                     <div className="flex flex-wrap gap-6 text-gray-600 mb-6">
                         <div className="flex items-center gap-2">
                             <Calendar size={18} />
-                            <span>{event?.dateRange}</span>
+                            <span>{`${event?.startDate} - ${event?.endDate}`}</span>
                         </div>
                         <div className="flex items-center gap-2">
                             <MapPin size={18} />

@@ -11,16 +11,17 @@ const EventsCard = ({ event }: EventCardProps) => {
         id,
         image,
         title,
-        dateRange,
+        startDate,
+        endDate,
         venue,
         status
     } = event;
 
     const getStatusColor = () => {
         switch (status) {
-            case 'Accepted':
+            case 'Active':
                 return 'bg-green-100 text-green-800';
-            case 'Rejected':
+            case 'Cancelled':
                 return 'bg-red-100 text-red-800';
             case 'Pending':
             default:
@@ -51,7 +52,7 @@ const EventsCard = ({ event }: EventCardProps) => {
                 <div className="mb-3 space-y-1.5">
                     <div className="flex items-center">
                         <Calendar className="h-4 w-4 mr-1.5 text-gray-500" />
-                        <span className="text-sm text-gray-600">{dateRange}</span>
+                        <span className="text-sm text-gray-600">{`${startDate} - ${endDate}`}</span>
                     </div>
 
                     <div className="flex items-center">

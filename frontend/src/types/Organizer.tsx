@@ -1,5 +1,3 @@
-import type { Event } from "./Event"
-
 export interface Organizer {
     id?: string | number
     firstName: string
@@ -9,5 +7,4 @@ export interface Organizer {
     organization: string
     job: string
     country: string
-    events?: Event[]
 }
