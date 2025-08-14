@@ -25,6 +25,9 @@ const EventDetailsCard = () => {
         }
     };
 
+    const FALLBACK_IMG =
+        "https://images.unsplash.com/photo-1505373877841-8d25f7d46678";
+
 
     return (
         <>
@@ -37,7 +40,7 @@ const EventDetailsCard = () => {
 
                     <div className="w-full h-64 rounded-lg overflow-hidden mb-6">
                         <img
-                            src={event?.image}
+                            src={event?.image ? event?.image : FALLBACK_IMG}
                             alt={event?.title}
                             className="w-full h-full object-cover"
                         />
@@ -66,7 +69,7 @@ const EventDetailsCard = () => {
                         </div>
                         <div className="flex items-center gap-2">
                             <MapPin size={18} />
-                            <span>{event?.venue}</span>
+                            <span>{event?.venueName}</span>
                         </div>
                     </div>
 

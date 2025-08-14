@@ -1,24 +1,36 @@
 import React, { useState } from "react";
-import { Calendar, MapPin, Ticket as TicketIcon, Upload } from "lucide-react";
+import { Calendar, LoaderCircle, MapPin, Ticket as TicketIcon, Upload } from "lucide-react";
 import type { Ticket } from "../types/Ticket";
+import type { Event } from "../types/Event";
+import { useNavigate } from "react-router-dom";
+import { cn } from "../lib/utils";
 
 const ticketOptions: Ticket["type"][] = ["Standard", "Premium", "VIP"];
 
 const EventForm = () => {
-    const [image, setImage] = useState<string>("");
-    const [title, setTitle] = useState("");
-    const [startDate, setStartDate] = useState("");
-    const [endDate, setEndDate] = useState("");
-    const [venue, setVenue] = useState("");
-    const [selectedTickets, setSelectedTickets] = useState<Ticket["type"][]>([]);
-    const [description, setDescription] = useState("");
+    // const [image, setImage] = useState<string>("");
+    // const [title, setTitle] = useState("");
+    // const [startDate, setStartDate] = useState("");
+    // const [endDate, setEndDate] = useState("");
+    // const [venue, setVenue] = useState("");
+    // const [selectedTickets, setSelectedTickets] = useState<Ticket["type"][]>([]);
+    // const [description, setDescription] = useState("");
 
+    const [formData, setFormData] = useState<Event>({
+        title: "",
+        startDate: "",
+        endDate: "",
+        venueName: "",
+        description: "",
+        ticket: []
+    })
 
-    const handleTicketChange = (type: Ticket["type"]) => {
-        setSelectedTickets((prev) =>
-            prev.includes(type) ? prev.filter((t) => t !== type) : [...prev, type]
-        )
-    }
+    const [image, setImage] = useState<string>("")
+    const [loading, setLoading] = useState<boolean>(false)
+
+    const navigate = useNavigate()
+
+    // image handling
 
     const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         if (e.target.files && e.target.files[0]) {
@@ -28,19 +40,56 @@ const EventForm = () => {
         }
     }
 
-    const handleSubmit = (e: React.FormEvent) => {
-        e.preventDefault();
-        const formData = {
-            title,
-            startDate,
-            endDate,
-            venue,
-            ticket: selectedTickets.map((type, idx) => ({ id: idx + 1, type })),
-            description,
-            image,
-        };
-        console.log("Event created:", formData);
-    };
+    // tickethandling
+
+    const handleTicketChange = (type: Ticket["type"]) => {
+        setFormData((prev) => {
+            const tickets = prev.ticket ?? [];
+            const exists = tickets.some((t) => t.type === type);
+            return {
+                ...prev,
+                ticket: exists
+                    ? tickets.filter((t) => t.type !== type)
+                    : [...tickets, { id: Date.now(), type }],
+            };
+        })
+    }
+
+
+
+    //api service function
+
+    const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>) => {
+        const { name, value } = e.target
+        setFormData(prev => ({
+            ...prev,
+            [name]: value
+        }))
+    }
+
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        setLoading(true)
+
+        if (!formData.image || !formData.title ||
+            !formData.startDate || !formData.endDate ||
+            !formData.venueName || !formData.ticket?.length ||
+            !formData.description
+        ) {
+            alert('all fields required')
+            setLoading(false)
+            return
+        }
+
+        // Simulate API call
+        setTimeout(() => {
+            setLoading(false);
+            alert('Event created successfully!');
+            navigate('/organizer/MyEvents')
+        }, 1500);
+
+
+    }
 
     return (
         <div className="flex items-center justify-center min-h-screen">
@@ -74,9 +123,10 @@ const EventForm = () => {
                 <div>
                     <input
                         type="text"
+                        name="title"
                         placeholder="Event title"
-                        value={title}
-                        onChange={(e) => setTitle(e.target.value)}
+                        value={formData.title}
+                        onChange={handleChange}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 text-lg font-bold focus:ring-orange-400 focus:border-orange-400"
                         required
                     />
@@ -88,8 +138,9 @@ const EventForm = () => {
                         <Calendar size={18} />
                         <input
                             type="date"
-                            value={startDate}
-                            onChange={(e) => setStartDate(e.target.value)}
+                            name="startDate"
+                            value={formData.startDate}
+                            onChange={handleChange}
                             className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                             required
                         />
@@ -98,8 +149,9 @@ const EventForm = () => {
                         <Calendar size={18} />
                         <input
                             type="date"
-                            value={endDate}
-                            onChange={(e) => setEndDate(e.target.value)}
+                            name="endDate"
+                            value={formData.endDate}
+                            onChange={handleChange}
                             className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                             required
                         />
@@ -111,9 +163,10 @@ const EventForm = () => {
                     <MapPin size={18} />
                     <input
                         type="text"
+                        name="venueName"
                         placeholder="Event location"
-                        value={venue}
-                        onChange={(e) => setVenue(e.target.value)}
+                        value={formData.venueName}
+                        onChange={handleChange}
                         className="flex-1 border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                         required
                     />
@@ -130,8 +183,8 @@ const EventForm = () => {
                             <label key={type} className="flex items-center space-x-2">
                                 <input
                                     type="checkbox"
-                                    checked={selectedTickets.includes(type)}
-                                    onChange={() => handleTicketChange(type)}
+                                    checked={formData.ticket?.some((t) => t.type === type) || false}
+                                    onChange={() => handleTicketChange}
                                     className="rounded border-gray-300 text-orange-500 focus:ring-orange-400"
                                 />
                                 <span>{type}</span>
@@ -144,8 +197,9 @@ const EventForm = () => {
                 <div>
                     <textarea
                         placeholder="Event description"
-                        value={description}
-                        onChange={(e) => setDescription(e.target.value)}
+                        name="description"
+                        value={formData.description}
+                        onChange={handleChange}
                         rows={5}
                         className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                     />
@@ -155,9 +209,19 @@ const EventForm = () => {
                 <div>
                     <button
                         type="submit"
-                        className="w-full bg-orange-500 text-white py-2 px-4 rounded-lg hover:bg-orange-600 transition"
+                        disabled={loading}
+                        className={cn(
+                            'h-10 w-full rounded-lg py-2 px-4 font-medium transition duration-300 ease-in-out',
+                            'inline-flex items-center justify-center gap-2',
+                            'bg-orange-500 text-white hover:bg-orange-600',
+                            'disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed'
+                        )}
                     >
-                        Create Event
+                        {loading ? (
+                            <LoaderCircle className="animate-spin" color={loading ? "#9CA3AF" : "#fff"} />
+                        ) : (
+                            'Create Event'
+                        )}
                     </button>
                 </div>
             </form>

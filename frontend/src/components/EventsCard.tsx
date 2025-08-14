@@ -1,10 +1,11 @@
 import { Link } from 'react-router-dom';
-import type { Event } from '../types/Event'
+import type { ViewEvent } from '../types/Event'
 import { Calendar, MapPin } from 'lucide-react';
 
 interface EventCardProps {
-    event: Omit<Event, 'ticket' | 'sessions'>
+    event: ViewEvent
 }
+
 
 const EventsCard = ({ event }: EventCardProps) => {
     const {
@@ -13,7 +14,7 @@ const EventsCard = ({ event }: EventCardProps) => {
         title,
         startDate,
         endDate,
-        venue,
+        venueName,
         status
     } = event;
 
@@ -29,6 +30,9 @@ const EventsCard = ({ event }: EventCardProps) => {
         }
     };
 
+    const FALLBACK_IMG =
+        "https://images.unsplash.com/photo-1505373877841-8d25f7d46678";
+
     return (
 
 
@@ -38,7 +42,7 @@ const EventsCard = ({ event }: EventCardProps) => {
                 <div className="w-full h-48 overflow-hidden">
                     <img
                         className="w-full h-full object-cover rounded-lg"
-                        src={image}
+                        src={image ? image : FALLBACK_IMG}
                         alt={title}
                     />
                 </div>
@@ -57,7 +61,7 @@ const EventsCard = ({ event }: EventCardProps) => {
 
                     <div className="flex items-center">
                         <MapPin className="h-4 w-4 mr-1.5 text-gray-500" />
-                        <span className="text-sm text-gray-600 line-clamp-1">{venue}</span>
+                        <span className="text-sm text-gray-600 line-clamp-1">{venueName}</span>
                     </div>
                 </div>
 

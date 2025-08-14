@@ -4,9 +4,9 @@ export const events: Event[] = [{
     id: 1,
     image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678",
     title: "Tech Innovation Summit 2023",
-    startDate: "15/11/2025 - 17/11/2025",
-    endDate: "15/11/2025 - 17/11/2025",
-    venue: "Grand Convention Center, Dubai",
+    startDate: "15/11/2025",
+    endDate: "17/11/2025",
+    venueName: "Grand Convention Center, Dubai",
     status: "Pending",
     description: "Conference or event where people in the technology industry gather to discuss, learn, and network about the latest trends, innovations, and challenges in the field",
     ticket: [
@@ -52,23 +52,23 @@ export const events: Event[] = [{
     id: 2,
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
     title: "Digital Marketing Conference",
-    startDate: "15/11/2025 - 17/11/2025",
-    endDate: "15/11/2025 - 17/11/2025", venue: "Marriott Hotel, London",
+    startDate: "15/11/2025",
+    endDate: "17/11/2025", venueName: "Marriott Hotel, London",
     status: "Pending"
 },
 {
     id: 3,
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865",
     title: "AI & Machine Learning Workshop",
-    startDate: "15/11/2025 - 17/11/2025",
-    endDate: "15/11/2025 - 17/11/2025", venue: "Innovation Hub, Singapore",
+    startDate: "17/11/2025",
+    endDate: "17/11/2025", venueName: "Innovation Hub, Singapore",
     status: "Pending"
 },
 {
     id: 4,
     image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4",
     title: "Blockchain Revolution Forum",
-    startDate: "15/11/2025 - 17/11/2025",
-    endDate: "15/11/2025 - 17/11/2025", venue: "Convention Center, New York",
+    startDate: "15/11/2025",
+    endDate: "17/11/2025", venueName: "Convention Center, New York",
     status: "Pending"
 }]
