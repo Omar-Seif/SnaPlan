@@ -97,16 +97,13 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
           <thead className="bg-gray-50 sticky top-0">
             <tr>
               <th className="text-left py-3 px-6 text-sm md:text-base text-gray-700">
-                Conference #
+                Event id
               </th>
               <th className="text-left py-3 px-6 text-sm md:text-base text-gray-700">
                 Event Name
               </th>
               <th className="text-left py-3 px-6 text-sm md:text-base text-gray-700">
-                Company Name
-              </th>
-              <th className="text-left py-3 px-6 text-sm md:text-base text-gray-700">
-                Organizer Name
+                Event Manager
               </th>
               <th className="text-left py-3 px-6 text-sm md:text-base text-gray-700">
                 Status
@@ -133,9 +130,6 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
                 </td>
                 <td className="py-4 px-6 text-sm md:text-base text-gray-600">
                   {conference.companyName}
-                </td>
-                <td className="py-4 px-6 text-sm md:text-base text-gray-600">
-                  {conference.organizerName}
                 </td>
                 <td className="py-4 px-6">
                   <span

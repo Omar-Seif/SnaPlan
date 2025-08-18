@@ -277,20 +277,18 @@ const AdminHome: React.FC = () => {
 
           <div className="relative bg-orange-300 rounded-lg p-6 overflow-hidden">
             <div>
-              <h3 className="text-sm opacity-90 mb-2">Total Companies</h3>
+              <h3 className="text-sm opacity-90 mb-2">Total Events</h3>
               <p className="text-2xl md:text-3xl font-bold">
                 {filteredConferences.length}
               </p>
-              <p className="text-sm opacity-90">Company</p>
+              <p className="text-sm opacity-90">Events</p>
             </div>
             <Building2 className="w-12 h-12 opacity-30 absolute top-6 right-6" />
           </div>
 
           <div className="relative bg-purple-300  rounded-lg p-6 overflow-hidden">
             <div>
-              <h3 className="text-sm opacity-90 mb-2">
-                Conferences Still Not Flagged
-              </h3>
+              <h3 className="text-sm opacity-90 mb-2">Events Pending</h3>
               <p className="text-2xl md:text-3xl font-bold">
                 {
                   filteredConferences.filter(
@@ -305,7 +303,7 @@ const AdminHome: React.FC = () => {
 
           <div className="relative bg-blue-300  rounded-lg p-6 overflow-hidden">
             <div>
-              <h3 className="text-sm opacity-90 mb-2">Active Conferences</h3>
+              <h3 className="text-sm opacity-90 mb-2">Active Events</h3>
               <p className="text-2xl md:text-3xl font-bold">
                 {
                   filteredConferences.filter(
@@ -319,13 +317,13 @@ const AdminHome: React.FC = () => {
           </div>
         </div>
 
-        {/* Conferences Table */}
+        {/* Pending Events Table */}
         <Table
           conferences={filteredConferences}
-          title="Recent Conferences"
+          title="Pending Events"
           showFullPageButton={true}
           onFullPageClick={goToEventManager}
-          limit={8}
+          limit={6}
         />
       </main>
     </div>
