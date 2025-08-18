@@ -1,7 +1,15 @@
 import { useState } from "react";
-import { Calendar, Building, BarChart3, Settings, Menu, X } from "lucide-react";
+import {
+  Calendar,
+  Building,
+  BarChart3,
+  Settings,
+  Menu,
+  X,
+  CircleUser,
+} from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AdminAccount from "./AdminAccount";
+import AdminAccount from "./SidebarAccountTab";
 
 function SideBar() {
   const [isCollapsed, setIsCollapsed] = useState(false);
@@ -20,6 +28,10 @@ function SideBar() {
 
   function goToSettings() {
     navigate("/admin/settings");
+  }
+
+  function goToAccounts() {
+    navigate("/admin/accounts");
   }
 
   const toggleSidebar = () => {
@@ -78,6 +90,14 @@ function SideBar() {
             >
               <Building className="w-4 h-4 group-hover:text-red-400" />
               <span className="text-sm font-medium">Organizers</span>
+            </div>
+
+            <div
+              onClick={goToAccounts}
+              className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+            >
+              <CircleUser className="w-4 h-4 group-hover:text-red-400" />
+              <span className="text-sm font-medium">Accounts</span>
             </div>
 
             <div

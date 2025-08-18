@@ -6,7 +6,10 @@ interface AdminAccountProps {
   adminEmail: string;
 }
 
-export default function AdminAccount({ adminName, adminEmail }: AdminAccountProps) {
+export default function AdminAccount({
+  adminName,
+  adminEmail,
+}: AdminAccountProps) {
   const [showInfo, setShowInfo] = useState(false);
 
   const handleLogout = () => {

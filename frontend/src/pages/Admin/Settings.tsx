@@ -62,7 +62,6 @@ function Settings() {
                 </button>
               </div>
             </div>
-
             {/* Theme Settings Card */}
             <div className="bg-white rounded-xl shadow-sm border border-gray-200 p-6 hover:shadow-md transition-all duration-200">
               <div className="flex items-center mb-4">
