@@ -71,7 +71,7 @@ const EventForm = () => {
         e.preventDefault()
         setLoading(true)
 
-        if (!formData.image || !formData.title ||
+        if (!image || !formData.title ||
             !formData.startDate || !formData.endDate ||
             !formData.venueName || !formData.ticket?.length ||
             !formData.description
@@ -184,7 +184,7 @@ const EventForm = () => {
                                 <input
                                     type="checkbox"
                                     checked={formData.ticket?.some((t) => t.type === type) || false}
-                                    onChange={() => handleTicketChange}
+                                    onChange={() => handleTicketChange(type)}
                                     className="rounded border-gray-300 text-orange-500 focus:ring-orange-400"
                                 />
                                 <span>{type}</span>

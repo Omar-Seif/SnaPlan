@@ -10,7 +10,7 @@ export const getEvents = async (): Promise<Event[]> => {
     if (!response.ok) {
         throw new Error('Failed to fetch events');
     }
-
     return response.json();
+
 };
 

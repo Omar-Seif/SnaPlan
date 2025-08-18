@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import EventsCard from "../../components/EventsCard"
 import Navbar from "../../components/Navbar"
-// import { events } from '../../data/events'
+import { eventsDummy } from '../../data/events'
 import { getEvents } from "../../services/EventService";
 import type { Event } from '../../types/Event';
 
@@ -44,7 +44,7 @@ const MyEventsOrganizer = () => {
 
             <div className="container mx-auto px-4 py-8">
 
-                {error && <div className="error-message">{error}</div>}
+                {/* {error && <div className="error-message">{error}</div>}
 
                 {loading ? <div>Loading</div> :
                     <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
@@ -52,7 +52,14 @@ const MyEventsOrganizer = () => {
                         {eventList.map((event, index) => (
                             <EventsCard event={event} key={index} />
                         ))}
-                    </div>}
+                    </div>} */}
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+
+                    {eventsDummy.map((event, index) => (
+                        <EventsCard event={event} key={index} />
+                    ))}
+                </div>
             </div>
 
         </>

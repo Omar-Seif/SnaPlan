@@ -1,6 +1,6 @@
 import type { Event } from "../types/Event";
 
-export const events: Event[] = [{
+export const eventsDummy: Event[] = [{
     id: 1,
     image: "https://images.unsplash.com/photo-1505373877841-8d25f7d46678",
     title: "Tech Innovation Summit 2023",

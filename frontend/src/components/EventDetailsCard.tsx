@@ -2,7 +2,7 @@
 import { Calendar, MapPin, Ticket } from "lucide-react";
 import SessionCard from "../components/SessionCard";
 
-import { events } from '../data/events'
+import { eventsDummy } from '../data/events'
 import { useParams } from "react-router-dom";
 
 
@@ -11,7 +11,7 @@ import { useParams } from "react-router-dom";
 const EventDetailsCard = () => {
 
     const { id } = useParams();
-    const event = events.find((e) => id === e.id.toString())
+    const event = eventsDummy.find((e) => id === e.id?.toString())
 
     const getStatusColor = () => {
         switch (event?.status) {
