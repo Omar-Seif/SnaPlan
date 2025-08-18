@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom'
 
 
 
-const LoginOrganizer = () => {
+const LoginAttendee = () => {
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
@@ -115,4 +115,4 @@ const LoginOrganizer = () => {
     )
 }
 
-export default LoginOrganizer
+export default LoginAttendee

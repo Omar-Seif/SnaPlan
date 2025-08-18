@@ -38,7 +38,7 @@ const EventsCard = ({ event }: EventCardProps) => {
 
         <div className="w-full h-full bg-white border border-gray-200 rounded-lg shadow-sm flex flex-col">
             {/* Fixed-size image container */}
-            <Link to={`/organizer/EventDetails/${id}`}>
+            <Link to={`/attendee/EventDetails/${id}`}>
                 <div className="w-full h-48 overflow-hidden">
                     <img
                         className="w-full h-full object-cover rounded-lg"
@@ -70,7 +70,7 @@ const EventsCard = ({ event }: EventCardProps) => {
                         {status}
                     </span>
 
-                    <Link to={`/organizer/EventDetails/${id}`}>
+                    <Link to={`/attendee/EventDetails/${id}`}>
                         <button className="mt-3 w-full inline-flex justify-center items-center px-3 py-2 text-sm font-medium text-center text-white bg-orange-400 rounded-lg hover:bg-orange-500 transition-colors">
                             View Details
                         </button>

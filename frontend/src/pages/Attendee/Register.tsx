@@ -7,7 +7,7 @@ import type { Organizer } from '../../types/Organizer'
 
 
 
-const RegisterOrganizer = () => {
+const RegisterAttendee = () => {
 
     const [formData, setFormData] = useState<Organizer>({
         firstName: "",
@@ -264,4 +264,4 @@ const RegisterOrganizer = () => {
     )
 }
 
-export default RegisterOrganizer
+export default RegisterAttendee

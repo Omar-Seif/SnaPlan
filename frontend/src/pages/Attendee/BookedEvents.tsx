@@ -8,7 +8,7 @@ import type { Event } from '../../types/Event';
 
 
 
-const MyEventsOrganizer = () => {
+const BookedAttendee = () => {
 
     const [eventList, setEventList] = useState<Event[]>([]);
     const [error, setError] = useState<null | string>(null);
@@ -38,7 +38,7 @@ const MyEventsOrganizer = () => {
 
             <div className="mt-8 pb-6 border-b-4 pl-8">
 
-                <h1 className="text-3xl text-slate-900 font-bold">My Events</h1>
+                <h1 className="text-3xl text-slate-900 font-bold">Booked Events</h1>
 
             </div>
 
@@ -66,4 +66,4 @@ const MyEventsOrganizer = () => {
     )
 }
 
-export default MyEventsOrganizer
+export default BookedAttendee

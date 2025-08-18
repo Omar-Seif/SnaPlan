@@ -12,11 +12,9 @@ const Navbar = () => {
     };
 
     const navItems = [
-        { id: 1, text: 'Home', path: '/organizer/Home' },
-        { id: 2, text: 'My Events', path: '/organizer/MyEvents' },
-        { id: 3, text: 'Create Event', path: '/organizer/CreateEvent' },
-        { id: 4, text: 'Explore', path: '/organizer/Explore' },
-        { id: 5, text: 'Account', path: '/organizer/Account' },
+        { id: 1, text: 'Explore', path: '/attendee/Explore' },
+        { id: 2, text: 'Booked Events', path: '/attendee/BookedEvents' },
+        { id: 3, text: 'Account', path: '/attendee/Account' },
     ];
 
     return (
