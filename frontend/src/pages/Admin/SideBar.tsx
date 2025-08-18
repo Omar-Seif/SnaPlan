@@ -31,7 +31,7 @@ function SideBar() {
   }
 
   function goToAccounts() {
-    navigate("/admin/accounts");
+    navigate("/admin/eventsManager  ");
   }
 
   const toggleSidebar = () => {
@@ -97,7 +97,7 @@ function SideBar() {
               className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
             >
               <CircleUser className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Accounts</span>
+              <span className="text-sm font-medium">Event Managers</span>
             </div>
 
             <div
@@ -112,7 +112,7 @@ function SideBar() {
           {/* Admin Account Section */}
           <AdminAccount
             adminName="Youssef Tamer"
-            adminEmail="Youssef@example.com"
+            adminEmail="Youssef@gmail.com"
           />
         </div>
       </aside>

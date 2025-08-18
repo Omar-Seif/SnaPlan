@@ -18,7 +18,7 @@ import AdminEvents from "./pages/Admin/Events";
 import Organizers from "./pages/Admin/Organizers";
 import Settings from "./pages/Admin/Settings";
 import Login from "./pages/Admin/Login";
-import Accounts from "./pages/Admin/Accounts";
+import EventsManager from "./pages/Admin/EventsManager";
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -52,7 +52,7 @@ function App() {
           <Route path="/admin/organizers" element={<Organizers />} />
           <Route path="/admin/settings" element={<Settings />} />
           <Route path="/admin/Login" element={<Login />} />
-          <Route path="/admin/accounts" element={<Accounts />} />
+          <Route path="/admin/eventsManager" element={<EventsManager />} />
         </Routes>
       </BrowserRouter>
     </>
