@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import AdminAccount from "./SidebarAccountTab";
 
 function SideBar() {
-  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
   function goToEventManager() {
     navigate("/admin/events");
@@ -43,18 +43,16 @@ function SideBar() {
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className={`fixed z-50 p-2 rounded-full bg-gradient-to-br from-zinc-900 to-black text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${
-          isCollapsed ? "top-4 left-4" : "top-4 left-52"
-        }`}
+        className={`fixed z-50 p-2 rounded-full bg-gradient-to-br from-zinc-900 to-black text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"
+          }`}
       >
         {isCollapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}
       </button>
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-white flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 ${
-          isCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-48 opacity-100"
-        }`}
+        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-white flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 ${isCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-48 opacity-100"
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -120,7 +118,7 @@ function SideBar() {
       {/* Overlay for mobile */}
       {!isCollapsed && (
         <div
-          className="fixed inset-0 bg-black bg-opacity-50 z-30 md:hidden"
+          className="fixed inset-0 bg-opacity-50 z-30 md:hidden"
           onClick={toggleSidebar}
         />
       )}
