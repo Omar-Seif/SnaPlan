@@ -74,9 +74,9 @@ function Sidebar() {
 
             <Link to="/organizer/Home">
               <div
-                className="hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group"
+                className="hover:text-orange-400 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group"
               >
-                <Home className="w-4 h-4 group-hover:text-red-400" />
+                <Home className="w-4 h-4 hover:text-orange-400" />
                 <span className="text-sm font-medium">Home</span>
               </div>
             </Link>
@@ -87,26 +87,26 @@ function Sidebar() {
               <span>Events</span>
 
               <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
               >
-                <Plus className="w-4 h-4 group-hover:text-red-400" />
+                <Plus className="w-4 h-4 hover:text-orange-400" />
                 <span className="text-sm font-medium">Create Event</span>
               </div>
 
               <Link to="/organizer/DraftEvents">
                 <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
                 >
-                  <FileText className="w-4 h-4 group-hover:text-red-400" />
+                  <FileText className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Draft Events</span>
                 </div>
               </Link>
 
               <Link to="/organizer/SubmittedEvents">
                 <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
                 >
-                  <CheckCircle className="w-4 h-4 group-hover:text-red-400" />
+                  <CheckCircle className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Submitted Events</span>
                 </div>
               </Link>
@@ -120,17 +120,17 @@ function Sidebar() {
               <span>Venues</span>
 
               <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
               >
-                <Plus className="w-4 h-4 group-hover:text-red-400" />
+                <Plus className="w-4 h-4 hover:text-orange-400" />
                 <span className="text-sm font-medium">Add Venue</span>
               </div>
 
               <Link to="/organizer/Venues">
                 <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
                 >
-                  <MapPin className="w-4 h-4 group-hover:text-red-400" />
+                  <MapPin className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Venues</span>
                 </div>
               </Link>
@@ -144,17 +144,17 @@ function Sidebar() {
               <span>Speakers</span>
 
               <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
               >
-                <Plus className="w-4 h-4 group-hover:text-red-400" />
+                <Plus className="w-4 h-4 hover:text-orange-400" />
                 <span className="text-sm font-medium">Add Speaker</span>
               </div>
 
               <Link to="/organizer/Speakers">
                 <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
                 >
-                  <UserCheck className="w-4 h-4 group-hover:text-red-400" />
+                  <UserCheck className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Speakers</span>
                 </div>
               </Link>
@@ -165,7 +165,7 @@ function Sidebar() {
 
           {/* Admin Account Section */}
           <div className="relative border-t border-gray-700 p-3 flex items-center justify-between">
-            <div className="flex items-center gap-2 cursor-pointer">
+            <div className="flex items-center gap-2">
               <User className="w-6 h-6 text-orange-600" />
               <span className="text-sm font-medium">Omar Hany</span>
             </div>

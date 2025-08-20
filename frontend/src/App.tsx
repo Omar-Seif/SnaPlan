@@ -51,10 +51,7 @@ function App() {
           />
           <Route path="/organizer/Home" element={<Home />} />
           <Route path="/organizer/DraftEvents" element={<DraftEvents />} />
-          <Route
-            path="/organizer/SubmittedEvents"
-            element={<SubmittedEvents />}
-          />
+          <Route path="/organizer/SubmittedEvents" element={<SubmittedEvents />} />
           <Route path="/organizer/Venues" element={<Venues />} />
           <Route path="/organizer/Speakers" element={<Speakers />} />
 
