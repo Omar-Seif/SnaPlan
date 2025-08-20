@@ -18,7 +18,6 @@ import AdminEvents from "./pages/Admin/Events";
 import Organizers from "./pages/Admin/Organizers";
 import Settings from "./pages/Admin/Settings";
 import Login from "./pages/Admin/Login";
-import EventsManager from "./pages/Admin/EventsManager";
 import Home from "./pages/Organizer/Home";
 import DraftEvents from "./pages/Organizer/DraftEvents";
 import SubmittedEvents from "./pages/Organizer/SubmittedEvents";
@@ -46,10 +45,16 @@ function App() {
 
           {/* Organizer */}
 
-          <Route path="/organizer/CreateEvent" element={<CreateEventOrganizer />} />
+          <Route
+            path="/organizer/CreateEvent"
+            element={<CreateEventOrganizer />}
+          />
           <Route path="/organizer/Home" element={<Home />} />
           <Route path="/organizer/DraftEvents" element={<DraftEvents />} />
-          <Route path="/organizer/SubmittedEvents" element={<SubmittedEvents />} />
+          <Route
+            path="/organizer/SubmittedEvents"
+            element={<SubmittedEvents />}
+          />
           <Route path="/organizer/Venues" element={<Venues />} />
           <Route path="/organizer/Speakers" element={<Speakers />} />
 
@@ -59,7 +64,6 @@ function App() {
           <Route path="/admin/organizers" element={<Organizers />} />
           <Route path="/admin/settings" element={<Settings />} />
           <Route path="/admin/Login" element={<Login />} />
-          <Route path="/admin/eventsManager" element={<EventsManager />} />
         </Routes>
       </BrowserRouter>
     </>

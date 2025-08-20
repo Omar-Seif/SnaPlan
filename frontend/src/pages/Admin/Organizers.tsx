@@ -9,7 +9,7 @@ import {
   Eye,
   Sidebar,
 } from "lucide-react";
-import SideBarComponent from "../../components/Sidebar";
+import SideBarComponent from "../Admin/SideBar";
 
 const initialOrganizers = [
   {
@@ -194,10 +194,11 @@ function Organizers() {
         <div className="flex gap-2">
           <button
             onClick={() => setShowPending(!showPending)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${showPending
-              ? "bg-orange-500 text-white hover:bg-orange-600"
-              : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-              }`}
+            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
+              showPending
+                ? "bg-orange-500 text-white hover:bg-orange-600"
+                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
+            }`}
           >
             Pending Accounts ({pendingOrganizers.length})
           </button>
@@ -402,10 +403,11 @@ function Organizers() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span
-                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${organizer.status === "active"
-                        ? "bg-green-100 text-green-800"
-                        : "bg-red-100 text-red-800"
-                        }`}
+                      className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
+                        organizer.status === "active"
+                          ? "bg-green-100 text-green-800"
+                          : "bg-red-100 text-red-800"
+                      }`}
                     >
                       {organizer.status}
                     </span>
@@ -437,10 +439,11 @@ function Organizers() {
                         </button>
                         <button
                           onClick={() => toggleBan(organizer.id)}
-                          className={`transition-colors ${organizer.status === "banned"
-                            ? "text-green-600 hover:text-green-900"
-                            : "text-yellow-600 hover:text-yellow-900"
-                            }`}
+                          className={`transition-colors ${
+                            organizer.status === "banned"
+                              ? "text-green-600 hover:text-green-900"
+                              : "text-yellow-600 hover:text-yellow-900"
+                          }`}
                           title={
                             organizer.status === "banned" ? "Unban" : "Ban"
                           }
