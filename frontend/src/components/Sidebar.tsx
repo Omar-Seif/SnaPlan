@@ -72,13 +72,14 @@ function Sidebar() {
 
             {/* Home */}
 
-            <div
-              className="hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group"
-            >
-              <Home className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Home</span>
-            </div>
-
+            <Link to="/organizer/Home">
+              <div
+                className="hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group"
+              >
+                <Home className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Home</span>
+              </div>
+            </Link>
             {/* Events */}
 
             <div className="">
@@ -101,12 +102,14 @@ function Sidebar() {
                 </div>
               </Link>
 
-              <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-              >
-                <CheckCircle className="w-4 h-4 group-hover:text-red-400" />
-                <span className="text-sm font-medium">Submitted Events</span>
-              </div>
+              <Link to="/organizer/SubmittedEvents">
+                <div
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                >
+                  <CheckCircle className="w-4 h-4 group-hover:text-red-400" />
+                  <span className="text-sm font-medium">Submitted Events</span>
+                </div>
+              </Link>
 
             </div>
 
@@ -123,12 +126,14 @@ function Sidebar() {
                 <span className="text-sm font-medium">Add Venue</span>
               </div>
 
-              <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-              >
-                <MapPin className="w-4 h-4 group-hover:text-red-400" />
-                <span className="text-sm font-medium">Venues</span>
-              </div>
+              <Link to="/organizer/Venues">
+                <div
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                >
+                  <MapPin className="w-4 h-4 group-hover:text-red-400" />
+                  <span className="text-sm font-medium">Venues</span>
+                </div>
+              </Link>
 
             </div>
 
@@ -145,12 +150,14 @@ function Sidebar() {
                 <span className="text-sm font-medium">Add Speaker</span>
               </div>
 
-              <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-              >
-                <UserCheck className="w-4 h-4 group-hover:text-red-400" />
-                <span className="text-sm font-medium">Speakers</span>
-              </div>
+              <Link to="/organizer/Speakers">
+                <div
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                >
+                  <UserCheck className="w-4 h-4 group-hover:text-red-400" />
+                  <span className="text-sm font-medium">Speakers</span>
+                </div>
+              </Link>
 
             </div>
 
