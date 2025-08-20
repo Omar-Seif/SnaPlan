@@ -9,7 +9,7 @@ import {
   Trash2,
 } from "lucide-react";
 import SearchAndFilter from "./SearchAndFilter";
-import SideBar from "./SideBar";
+import SideBar from "../../components/Sidebar";
 
 function Events() {
   interface Conference {
@@ -556,7 +556,7 @@ function Events() {
                   </td>
                   <td className="py-4 px-6">
                     {editingCell?.rowId === conference.id &&
-                    editingCell?.field === "status" ? (
+                      editingCell?.field === "status" ? (
                       renderEditableCell(
                         conference,
                         "status",
@@ -589,7 +589,7 @@ function Events() {
                   </td>
                   <td className="py-4 px-6 text-sm md:text-base text-gray-700">
                     {editingCell?.rowId === conference.id &&
-                    editingCell?.field === "state" ? (
+                      editingCell?.field === "state" ? (
                       renderEditableCell(
                         conference,
                         "state",
@@ -608,8 +608,8 @@ function Events() {
                             {conference.state === "Accepted"
                               ? "✅"
                               : conference.state === "Rejected"
-                              ? "❌"
-                              : "🔎"}
+                                ? "❌"
+                                : "🔎"}
                           </span>
                           <Edit2 className="w-3 h-3 text-gray-400 opacity-0 group-hover:opacity-100 transition-opacity" />
                         </div>
@@ -687,11 +687,10 @@ function Events() {
               <button
                 onClick={() => goToPage(currentPage - 1)}
                 disabled={currentPage === 1}
-                className={`flex items-center px-3 py-2 rounded-lg text-sm ${
-                  currentPage === 1
-                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                }`}
+                className={`flex items-center px-3 py-2 rounded-lg text-sm ${currentPage === 1
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  }`}
               >
                 <ChevronLeft className="w-4 h-4 mr-1" />
                 Previous
@@ -715,11 +714,10 @@ function Events() {
                     <button
                       key={pageNum}
                       onClick={() => goToPage(pageNum)}
-                      className={`px-3 py-2 rounded-lg text-sm cursor-pointer ${
-                        currentPage === pageNum
-                          ? "bg-blue-500 text-white"
-                          : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
-                      }`}
+                      className={`px-3 py-2 rounded-lg text-sm cursor-pointer ${currentPage === pageNum
+                        ? "bg-blue-500 text-white"
+                        : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100"
+                        }`}
                     >
                       {pageNum}
                     </button>
@@ -730,11 +728,10 @@ function Events() {
               <button
                 onClick={() => goToPage(currentPage + 1)}
                 disabled={currentPage === totalPages}
-                className={`flex items-center px-3 py-2 rounded-lg text-sm ${
-                  currentPage === totalPages
-                    ? "bg-gray-200 text-gray-400 cursor-not-allowed"
-                    : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
-                }`}
+                className={`flex items-center px-3 py-2 rounded-lg text-sm ${currentPage === totalPages
+                  ? "bg-gray-200 text-gray-400 cursor-not-allowed"
+                  : "bg-white border border-gray-300 text-gray-700 hover:bg-gray-100 cursor-pointer"
+                  }`}
               >
                 Next
                 <ChevronRight className="w-4 h-4 ml-1" />

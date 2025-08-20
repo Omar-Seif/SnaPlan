@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { Calendar, Building, Building2, Frown } from "lucide-react";
-import SideBar from "./SideBar";
+import Sidebar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 import SearchAndFilter from "./SearchAndFilter";
 import Table from "./EventsTable";
@@ -247,7 +247,7 @@ const AdminHome: React.FC = () => {
   return (
     <div className="min-h-screen flex md:flex-row ">
       {/* Sidebar */}
-      <SideBar />
+      <Sidebar />
       {/* Main Content */}
       <main className="flex-1 p-3 md:p-8 min-w-0 overflow-auto">
         {/* Search + Filter */}

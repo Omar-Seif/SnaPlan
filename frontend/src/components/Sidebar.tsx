@@ -9,9 +9,9 @@ import {
   CircleUser,
 } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import AdminAccount from "./SidebarAccountTab";
+import AdminAccount from "../pages/Admin/SidebarAccountTab";
 
-function SideBar() {
+function Sidebar() {
   const [isCollapsed, setIsCollapsed] = useState(true);
   const navigate = useNavigate();
   function goToEventManager() {
@@ -126,4 +126,4 @@ function SideBar() {
   );
 }
 
-export default SideBar;
+export default Sidebar;
