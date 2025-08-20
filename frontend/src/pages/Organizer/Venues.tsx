@@ -1,8 +1,6 @@
 import Sidebar from "../../components/Sidebar"
 
-
-
-const Home = () => {
+const Venues = () => {
     return (
         <div>
             <Sidebar />
@@ -10,4 +8,4 @@ const Home = () => {
     )
 }
 
-export default Home
+export default Venues

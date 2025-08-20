@@ -5,7 +5,7 @@ import {
   Settings as SettingsIcon,
   Shield,
 } from "lucide-react";
-import SideBar from "./SideBar";
+import SideBar from "../../components/Sidebar";
 import { useNavigate } from "react-router-dom";
 
 function Settings() {

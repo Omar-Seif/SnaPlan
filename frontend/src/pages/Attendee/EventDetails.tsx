@@ -1,7 +1,7 @@
 import EventDetailsCard from "../../components/EventDetailsCard"
 import Navbar from "../../components/Navbar"
 
-const EventDetailsOrganizer = () => {
+const EventDetailsAttendee = () => {
     return (
         <>
             <Navbar />
@@ -10,4 +10,4 @@ const EventDetailsOrganizer = () => {
     )
 }
 
-export default EventDetailsOrganizer
+export default EventDetailsAttendee
