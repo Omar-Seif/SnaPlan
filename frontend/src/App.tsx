@@ -23,6 +23,7 @@ import DraftEvents from "./pages/Organizer/DraftEvents";
 import SubmittedEvents from "./pages/Organizer/SubmittedEvents";
 import Venues from "./pages/Organizer/Venues";
 import Speakers from "./pages/Organizer/Speakers";
+import CreateVenueForm from "./pages/Organizer/CreateVenue";
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -54,6 +55,10 @@ function App() {
           <Route path="/organizer/SubmittedEvents" element={<SubmittedEvents />} />
           <Route path="/organizer/Venues" element={<Venues />} />
           <Route path="/organizer/Speakers" element={<Speakers />} />
+          <Route
+            path="/organizer/CreateVenue"
+            element={<CreateVenueForm />}
+          />
 
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />

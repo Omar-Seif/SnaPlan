@@ -1,5 +1,6 @@
 import type { Session } from "./Session"
 import type { Ticket } from "./Ticket"
+import type { Venue } from "./Venue"
 
 export interface ViewEvent {
     id?: string | number
@@ -7,7 +8,7 @@ export interface ViewEvent {
     title: string
     startDate: string
     endDate: string
-    venueName: string
+    venue:Venue
     status?: 'Active' | 'Pending' | 'Cancelled'
 }
 
