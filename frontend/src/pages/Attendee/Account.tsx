@@ -1,6 +1,6 @@
 import Navbar from "../../components/Navbar"
 
-const AccountOrganizer = () => {
+const AccountAttendee = () => {
     return (
         <>
             <Navbar />
@@ -8,4 +8,4 @@ const AccountOrganizer = () => {
     )
 }
 
-export default AccountOrganizer
+export default AccountAttendee
