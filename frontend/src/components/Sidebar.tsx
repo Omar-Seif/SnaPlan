@@ -12,7 +12,7 @@ import { useNavigate } from "react-router-dom";
 import AdminAccount from "../pages/Admin/SidebarAccountTab";
 
 function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
+  const [isCollapsed, setIsCollapsed] = useState(false);
   const navigate = useNavigate();
   function goToEventManager() {
     navigate("/admin/events");

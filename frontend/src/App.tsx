@@ -19,6 +19,7 @@ import Organizers from "./pages/Admin/Organizers";
 import Settings from "./pages/Admin/Settings";
 import Login from "./pages/Admin/Login";
 import EventsManager from "./pages/Admin/EventsManager";
+import CreateVenueForm from "./pages/Organizer/CreateVenue";
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -44,6 +45,10 @@ function App() {
           <Route
             path="/organizer/CreateEvent"
             element={<CreateEventOrganizer />}
+          />
+          <Route
+            path="/organizer/CreateVenue"
+            element={<CreateVenueForm />}
           />
 
           {/* Admin */}
