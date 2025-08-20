@@ -9,7 +9,7 @@ import {
   Eye,
   Sidebar,
 } from "lucide-react";
-import SideBarComponent from "./SideBar";
+import SideBarComponent from "../Admin/SideBar";
 
 const initialOrganizers = [
   {

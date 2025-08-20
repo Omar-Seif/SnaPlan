@@ -9,7 +9,7 @@ import {
   Trash2,
 } from "lucide-react";
 import SearchAndFilter from "./SearchAndFilter";
-import SideBar from "./SideBar";
+import SideBar from "../Admin/SideBar";
 
 function Events() {
   interface Conference {

@@ -30,10 +30,6 @@ function SideBar() {
     navigate("/admin/settings");
   }
 
-  function goToAccounts() {
-    navigate("/admin/eventsManager  ");
-  }
-
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
   };
@@ -43,16 +39,18 @@ function SideBar() {
       {/* Toggle Button */}
       <button
         onClick={toggleSidebar}
-        className={`fixed z-50 p-2 rounded-full bg-gradient-to-br from-zinc-900 to-black text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"
-          }`}
+        className={`fixed z-50 p-2 rounded-full bg-gradient-to-br from-zinc-900 to-black text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${
+          isCollapsed ? "top-4 left-4" : "top-4 left-52"
+        }`}
       >
         {isCollapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}
       </button>
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-white flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 ${isCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-48 opacity-100"
-          }`}
+        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-white flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 ${
+          isCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-48 opacity-100"
+        }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -88,14 +86,6 @@ function SideBar() {
             >
               <Building className="w-4 h-4 group-hover:text-red-400" />
               <span className="text-sm font-medium">Organizers</span>
-            </div>
-
-            <div
-              onClick={goToAccounts}
-              className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-            >
-              <CircleUser className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Event Managers</span>
             </div>
 
             <div

@@ -1,7 +1,7 @@
 import Navbar from "../../components/Navbar"
 
 
-const ExploreOrganizer = () => {
+const ExploreAttendee = () => {
     return (
         <>
             <Navbar />
@@ -9,4 +9,4 @@ const ExploreOrganizer = () => {
     )
 }
 
-export default ExploreOrganizer
+export default ExploreAttendee
