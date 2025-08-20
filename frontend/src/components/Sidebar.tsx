@@ -1,38 +1,40 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
-  Calendar,
-  Building,
-  BarChart3,
-  Settings,
   Menu,
   X,
-  CircleUser,
+  User,
+  LogOut,
+  Home,
+  Plus,
+  FileText,
+  CheckCircle,
+  MapPin,
+  UserCheck,
 } from "lucide-react";
-import { useNavigate } from "react-router-dom";
-import AdminAccount from "../pages/Admin/SidebarAccountTab";
+import Logo from "./logo";
+import { Link } from "react-router-dom";
 
 function Sidebar() {
-  const [isCollapsed, setIsCollapsed] = useState(true);
-  const navigate = useNavigate();
-  function goToEventManager() {
-    navigate("/admin/events");
-  }
+  const [isCollapsed, setIsCollapsed] = useState(false);
+  const [isMobile, setIsMobile] = useState(false);
 
-  function goToOverview() {
-    navigate("/admin/home");
-  }
+  // Check screen size on mount and resize
+  useEffect(() => {
+    const checkScreenSize = () => {
+      const mobile = window.innerWidth < 768;
+      setIsMobile(mobile);
+      setIsCollapsed(mobile);
+    };
 
-  function goToOrganizers() {
-    navigate("/admin/organizers");
-  }
+    // Initial check
+    checkScreenSize();
 
-  function goToSettings() {
-    navigate("/admin/settings");
-  }
+    // Add event listener
+    window.addEventListener('resize', checkScreenSize);
 
-  function goToAccounts() {
-    navigate("/admin/eventsManager  ");
-  }
+    // Clean up
+    return () => window.removeEventListener('resize', checkScreenSize);
+  }, []);
 
   const toggleSidebar = () => {
     setIsCollapsed(!isCollapsed);
@@ -40,83 +42,136 @@ function Sidebar() {
 
   return (
     <>
-      {/* Toggle Button */}
-      <button
-        onClick={toggleSidebar}
-        className={`fixed z-50 p-2 rounded-full bg-gradient-to-br from-zinc-900 to-black text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"
-          }`}
-      >
-        {isCollapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}
-      </button>
+      {/* Toggle Button - Only show on mobile */}
+      {isMobile && (
+        <button
+          onClick={toggleSidebar}
+          className={`fixed z-50 p-2 rounded-full bg-gradient-to-br bg-slate-900 text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"}`}
+        >
+          {isCollapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}
+        </button>
+      )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b from-zinc-950 via-black to-zinc-950 text-white flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 ${isCollapsed ? "w-0 opacity-0 overflow-hidden" : "w-48 opacity-100"
-          }`}
+        className={`fixed top-0 left-0 h-full bg-gradient-to-b bg-gray-200 text-slate-900 flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 
+          ${isCollapsed ? "w-0 opacity-0 overflow-hidden md:opacity-100 md:w-48" : "w-48 opacity-100"}`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
-          <div className="p-4 border-b border-zinc-800">
-            <div className="flex items-center">
-              <span className="text-lg font-light">Snap</span>
-              <span className="text-lg font-light">Plan</span>
-              <span className="text-red-600 font-bold text-sm ml-1">Admin</span>
+          <Link to="/organizer/Home">
+            <div className="p-4 border-b border-zinc-800">
+              <div className="flex items-center">
+                <Logo />
+              </div>
             </div>
-          </div>
+          </Link>
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1">
+
+            {/* Home */}
+
             <div
-              onClick={goToOverview}
               className="hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group"
             >
-              <BarChart3 className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Overview</span>
+              <Home className="w-4 h-4 group-hover:text-red-400" />
+              <span className="text-sm font-medium">Home</span>
             </div>
 
-            <div
-              onClick={goToEventManager}
-              className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-            >
-              <Calendar className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Events</span>
+            {/* Events */}
+
+            <div className="">
+
+              <span>Events</span>
+
+              <div
+                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+              >
+                <Plus className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Create Event</span>
+              </div>
+
+              <Link to="/organizer/DraftEvents">
+                <div
+                  className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+                >
+                  <FileText className="w-4 h-4 group-hover:text-red-400" />
+                  <span className="text-sm font-medium">Draft Events</span>
+                </div>
+              </Link>
+
+              <div
+                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+              >
+                <CheckCircle className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Submitted Events</span>
+              </div>
+
             </div>
 
-            <div
-              onClick={goToOrganizers}
-              className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-            >
-              <Building className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Organizers</span>
+            {/* Venues */}
+
+            <div className="">
+
+              <span>Venues</span>
+
+              <div
+                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+              >
+                <Plus className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Add Venue</span>
+              </div>
+
+              <div
+                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+              >
+                <MapPin className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Venues</span>
+              </div>
+
             </div>
 
-            <div
-              onClick={goToAccounts}
-              className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-            >
-              <CircleUser className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Event Managers</span>
+            {/* Speakers */}
+
+            <div className="">
+
+              <span>Speakers</span>
+
+              <div
+                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+              >
+                <Plus className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Add Speaker</span>
+              </div>
+
+              <div
+                className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
+              >
+                <UserCheck className="w-4 h-4 group-hover:text-red-400" />
+                <span className="text-sm font-medium">Speakers</span>
+              </div>
+
             </div>
 
-            <div
-              onClick={goToSettings}
-              className="flex items-center space-x-3 px-3 py-2.5 hover:bg-gradient-to-r hover:from-zinc-900 hover:to-zinc-800 rounded-lg cursor-pointer transition-all duration-200 group"
-            >
-              <Settings className="w-4 h-4 group-hover:text-red-400" />
-              <span className="text-sm font-medium">Settings</span>
-            </div>
           </nav>
 
           {/* Admin Account Section */}
-          <AdminAccount
-            adminName="Youssef Tamer"
-            adminEmail="Youssef@gmail.com"
-          />
+          <div className="relative border-t border-gray-700 p-3 flex items-center justify-between">
+            <div className="flex items-center gap-2 cursor-pointer">
+              <User className="w-6 h-6 text-orange-600" />
+              <span className="text-sm font-medium">Omar Hany</span>
+            </div>
+            {/* Logout Icon */}
+            <LogOut
+              className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-300"
+            />
+          </div>
         </div>
       </aside>
 
       {/* Overlay for mobile */}
-      {!isCollapsed && (
+      {!isCollapsed && isMobile && (
         <div
           className="fixed inset-0 bg-opacity-50 z-30 md:hidden"
           onClick={toggleSidebar}

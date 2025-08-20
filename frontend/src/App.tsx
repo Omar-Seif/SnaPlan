@@ -19,6 +19,11 @@ import Organizers from "./pages/Admin/Organizers";
 import Settings from "./pages/Admin/Settings";
 import Login from "./pages/Admin/Login";
 import EventsManager from "./pages/Admin/EventsManager";
+import Home from "./pages/Organizer/Home";
+import DraftEvents from "./pages/Organizer/DraftEvents";
+import SubmittedEvents from "./pages/Organizer/SubmittedEvents";
+import Venues from "./pages/Organizer/Venues";
+import Speakers from "./pages/Organizer/Speakers";
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -41,10 +46,12 @@ function App() {
 
           {/* Organizer */}
 
-          <Route
-            path="/organizer/CreateEvent"
-            element={<CreateEventOrganizer />}
-          />
+          <Route path="/organizer/CreateEvent" element={<CreateEventOrganizer />} />
+          <Route path="/organizer/Home" element={<Home />} />
+          <Route path="/organizer/DraftEvents" element={<DraftEvents />} />
+          <Route path="/organizer/SubmittedEvents" element={<SubmittedEvents />} />
+          <Route path="/organizer/Venues" element={<Venues />} />
+          <Route path="/organizer/Speakers" element={<Speakers />} />
 
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
