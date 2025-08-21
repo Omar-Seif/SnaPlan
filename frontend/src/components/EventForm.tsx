@@ -106,7 +106,15 @@ const EventForm = () => {
       navigate("/organizer/MyEvents");
     }, 1500);
   };
-
+  const handleDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
+    setLoading(true);
+    setTimeout(()=>{
+      setLoading(false);
+      alert("Event saved as draft!");
+      navigate("/organizer/DraftEvents");
+    })
+  }
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
@@ -232,6 +240,7 @@ const EventForm = () => {
               "bg-blue-500 text-white hover:bg-blue-600",
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
             )}
+            onClick = {handleDraft}
           >
             Save as Draft
           </button>
@@ -246,7 +255,9 @@ const EventForm = () => {
               "inline-flex items-center justify-center gap-2",
               "bg-orange-500 text-white hover:bg-orange-600",
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
-            )}
+            )
+            
+          }
           >
             {loading ? (
               <LoaderCircle
