@@ -137,10 +137,12 @@ function Sidebar() {
             <div className="">
               <span>Speakers</span>
 
-              <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
-                <Plus className="w-4 h-4 hover:text-orange-400" />
-                <span className="text-sm font-medium">Add Speaker</span>
-              </div>
+              <Link to="/organizer/CreateSpeaker">
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
+                  <Plus className="w-4 h-4 hover:text-orange-400" />
+                  <span className="text-sm font-medium">Add Speaker</span>
+                </div>
+              </Link>
 
               <Link to="/organizer/Speakers">
                 <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
