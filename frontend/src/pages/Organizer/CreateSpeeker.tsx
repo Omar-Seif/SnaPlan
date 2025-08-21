@@ -1,10 +1,13 @@
+import Sidebar from "../../components/Sidebar"
+import SpeakerForm from "../../components/SpeakerForm"
 
-const CreateSpeeker = () => {
+const CreateSpeekerOrganizer = () => {
     return (
-        <div>
-
-        </div>
+        <>
+            <Sidebar/>
+            <SpeakerForm/>
+        </>
     )
 }
 
-export default CreateSpeeker
+export default CreateSpeekerOrganizer;

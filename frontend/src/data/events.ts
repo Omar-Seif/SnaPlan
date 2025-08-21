@@ -6,7 +6,8 @@ export const eventsDummy: Event[] = [{
     title: "Tech Innovation Summit 2023",
     startDate: "15/11/2025",
     endDate: "17/11/2025",
-    venueName: "Grand Convention Center, Dubai",
+    // venue: Grand Convention Center, Dubai",
+    venue : {name : "Grand Convention Center, Dubai" , address: "123 Main St, Dubai", location: "Dubai, UAE", rooms: [{id: 1, name: "Main Hall", capacity: 500}, {id: 2, name: "Conference Room A", capacity: 200}] },
     status: "Pending",
     description: "Conference or event where people in the technology industry gather to discuss, learn, and network about the latest trends, innovations, and challenges in the field",
     ticket: [
@@ -53,7 +54,7 @@ export const eventsDummy: Event[] = [{
     image: "https://images.unsplash.com/photo-1492684223066-81342ee5ff30",
     title: "Digital Marketing Conference",
     startDate: "15/11/2025",
-    endDate: "17/11/2025", venueName: "Marriott Hotel, London",
+    endDate: "17/11/2025", venue: {name: "Marriott Hotel, London" , address: "456 High Street, London", location: "London, UK", rooms: [{id: 1, name: "Marketing Hall", capacity: 300}, {id: 2, name: "Strategy Room", capacity: 100}] },
     status: "Pending"
 },
 {
@@ -61,7 +62,7 @@ export const eventsDummy: Event[] = [{
     image: "https://images.unsplash.com/photo-1511578314322-379afb476865",
     title: "AI & Machine Learning Workshop",
     startDate: "17/11/2025",
-    endDate: "17/11/2025", venueName: "Innovation Hub, Singapore",
+    endDate: "17/11/2025", venue: {name:"Innovation Hub, Singapore" , address: "789 Orchard Road, Singapore", location: "Singapore", rooms: [{id: 1, name: "AI Lab", capacity: 100}, {id: 2, name: "ML Workshop Room", capacity: 50}] },
     status: "Pending"
 },
 {
@@ -69,6 +70,6 @@ export const eventsDummy: Event[] = [{
     image: "https://images.unsplash.com/photo-1501281668745-f7f57925c3b4",
     title: "Blockchain Revolution Forum",
     startDate: "15/11/2025",
-    endDate: "17/11/2025", venueName: "Convention Center, New York",
+    endDate: "17/11/2025", venue:{ name:"Convention Center, New York" , address: "456 Broadway, New York", location: "New York, USA", rooms: [{id: 3, name: "Blockchain Hall", capacity: 300}, {id: 4, name: "Crypto Room", capacity: 150}] },
     status: "Pending"
 }]

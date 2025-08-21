@@ -30,10 +30,10 @@ function Sidebar() {
     checkScreenSize();
 
     // Add event listener
-    window.addEventListener('resize', checkScreenSize);
+    window.addEventListener("resize", checkScreenSize);
 
     // Clean up
-    return () => window.removeEventListener('resize', checkScreenSize);
+    return () => window.removeEventListener("resize", checkScreenSize);
   }, []);
 
   const toggleSidebar = () => {
@@ -46,16 +46,24 @@ function Sidebar() {
       {isMobile && (
         <button
           onClick={toggleSidebar}
-          className={`fixed z-50 p-2 rounded-full bg-gradient-to-br bg-slate-900 text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"}`}
+          className={`fixed z-50 p-2 rounded-full bg-gradient-to-br bg-slate-900 text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"
+            }`}
         >
-          {isCollapsed ? <Menu className="w-4 h-4" /> : <X className="w-4 h-4" />}
+          {isCollapsed ? (
+            <Menu className="w-4 h-4" />
+          ) : (
+            <X className="w-4 h-4" />
+          )}
         </button>
       )}
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b bg-gray-200 text-slate-900 flex-shrink-0 transition-all duration-300 shadow-2xl border-r border-zinc-800 
-          ${isCollapsed ? "w-0 opacity-0 overflow-hidden md:opacity-100 md:w-48" : "w-48 opacity-100"}`}
+        className={`fixed top-0 left-0 h-full bg-gradient-to-b bg-gray-200 text-slate-900 flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 
+          ${isCollapsed
+            ? "w-0 opacity-0 overflow-hidden md:opacity-100 md:w-48"
+            : "w-48 opacity-100"
+          }`}
       >
         <div className="flex flex-col h-full">
           {/* Header */}
@@ -69,13 +77,10 @@ function Sidebar() {
 
           {/* Navigation */}
           <nav className="flex-1 p-4 space-y-1">
-
             {/* Home */}
 
             <Link to="/organizer/Home">
-              <div
-                className="hover:text-orange-400 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group"
-              >
+              <div className="hover:text-orange-400 cursor-pointer flex items-center space-x-3 rounded-lg px-3 py-2.5 transition-all duration-200 group">
                 <Home className="w-4 h-4 hover:text-orange-400" />
                 <span className="text-sm font-medium">Home</span>
               </div>
@@ -83,84 +88,67 @@ function Sidebar() {
             {/* Events */}
 
             <div className="">
-
               <span>Events</span>
 
-              <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-              >
-                <Plus className="w-4 h-4 hover:text-orange-400" />
-                <span className="text-sm font-medium">Create Event</span>
-              </div>
+              <Link to="/organizer/CreateEvent">
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
+                  <Plus className="w-4 h-4 hover:text-orange-400" />
+                  <span className="text-sm font-medium">Create Event</span>
+                </div>
+              </Link>
 
               <Link to="/organizer/DraftEvents">
-                <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-                >
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
                   <FileText className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Draft Events</span>
                 </div>
               </Link>
 
               <Link to="/organizer/SubmittedEvents">
-                <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-                >
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
                   <CheckCircle className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Submitted Events</span>
                 </div>
               </Link>
-
             </div>
 
             {/* Venues */}
 
             <div className="">
-
               <span>Venues</span>
 
-              <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-              >
-                <Plus className="w-4 h-4 hover:text-orange-400" />
-                <span className="text-sm font-medium">Add Venue</span>
-              </div>
+              <Link to="/organizer/CreateVenue">
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
+                  <Plus className="w-4 h-4 hover:text-orange-400" />
+                  <span className="text-sm font-medium">Add Venue</span>
+                </div>
+              </Link>
 
               <Link to="/organizer/Venues">
-                <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-                >
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
                   <MapPin className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Venues</span>
                 </div>
               </Link>
-
             </div>
 
             {/* Speakers */}
 
             <div className="">
-
               <span>Speakers</span>
 
-              <div
-                className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-              >
+              <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
                 <Plus className="w-4 h-4 hover:text-orange-400" />
                 <span className="text-sm font-medium">Add Speaker</span>
               </div>
 
               <Link to="/organizer/Speakers">
-                <div
-                  className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group"
-                >
+                <div className="flex items-center space-x-3 px-3 py-2.5 hover:text-orange-400 rounded-lg cursor-pointer transition-all duration-200 group">
                   <UserCheck className="w-4 h-4 hover:text-orange-400" />
                   <span className="text-sm font-medium">Speakers</span>
                 </div>
               </Link>
-
             </div>
-
           </nav>
 
           {/* Admin Account Section */}
@@ -170,9 +158,7 @@ function Sidebar() {
               <span className="text-sm font-medium">Omar Hany</span>
             </div>
             {/* Logout Icon */}
-            <LogOut
-              className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-300"
-            />
+            <LogOut className="w-5 h-5 text-red-400 cursor-pointer hover:text-red-300" />
           </div>
         </div>
       </aside>
