@@ -54,7 +54,7 @@ function Sidebar() {
 
       {/* Sidebar */}
       <aside
-        className={`fixed top-0 left-0 h-full bg-gradient-to-b bg-gray-200 text-slate-900 flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 
+        className={`fixed top-0 left-0 h-full bg-gradient-to-b bg-gray-200 text-slate-900 flex-shrink-0 transition-all duration-300 shadow-2xl border-r border-zinc-800 
           ${isCollapsed ? "w-0 opacity-0 overflow-hidden md:opacity-100 md:w-48" : "w-48 opacity-100"}`}
       >
         <div className="flex flex-col h-full">

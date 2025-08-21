@@ -18,4 +18,11 @@ export interface Event extends ViewEvent {
 }
 
 
+export interface DraftEvent {
+    title: string
+    startDate: string
+    endDate: string
+    venue: string
+}
+
 
