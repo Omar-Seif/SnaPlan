@@ -4,6 +4,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 // organizer
 import CreateEventOrganizer from "./pages/Organizer/CreateEvent";
 
+
 // Attendee
 import RegisterAttendee from "./pages/Attendee/Register";
 import LoginAttendee from "./pages/Attendee/Login";
@@ -23,6 +24,8 @@ import DraftEvents from "./pages/Organizer/DraftEvents";
 import SubmittedEvents from "./pages/Organizer/SubmittedEvents";
 import Venues from "./pages/Organizer/Venues";
 import Speakers from "./pages/Organizer/Speakers";
+import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
+import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -54,7 +57,11 @@ function App() {
           <Route path="/organizer/SubmittedEvents" element={<SubmittedEvents />} />
           <Route path="/organizer/Venues" element={<Venues />} />
           <Route path="/organizer/Speakers" element={<Speakers />} />
-
+          <Route
+            path="/organizer/CreateVenue"
+            element={<CreateVenueOrganizer />}
+          />
+          <Route path="/organizer/CreateSpeaker" element={<CreateSpeekerOrganizer/>}/>
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/events" element={<AdminEvents />} />

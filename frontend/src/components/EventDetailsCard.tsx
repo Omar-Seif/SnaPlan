@@ -69,7 +69,7 @@ const EventDetailsCard = () => {
                         </div>
                         <div className="flex items-center gap-2">
                             <MapPin size={18} />
-                            <span>{event?.venueName}</span>
+                            <span>{event?.venue.name}</span>
                         </div>
                     </div>
 
