@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import EventsCard from "../../components/EventsCard"
 import Navbar from "../../components/Navbar"
-import { eventsDummy } from '../../data/events'
 import { getEventCardsMock } from "../../services/EventService";
 import type { Event } from '../../types/Event';
 

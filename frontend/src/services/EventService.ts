@@ -1,20 +1,20 @@
 // src/services/eventService.ts
-import { API_BASE_URL } from '../config';
+// import { API_BASE_URL } from '../config';
 import { draftEvents } from '../data/draftevents';
 import { eventsDummy } from '../data/events';
 import type { DraftEvent, Event } from '../types/Event';
 
 
 //get EventCards Real
-export const getEventCards = async (): Promise<Event[]> => {
-    const response = await fetch(`${API_BASE_URL}/api/Events/simple`);
+// export const getEventCards = async (): Promise<Event[]> => {
+//     const response = await fetch(`${API_BASE_URL}/api/Events/simple`);
 
-    if (!response.ok) {
-        throw new Error('Failed to fetch events');
-    }
-    return response.json();
+//     if (!response.ok) {
+//         throw new Error('Failed to fetch events');
+//     }
+//     return response.json();
 
-};
+// };
 
 
 
