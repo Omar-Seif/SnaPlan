@@ -7,7 +7,6 @@ import CreateEventOrganizer from "./pages/Organizer/CreateEvent";
 
 // Attendee
 import RegisterAttendee from "./pages/Attendee/Register";
-import LoginAttendee from "./pages/Attendee/Login";
 import ExploreAttendee from "./pages/Attendee/Explore";
 import BookedAttendee from "./pages/Attendee/BookedEvents";
 import AccountAttendee from "./pages/Attendee/Account";
@@ -26,6 +25,7 @@ import Venues from "./pages/Organizer/Venues";
 import Speakers from "./pages/Organizer/Speakers";
 import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
 import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
+import LoginOrganizer from "./pages/Organizer/Login";
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -36,7 +36,6 @@ function App() {
         <Routes>
           {/* Attendee */}
 
-          <Route path="/attendee/login" element={<LoginAttendee />} />
           <Route path="/attendee/register" element={<RegisterAttendee />} />
           <Route path="/attendee/Explore" element={<ExploreAttendee />} />
           <Route path="/attendee/BookedEvents" element={<BookedAttendee />} />
@@ -48,6 +47,8 @@ function App() {
 
           {/* Organizer */}
 
+
+          <Route path="/organizer/login" element={<LoginOrganizer />} />
           <Route
             path="/organizer/CreateEvent"
             element={<CreateEventOrganizer />}
@@ -61,7 +62,7 @@ function App() {
             path="/organizer/CreateVenue"
             element={<CreateVenueOrganizer />}
           />
-          <Route path="/organizer/CreateSpeaker" element={<CreateSpeekerOrganizer/>}/>
+          <Route path="/organizer/CreateSpeaker" element={<CreateSpeekerOrganizer />} />
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/events" element={<AdminEvents />} />

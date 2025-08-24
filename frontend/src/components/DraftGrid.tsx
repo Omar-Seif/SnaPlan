@@ -49,7 +49,7 @@ const DraftsGrid = () => {
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Start Date</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">End Date</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Venue</th>
-                                <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Actions</th>
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Edit</th>
                             </tr>
                         </thead>
                         <tbody>

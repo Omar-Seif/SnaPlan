@@ -2,10 +2,12 @@
 // import { API_BASE_URL } from '../config';
 import { draftEvents } from '../data/draftevents';
 import { eventsDummy } from '../data/events';
-import type { DraftEvent, Event } from '../types/Event';
+import { submittedEvents } from '../data/submittedevents';
+import type { DraftEvent, Event, SubmittedEvent } from '../types/Event';
 
 
 //get EventCards Real
+
 // export const getEventCards = async (): Promise<Event[]> => {
 //     const response = await fetch(`${API_BASE_URL}/api/Events/simple`);
 
@@ -19,6 +21,7 @@ import type { DraftEvent, Event } from '../types/Event';
 
 
 // get EventCards Mock
+
 export const getEventCardsMock = async (): Promise<Event[]> => {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 500));
@@ -27,9 +30,10 @@ export const getEventCardsMock = async (): Promise<Event[]> => {
     return Promise.resolve(eventsDummy as unknown as Event[]);
 };
 
-// DraftEvents
+
 
 // get DraftEvents Real
+
 // export const getDraftEvents = async (): Promise<DraftEvent[]> => {
 //     const response = await fetch(`${API_BASE_URL}/api/Events/simple`);
 
@@ -41,10 +45,36 @@ export const getEventCardsMock = async (): Promise<Event[]> => {
 
 
 // get DraftEvents Mock
+
 export const getDraftEventsMock = async (): Promise<DraftEvent[]> => {
     // Simulate network delay
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Return the dummy data as if it came from an API
     return Promise.resolve(draftEvents as unknown as DraftEvent[]);
+};
+
+
+
+//get SubmittedEvents Real
+
+// export const getSubmittedEvents = async (): Promise<SubmittedEvent[]> => {
+//     const response = await fetch(`${API_BASE_URL}/api/Events/simple`);
+
+//     if (!response.ok) {
+//         throw new Error('Failed to fetch events');
+//     }
+//     return response.json();
+// };
+
+
+
+// get SubmittedEvents Mock
+
+export const getSubmittedEventsMock = async (): Promise<SubmittedEvent[]> => {
+    // Simulate network delay
+    await new Promise(resolve => setTimeout(resolve, 500));
+
+    // Return the dummy data as if it came from an API
+    return Promise.resolve(submittedEvents as unknown as SubmittedEvent[]);
 };

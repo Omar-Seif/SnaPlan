@@ -25,7 +25,7 @@ const ViewSpeakers = () => {
   }, []);
   console.log(speakers);
   return (
-    <div className="min-h-screen bg-gradient-to-br  flex flex-col items-center py-12">
+    <div className="min-h-screen bg-gradient-to-br md:ml-48 flex flex-col items-center py-12">
       <h1 className="text-3xl font-extrabold text-orange-700 mb-10 drop-shadow-lg">
         {" "}
         Event Speakers
@@ -57,13 +57,13 @@ const ViewSpeakers = () => {
             </div>
           </div>
         ))}
-          <Link
-            to="/organizer/CreateSpeaker"
-            className="block w-80 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center justify-center transition-transform hover:scale-105 hover:shadow-orange-200 border border-orange-200 hover:cursor-pointer"
-          >
-            <UserRoundPlus size={62} />
-            Add New Speaker
-          </Link>
+        <Link
+          to="/organizer/CreateSpeaker"
+          className="block w-80 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center justify-center transition-transform hover:scale-105 hover:shadow-orange-200 border border-orange-200 hover:cursor-pointer"
+        >
+          <UserRoundPlus size={62} />
+          Add New Speaker
+        </Link>
       </div>
     </div>
   );

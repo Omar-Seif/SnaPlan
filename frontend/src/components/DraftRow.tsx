@@ -1,3 +1,4 @@
+import { Edit } from "lucide-react"
 import type { DraftEvent } from "../types/Event"
 
 
@@ -13,8 +14,8 @@ const DraftRow = ({ draftEvent }: DraftRowProps) => {
             <td className="p-3 border-b border-gray-200 text-gray-600">{draftEvent.endDate}</td>
             <td className="p-3 border-b border-gray-200 text-gray-600">{draftEvent.venue}</td>
             <td className="p-3 border-b border-gray-200">
-                <button className="px-3 py-1.5 text-white rounded-md text-sm bg-orange-600 hover:bg-orange-800 transition-colors">
-                    View Details
+                <button className="pr-3 py-1.5 text-orange-600 rounded-md text-sm  hover:bg-orange-100 transition-colors">
+                    <Edit />
                 </button>
             </td>
         </tr>

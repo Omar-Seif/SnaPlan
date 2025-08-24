@@ -3,7 +3,7 @@ import type { Venue } from "../types/Venue";
 import { CaseLower, DoorClosed, BookUser, MapPin } from "lucide-react";
 import type { Room } from "../types/Room";
 import { cn } from "../lib/utils";
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 
 export default function CreateVenueForm() {
   const [formData, setFormData] = useState<Venue>({
@@ -55,7 +55,7 @@ export default function CreateVenueForm() {
   }
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex md:ml-48 items-center justify-center min-h-screen">
         <form
           action=""
           onSubmit={handleSubmit}
