@@ -8,7 +8,7 @@ interface SessionCardProps {
 const SessionCard = ({ session }: SessionCardProps) => {
     return (
         <>
-            <div className="flex items-center gap-4 border rounded-lg p-4 bg-white shadow-sm">
+            <div className="flex items-center gap-4 border rounded-lg p-4 bg-white shadow-sm active:bg-orange-400 active:text-white ">
 
                 <div className="text-sm font-medium text-gray-500 w-24 md:w-auto mr-auto md:mr-2">
                     {`${session.timeSlot.day}, ${session.timeSlot.startDate} - ${session.timeSlot.endDate}`}

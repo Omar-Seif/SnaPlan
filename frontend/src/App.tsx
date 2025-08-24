@@ -26,6 +26,7 @@ import Venues from "./pages/Organizer/Venues";
 import Speakers from "./pages/Organizer/Speakers";
 import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
 import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
+import SessionsPage from "./pages/Organizer/SessionManagementPage"
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -61,6 +62,12 @@ function App() {
             path="/organizer/CreateVenue"
             element={<CreateVenueOrganizer />}
           />
+          <Route
+            path="/organizer/ManageSessions"
+            element={<SessionsPage/>}
+          />
+
+          
           <Route path="/organizer/CreateSpeaker" element={<CreateSpeekerOrganizer/>}/>
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
