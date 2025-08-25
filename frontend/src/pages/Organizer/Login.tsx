@@ -2,15 +2,17 @@ import { LoaderCircle, Lock, MailIcon } from 'lucide-react'
 import { useState } from 'react'
 import { cn } from '../../lib/utils'
 import Logo from '../../components/logo'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 
 
 
-const LoginAttendee = () => {
+const LoginOrganizer = () => {
 
     const [email, setEmail] = useState<string>("")
     const [password, setPassword] = useState<string>("")
     const [loading, setLoading] = useState<boolean>(false)
+
+    const navigate = useNavigate()
 
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -24,6 +26,7 @@ const LoginAttendee = () => {
         setTimeout(() => {
             setLoading(false);
             alert('Login successful!');
+            navigate('/organizer/Home')
         }, 1000);
     }
 
@@ -100,19 +103,10 @@ const LoginAttendee = () => {
 
                     </form>
 
-                    {/* Sign-up Link */}
-                    <div className="mt-4 text-center">
-                        <span className="text-sm text-gray-600">New here? </span>
-
-                        <Link to='/organizer/register' className="text-sm font-medium text-blue-600 hover:underline">
-
-                            Sign up
-                        </Link>
-                    </div>
                 </div>
             </div>
         </>
     )
 }
 
-export default LoginAttendee
+export default LoginOrganizer

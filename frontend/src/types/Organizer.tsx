@@ -7,4 +7,7 @@ export interface Organizer {
     organization: string
     job: string
     country: string
+    
+
 }
+

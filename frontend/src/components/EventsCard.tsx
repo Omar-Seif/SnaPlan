@@ -14,7 +14,7 @@ const EventsCard = ({ event }: EventCardProps) => {
         title,
         startDate,
         endDate,
-        venueName,
+        venue,
         status
     } = event;
 
@@ -61,7 +61,7 @@ const EventsCard = ({ event }: EventCardProps) => {
 
                     <div className="flex items-center">
                         <MapPin className="h-4 w-4 mr-1.5 text-gray-500" />
-                        <span className="text-sm text-gray-600 line-clamp-1">{venueName}</span>
+                        <span className="text-sm text-gray-600 line-clamp-1">{venue.name}</span>
                     </div>
                 </div>
 

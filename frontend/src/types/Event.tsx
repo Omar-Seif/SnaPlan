@@ -8,7 +8,7 @@ export interface ViewEvent {
     title: string
     startDate: string
     endDate: string
-    venue:Venue
+    venue: Venue
     status?: 'Active' | 'Pending' | 'Cancelled'
 }
 
@@ -24,6 +24,14 @@ export interface DraftEvent {
     startDate: string
     endDate: string
     venue: string
+}
+
+export interface SubmittedEvent {
+    title: string
+    startDate: string
+    endDate: string
+    venue: string
+    status: 'Active' | 'Pending' | 'Rejected'
 }
 
 

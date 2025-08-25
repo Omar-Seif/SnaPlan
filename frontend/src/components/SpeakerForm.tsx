@@ -41,10 +41,10 @@ const SpeakerForm = () => {
 
   return (
     <>
-      <div className="flex items-center justify-center min-h-screen">
+      <div className="flex items-center md:ml-48 justify-center min-h-screen">
         <form
           action=""
-          onSubmit ={handleSubmit}
+          onSubmit={handleSubmit}
           className="max-w-none my-10 mx-5 px-4 pb-8 pt-4 border-gray-200 rounded-lg shadow-sm space-y-8 md:w-[700px] lg:w-[900px]"
         >
           {/*Upload profile picture for speaker here */}

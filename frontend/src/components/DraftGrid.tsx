@@ -1,9 +1,36 @@
+import { useEffect, useState } from "react"
 import DraftRow from "./DraftRow"
+import type { DraftEvent } from "../types/Event"
+import { getDraftEventsMock } from "../services/EventService"
+import { LoaderCircle } from "lucide-react"
 
 
 
 
 const DraftsGrid = () => {
+
+    const [draftEvents, setDraftEvents] = useState<DraftEvent[]>([])
+    const [error, setError] = useState<null | string>(null)
+    const [loading, setLoading] = useState<boolean>(false)
+
+    useEffect(() => {
+        const fetchDraftEvents = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const draftEvents: DraftEvent[] = await getDraftEventsMock()
+                setDraftEvents(draftEvents)
+            } catch (err) {
+                console.log(err)
+                setLoading(false)
+                setError(err instanceof Error ? err.message : "Failed to load events")
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchDraftEvents()
+    }, [])
+
     return (
         <>
             {/* Events Table Section */}
@@ -22,30 +49,19 @@ const DraftsGrid = () => {
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Start Date</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">End Date</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Venue</th>
-                                <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Actions</th>
+                                <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Edit</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <DraftRow draftEvent={{
-                                title: "Introduction to AI",
-                                startDate: "15/11/2025",
-                                endDate: "17/11/2025",
-                                venue: "Dubai Plaza"
-                            }} />
 
-                            <DraftRow draftEvent={{
-                                title: "Web Development Workshop",
-                                startDate: "20/11/2025",
-                                endDate: "21/11/2025",
-                                venue: "Tech Hub"
-                            }} />
+                            {error && <div className="error-message">{error}</div>}
 
-                            <DraftRow draftEvent={{
-                                title: "Digital Marketing Summit",
-                                startDate: "25/12/2025",
-                                endDate: "27/12/2025",
-                                venue: "Conventional Center"
-                            }} />
+                            {loading ? <LoaderCircle className="animate-spin" color={loading ? "#9CA3AF" : "#fff"} /> :
+
+                                draftEvents.map((event, index) => (
+                                    <DraftRow draftEvent={event} key={index} />
+                                ))}
+
                         </tbody>
                     </table>
                 </div>

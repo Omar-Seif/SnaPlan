@@ -1,7 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { Calendar, LoaderCircle, MapPin, Upload } from "lucide-react";
+import { Calendar, LoaderCircle, MapPin, Upload , PlusCircle } from "lucide-react";
 // import type { Ticket } from "../types/Ticket";
 import type { Event } from "../types/Event";
+import type {Session} from "../types/Session"
 import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
 
@@ -17,6 +18,7 @@ const EventForm = () => {
   // const [selectedTickets, setSelectedTickets] = useState<Ticket["type"][]>([]);
   // const [description, setDescription] = useState("");
   const [venues, setVenues] = useState<Venue[]>([]);
+  const[sessions , setSessions] = useState<Session[]>([]);//This will be filled up later , but because this is create event , it will always be empty in the beginning
   useEffect(() => {
     const fetchVenues = async () => {
       try {
@@ -64,7 +66,7 @@ const EventForm = () => {
   ) => {
     const { name, value } = e.target;
     if (name === "venues") {
-      if(value==="Add"){
+      if (value === "Add") {
         navigate("/organizer/CreateVenue");
         return;
       }
@@ -109,14 +111,17 @@ const EventForm = () => {
   const handleDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
-    setTimeout(()=>{
+    setTimeout(() => {
       setLoading(false);
       alert("Event saved as draft!");
       navigate("/organizer/DraftEvents");
-    })
+    });
+  };
+  const handleAddSession = (e:React.MouseEvent<HTMLButtonElement>) =>{
+    navigate("/organizer/ManageSessions")
   }
   return (
-    <div className="flex items-center justify-center min-h-screen">
+    <div className="flex items-center md:ml-48 justify-center min-h-screen">
       <form
         onSubmit={handleSubmit}
         className="max-w-none my-10 mx-5 px-4 pb-8 pt-4 border border-gray-200 rounded-lg shadow-sm space-y-8 md:w-[700px] lg:w-[900px]"
@@ -229,6 +234,21 @@ const EventForm = () => {
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
           />
         </div>
+        {/*  Create Session area */}
+        <div className="flex gap-2 items-center justify-center">
+            {/* placeholder for actual sessions */}
+            <button className=" w-[350px] border border-gray-300 rounded-full px-4 py-4 hover:border-orange-400 flex gap-2 items-center justify-center bg-gray-300 transition transform duration-200 ease-in-out hover:-translate-y-2 hover:shadow-lg  " onClick={handleAddSession}>
+              <PlusCircle size={18}/>
+              Add new session
+            </button>
+            {
+              sessions.length === 0 ? (
+                <h2>No sessions have been added...</h2>
+              ) : (
+                <h2>Sessions have been added...</h2>
+              )
+            }
+        </div>
         {/* Save as Draft Button */}
         <div>
           <button
@@ -240,7 +260,7 @@ const EventForm = () => {
               "bg-blue-500 text-white hover:bg-blue-600",
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
             )}
-            onClick = {handleDraft}
+            onClick={handleDraft}
           >
             Save as Draft
           </button>
@@ -255,9 +275,7 @@ const EventForm = () => {
               "inline-flex items-center justify-center gap-2",
               "bg-orange-500 text-white hover:bg-orange-600",
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
-            )
-            
-          }
+            )}
           >
             {loading ? (
               <LoaderCircle

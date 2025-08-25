@@ -1,8 +1,6 @@
 export interface TimeSlot {
     id?: string | number
-    day: 'Sunday' | 'Monday'
-    | 'Tuesday' | 'Wednesday' | 'Thursday' |
-    'Friday' | 'Saturday'
+    day: string
     startDate: string
     endDate: string
 }
