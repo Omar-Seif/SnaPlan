@@ -1,6 +1,6 @@
-export interface Room{
-    id?: string |number
-    name : string
-    capacity : number
+export interface Room {
+    id?: string | number | undefined
+    name: string
+    capacity: number
 
 }

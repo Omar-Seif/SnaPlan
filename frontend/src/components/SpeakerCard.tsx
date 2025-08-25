@@ -31,6 +31,13 @@ const ViewSpeakers = () => {
         Event Speakers
       </h1>
       <div className="flex flex-wrap justify-center gap-10 w-full max-w-6xl">
+        <Link
+          to="/organizer/CreateSpeaker"
+          className="block w-80 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center justify-center transition-transform hover:scale-105 hover:shadow-orange-200 border border-orange-200 hover:cursor-pointer"
+        >
+          <UserRoundPlus size={62} />
+          Add New Speaker
+        </Link>
         {speakers.map((speaker, idx) => (
           <div
             key={speaker.name + idx}
@@ -57,13 +64,7 @@ const ViewSpeakers = () => {
             </div>
           </div>
         ))}
-        <Link
-          to="/organizer/CreateSpeaker"
-          className="block w-80 bg-white rounded-3xl shadow-2xl p-8 flex flex-col items-center justify-center transition-transform hover:scale-105 hover:shadow-orange-200 border border-orange-200 hover:cursor-pointer"
-        >
-          <UserRoundPlus size={62} />
-          Add New Speaker
-        </Link>
+
       </div>
     </div>
   );
