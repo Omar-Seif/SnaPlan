@@ -1,5 +1,5 @@
 export interface Room {
-    id?: string | number | undefined
+    id?: string | number
     name: string
     capacity: number
 

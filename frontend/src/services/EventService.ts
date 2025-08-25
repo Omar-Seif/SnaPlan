@@ -1,8 +1,8 @@
 // src/services/eventService.ts
 // import { API_BASE_URL } from '../config';
-import { draftEvents } from '../data/draftevents';
+import { draftEventsDummy } from '../data/draftevents';
 import { eventsDummy } from '../data/events';
-import { submittedEvents } from '../data/submittedevents';
+import { submittedEventsDummy } from '../data/submittedevents';
 import type { DraftEvent, Event, SubmittedEvent } from '../types/Event';
 
 
@@ -51,7 +51,7 @@ export const getDraftEventsMock = async (): Promise<DraftEvent[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Return the dummy data as if it came from an API
-    return Promise.resolve(draftEvents as unknown as DraftEvent[]);
+    return Promise.resolve(draftEventsDummy as unknown as DraftEvent[]);
 };
 
 
@@ -76,5 +76,5 @@ export const getSubmittedEventsMock = async (): Promise<SubmittedEvent[]> => {
     await new Promise(resolve => setTimeout(resolve, 500));
 
     // Return the dummy data as if it came from an API
-    return Promise.resolve(submittedEvents as unknown as SubmittedEvent[]);
+    return Promise.resolve(submittedEventsDummy as unknown as SubmittedEvent[]);
 };

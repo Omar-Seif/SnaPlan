@@ -1,15 +1,32 @@
-import { useState } from "react";
-import RoomRow from "./RoomRow";
-
-
+import { useEffect, useState } from "react";
+import VenueRow from "./VenueRow";
+import type { Venue } from "../types/Venue";
+import { getVenuesMock } from "../services/VenueService";
+import { LoaderCircle } from "lucide-react";
 
 const VenueGrid = () => {
 
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [venues, setVenues] = useState<Venue[]>([])
+    const [error, setError] = useState<null | string>(null)
+    const [loading, setLoading] = useState(false)
 
-    const handleOpen = (prev: boolean) => (
-        prev = !prev
-    )
+    useEffect(() => {
+        const fetchVenues = async () => {
+            try {
+                setLoading(true)
+                setError(null)
+                const venues = await getVenuesMock()
+                setVenues(venues)
+            } catch (err) {
+                console.error(err)
+                setError(err instanceof Error ? err.message : "Failed to load events");
+            } finally {
+                setLoading(false)
+            }
+        }
+        fetchVenues();
+    },
+        [])
 
     return (
         <>
@@ -26,39 +43,23 @@ const VenueGrid = () => {
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Address</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Location</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Rooms</th>
-                                <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Capacity</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Actions</th>
                             </tr>
                         </thead>
 
                         <tbody>
                             {/* Example row */}
-                            <>
-                                <tr className="hover:bg-gray-50">
-                                    <td className="p-3">Venue A</td>
-                                    <td className="p-3 text-gray-600">123 Main St</td>
-                                    <td className="p-3 text-gray-600">City Center</td>
-                                    <td className="p-3">3</td>
-                                    <td className="p-3">500</td>
-                                    <td className="p-3">
-                                        <div className="flex gap-2">
-                                            <button
-                                                onClick={() => setIsOpen(handleOpen)}
-                                                className="px-2 py-1 text-sm rounded border hover:bg-gray-100"
-                                            >
-                                                {isOpen ? "Hide Rooms" : "View Rooms"}
-                                            </button>
-                                            <button className="px-2 py-1 text-sm rounded bg-orange-500 text-white hover:bg-orange-600">
-                                                Edit Venue
-                                            </button>
-                                        </div>
-                                    </td>
-                                </tr>
 
-                                {isOpen && (
-                                    <RoomRow />
-                                )}
-                            </>
+                            {error && <div className="error-message">{error}</div>}
+
+                            {loading ? <LoaderCircle className="animate-spin" color={loading ? "#9CA3AF" : "#fff"} /> :
+                                <>
+                                    {venues.map((venue, index) => (
+                                        <VenueRow venue={venue} key={index} />
+                                    ))}
+                                </>
+                            }
+
                         </tbody>
                     </table>
                 </div>

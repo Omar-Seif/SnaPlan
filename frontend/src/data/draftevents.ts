@@ -1,6 +1,6 @@
 import type { DraftEvent } from "../types/Event";
 
-export const draftEvents: DraftEvent[] = [
+export const draftEventsDummy: DraftEvent[] = [
     {
         title: "Introduction to AI",
         startDate: "15/11/2025",

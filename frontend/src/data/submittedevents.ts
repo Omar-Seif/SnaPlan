@@ -1,6 +1,6 @@
 import type { SubmittedEvent } from "../types/Event";
 
-export const submittedEvents: SubmittedEvent[] = [
+export const submittedEventsDummy: SubmittedEvent[] = [
     {
         title: "Introduction to AI",
         startDate: "15/11/2025",
