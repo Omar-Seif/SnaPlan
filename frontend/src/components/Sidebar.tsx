@@ -10,6 +10,7 @@ import {
   CheckCircle,
   MapPin,
   UserCheck,
+  ChartNoAxesGantt 
 } from "lucide-react";
 import Logo from "./logo";
 import { Link } from "react-router-dom";
@@ -46,8 +47,9 @@ function Sidebar() {
       {isMobile && (
         <button
           onClick={toggleSidebar}
-          className={`fixed z-50 p-2 rounded-full bg-gradient-to-br bg-slate-900 text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${isCollapsed ? "top-4 left-4" : "top-4 left-52"
-            }`}
+          className={`fixed z-50 p-2 rounded-full bg-gradient-to-br bg-slate-900 text-white transition-all duration-300 shadow-lg hover:from-zinc-800 hover:to-zinc-900 ${
+            isCollapsed ? "top-4 left-4" : "top-4 left-52"
+          }`}
         >
           {isCollapsed ? (
             <Menu className="w-4 h-4" />
@@ -60,9 +62,10 @@ function Sidebar() {
       {/* Sidebar */}
       <aside
         className={`fixed top-0 left-0 h-full bg-gradient-to-b bg-gray-200 text-slate-900 flex-shrink-0 transition-all duration-300 z-40 shadow-2xl border-r border-zinc-800 
-          ${isCollapsed
-            ? "w-0 opacity-0 overflow-hidden md:opacity-100 md:w-48"
-            : "w-48 opacity-100"
+          ${
+            isCollapsed
+              ? "w-0 opacity-0 overflow-hidden md:opacity-100 md:w-48"
+              : "w-48 opacity-100"
           }`}
       >
         <div className="flex flex-col h-full">
@@ -151,6 +154,8 @@ function Sidebar() {
                 </div>
               </Link>
             </div>
+          
+            
           </nav>
 
           {/* Admin Account Section */}
