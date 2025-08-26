@@ -1,11 +1,11 @@
-import {useState , useEffect } from "react"
-import {useNavigate , useParams} from "react-router-dom"
-import {eventsDummy} from "../data/events"
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { eventsDummy } from "../data/events";
 import type { Speaker } from "../types/Speaker";
 import { Upload, ALargeSmall } from "lucide-react";
 import { cn } from "../lib/utils";
 const SpeakerForm = () => {
-  const {id} = useParams<{id?:string}>()
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
   const [currentSpeaker, setCurrentSpeaker] = useState<Speaker>({
     name: "",
@@ -13,27 +13,27 @@ const SpeakerForm = () => {
     bio: "",
   });
   const [image, setImage] = useState<string>("");
-  useEffect(()=>{   
-    const fetchCurrentSpeaker = async() =>{
-        const sessions = eventsDummy.flatMap((event)=>event.sessions);
-        const speakers = sessions
-          .map((session) => session?.speaker)
-          .filter((speaker): speaker is Speaker => !!speaker);
-        console.log(speakers)
-        const speaker = speakers.find((speaker) => speaker.id === Number(id));
-        console.log(speaker)
-        if (speaker) {
-          setCurrentSpeaker({
-            name: speaker.name,
-            profile: speaker.profile,
-            bio: speaker.bio,
-          });
-          setImage(speaker.profile);
-        }
-    }
-    fetchCurrentSpeaker()
-  },[])
-  
+  useEffect(() => {
+    const fetchCurrentSpeaker = async () => {
+      const sessions = eventsDummy.flatMap((event) => event.sessions);
+      const speakers = sessions
+        .map((session) => session?.speaker)
+        .filter((speaker): speaker is Speaker => !!speaker);
+      console.log(speakers);
+      const speaker = speakers.find((speaker) => speaker.id === Number(id));
+      console.log(speaker);
+      if (speaker) {
+        setCurrentSpeaker({
+          name: speaker.name,
+          profile: speaker.profile,
+          bio: speaker.bio,
+        });
+        setImage(speaker.profile);
+      }
+    };
+    fetchCurrentSpeaker();
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
@@ -61,7 +61,7 @@ const SpeakerForm = () => {
       navigate("/organizer/Speakers");
     }, 1500);
   };
-  console.log(currentSpeaker)
+  console.log(currentSpeaker);
   return (
     <>
       <div className="flex items-center md:ml-48 justify-center min-h-screen">
@@ -71,13 +71,25 @@ const SpeakerForm = () => {
           className="max-w-none my-10 mx-5 px-4 pb-8 pt-4 border-gray-200 rounded-lg shadow-sm space-y-8 md:w-[700px] lg:w-[900px]"
         >
           {/*Upload profile picture for speaker here */}
-          <div className="w-full h-64 rounded-lg overflow-hidden mb-6">
+          {/* Upload profile picture for speaker here */}
+          <div className="w-full h-64 rounded-lg overflow-hidden mb-6 flex  items-center justify-center">
             {image ? (
-              <img
-                src={image}
-                alt="Speaker Profile picture"
-                className="w-full h-full object-contain"
-              />
+              <>
+                <img
+                  src={image}
+                  alt="Speaker Profile picture"
+                  className="w-full h-full object-contain"
+                />
+                <label className=" p-4 flex flex-col items-center justify-center cursor-pointer text-black hover:underline">
+                  Change picture
+                  <input
+                    type="file" 
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageChange}
+                  />
+                </label>
+              </>
             ) : (
               <label className="flex flex-col items-center justify-center cursor-pointer text-gray-500">
                 <Upload size={32} />
@@ -93,6 +105,7 @@ const SpeakerForm = () => {
               </label>
             )}
           </div>
+
           {/* speaker name */}
           <div>
             <div className="flex items-center gap-2">
@@ -128,7 +141,9 @@ const SpeakerForm = () => {
                 "bg-orange-500 text-white hover:bg-orange-600",
                 "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
               )}
-            >Submit changes</button>
+            >
+              Submit changes
+            </button>
           </div>
         </form>
       </div>

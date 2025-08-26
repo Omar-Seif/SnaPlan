@@ -40,8 +40,12 @@ export const EditEventForm = () => {
 
   // populate venues list (unique by name) from eventsDummy
   useEffect(() => {
-    const allVenues = eventsDummy.map((e) => e.venue).filter(Boolean) as Venue[];
-    const unique = Array.from(new Map(allVenues.map((v) => [v.name, v])).values());
+    const allVenues = eventsDummy
+      .map((e) => e.venue)
+      .filter(Boolean) as Venue[];
+    const unique = Array.from(
+      new Map(allVenues.map((v) => [v.name, v])).values()
+    );
     setVenues(unique);
   }, []);
 
@@ -60,7 +64,9 @@ export const EditEventForm = () => {
   };
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     if (name === "venues") {
@@ -132,11 +138,22 @@ export const EditEventForm = () => {
         {/* Image Upload */}
         <div className="w-full h-64 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center relative">
           {currentEvent.image ? (
-            <img
-              src={currentEvent.image}
-              alt="Event preview"
-              className="w-full h-full object-cover"
-            />
+            <>
+              <img
+                src={currentEvent.image}
+                alt="Event preview"
+                className="w-full h-full object-cover"
+              />
+              <label className=" p-4 flex flex-col items-center justify-center cursor-pointer text-black hover:underline">
+                Change picture
+                <input
+                  type="file"
+                  accept="image/*"
+                  className="hidden"
+                  onChange={handleImageChange}
+                />
+              </label>
+            </>
           ) : (
             <label className="flex flex-col items-center justify-center cursor-pointer text-gray-500">
               <Upload size={32} />
@@ -267,7 +284,9 @@ export const EditEventForm = () => {
 
           <div className="w-full mt-4">
             {currentEvent.sessions?.length === 0 ? (
-              <h2 className="text-center text-gray-500">No sessions have been added...</h2>
+              <h2 className="text-center text-gray-500">
+                No sessions have been added...
+              </h2>
             ) : (
               currentEvent.sessions?.map((session: Session, index: number) => (
                 <SessionCard session={session} key={index} />
@@ -305,7 +324,11 @@ export const EditEventForm = () => {
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
             )}
           >
-            {loading ? <LoaderCircle className="animate-spin" /> : "Create Event"}
+            {loading ? (
+              <LoaderCircle className="animate-spin" />
+            ) : (
+              "Create Event"
+            )}
           </button>
         </div>
       </form>
