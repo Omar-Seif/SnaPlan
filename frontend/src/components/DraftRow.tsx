@@ -4,9 +4,10 @@ import {useNavigate} from "react-router-dom"
 
 type DraftRowProps = {
     draftEvent: DraftEvent
+    handleonDeleteClick: (id:string|number)=>void
 }
 
-const DraftRow = ({ draftEvent }: DraftRowProps) => {
+const DraftRow = ({ draftEvent , handleonDeleteClick }: DraftRowProps) => {
     const navigate = useNavigate();
     const handleOnEditClick = () =>{
         navigate(`/organizer/EditEvent/${draftEvent.title}`)
@@ -22,7 +23,7 @@ const DraftRow = ({ draftEvent }: DraftRowProps) => {
                     <Edit />
                 </button>
                 <button className="p-3 py-1.5 text-red-600 rounded-md text-sm  hover:bg-orange-100 transition-colors">
-                    <Trash2 />
+                    <Trash2 onClick={()=>handleonDeleteClick(draftEvent.title)} />
                 </button>
             </td>
         </tr>

@@ -30,7 +30,14 @@ const DraftsGrid = () => {
         }
         fetchDraftEvents()
     }, [])
-
+    const handleonDeleteClick = (id : string|number)=>{
+        setDraftEvents(
+            draftEvents.filter(
+                (draftEvent)=>
+                draftEvent.title !== id
+            )
+        )
+    }
     return (
         <>
             {/* Events Table Section */}
@@ -59,7 +66,7 @@ const DraftsGrid = () => {
                             {loading ? <LoaderCircle className="animate-spin" color={loading ? "#9CA3AF" : "#fff"} /> :
 
                                 draftEvents.map((event, index) => (
-                                    <DraftRow draftEvent={event} key={index} />
+                                    <DraftRow draftEvent={event} key={index} handleonDeleteClick = {handleonDeleteClick} />
                                 ))}
 
                         </tbody>

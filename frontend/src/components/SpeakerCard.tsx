@@ -28,6 +28,11 @@ const ViewSpeakers = () => {
   const handleonEditClick = (id: number | string) => {
     navigate(`/organizer/EditSpeaker/${id}`);
   };
+  const handleonDeleteClick = (id:number | string)=>{
+    setSpeakers(
+      speakers.filter((speaker)=>speaker.id!==id)
+    )
+  }
 
   return (
     <div className="min-h-screen bg-gradient-to-br md:ml-48 flex flex-col items-center py-12">
@@ -75,7 +80,7 @@ const ViewSpeakers = () => {
                 />
               </button>
               <button>
-                <Trash className="text-red-600" />
+                <Trash className="text-red-600" onClick={()=>handleonDeleteClick(speaker.id ?? 0)} />
               </button>
             </div>
           </div>
