@@ -3,7 +3,18 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 
 // organizer
 import CreateEventOrganizer from "./pages/Organizer/CreateEvent";
-
+import Home from "./pages/Organizer/Home";
+import DraftEvents from "./pages/Organizer/DraftEvents";
+import SubmittedEvents from "./pages/Organizer/SubmittedEvents";
+import Venues from "./pages/Organizer/Venues";
+import Speakers from "./pages/Organizer/Speakers";
+import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
+import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
+import LoginOrganizer from "./pages/Organizer/Login";
+import SessionsPage from "./pages/Organizer/SessionManagementPage"
+import  {CreateSessionOrganizer} from "./pages/Organizer/CreateSession";
+import EditEvents from "./pages/Organizer/EditEvents"
+import { EditSpeaker } from "./pages/Organizer/EditSpeakers";
 
 // Attendee
 import RegisterAttendee from "./pages/Attendee/Register";
@@ -18,16 +29,7 @@ import AdminEvents from "./pages/Admin/Events";
 import Organizers from "./pages/Admin/Organizers";
 import Settings from "./pages/Admin/Settings";
 import Login from "./pages/Admin/Login";
-import Home from "./pages/Organizer/Home";
-import DraftEvents from "./pages/Organizer/DraftEvents";
-import SubmittedEvents from "./pages/Organizer/SubmittedEvents";
-import Venues from "./pages/Organizer/Venues";
-import Speakers from "./pages/Organizer/Speakers";
-import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
-import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
-import LoginOrganizer from "./pages/Organizer/Login";
-import SessionsPage from "./pages/Organizer/SessionManagementPage"
-import { CreateSessionOrganizer } from "./pages/Organizer/CreateSession";
+
 
 // https://192.168.201.124:7096/api/Auth/login
 
@@ -70,6 +72,8 @@ function App() {
             path="/organizer/ManageSessions"
             element={<SessionsPage />}
           />
+          <Route path="/organizer/EditEvent/:id" element={<EditEvents/>}/>
+          <Route path="/organizer/EditSpeaker/:id" element = {<EditSpeaker/>}/>
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/events" element={<AdminEvents />} />

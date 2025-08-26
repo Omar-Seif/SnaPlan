@@ -1,18 +1,20 @@
 import { useDraggable } from "@dnd-kit/core";
 import { CSS } from "@dnd-kit/utilities";
 import type { Session } from "../types/Session";
-import SessionCard from "../components/SessionCard";
+import { Heading1 } from "lucide-react";
 
 type DraggableSessionsProps = {
   session: Session;
   day: string;
   time: string;
+  isRoomsHidden: boolean;
 };
 
 export default function DraggableSessions({
   session,
   day,
   time,
+  isRoomsHidden
 }: DraggableSessionsProps) {
   const { attributes, listeners, setNodeRef, transform } = useDraggable({
     id: session.id?.toString() ?? crypto.randomUUID(),
@@ -36,7 +38,19 @@ export default function DraggableSessions({
         </div>
 
         <div className="flex flex-1 justify-between items-center">
-          <div className="text-lg font-medium">{session.name}</div>
+          <div className="text-lg font-medium">
+            <p>{session.name}</p>
+            {isRoomsHidden ? (
+              <h1></h1>
+            ) : (
+              <form action="">
+                <select name="roomchosen" id="" >
+                  {/* Load registered rooms for this specific event and venue  */}
+                  <option value="">Session Room...</option>
+                </select>
+              </form>
+            )}
+          </div>
 
           <div className="flex items-center gap-2 text-sm text-gray-500 ml-4 mr-2">
             <img

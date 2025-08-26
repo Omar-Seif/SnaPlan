@@ -1,4 +1,7 @@
-import React, { useState, useEffect } from "react";
+import { eventsDummy } from "../data/events";
+import type { Event } from "../types/Event";
+import { useState, useEffect } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import {
   Calendar,
   LoaderCircle,
@@ -7,71 +10,57 @@ import {
   PlusCircle,
   Clock,
 } from "lucide-react";
-// import type { Ticket } from "../types/Ticket";
-import type { Event } from "../types/Event";
 import type { Session } from "../types/Session";
-import { useNavigate } from "react-router-dom";
+import SessionCard from "./SessionCard";
 import { cn } from "../lib/utils";
-
-import { eventsDummy } from "../data/events";
 import type { Venue } from "../types/Venue";
 
-const EventForm = () => {
-  // const [image, setImage] = useState<string>("");
-  // const [title, setTitle] = useState("");
-  // const [startDate, setStartDate] = useState("");
-  // const [endDate, setEndDate] = useState("");
-  // const [venue, setVenue] = useState("");
-  // const [selectedTickets, setSelectedTickets] = useState<Ticket["type"][]>([]);
-  // const [description, setDescription] = useState("");
+export const EditEventForm = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
-  const [sessions, setSessions] = useState<Session[]>([]); //This will be filled up later , but because this is create event , it will always be empty in the beginning
-  useEffect(() => {
-    const fetchVenues = async () => {
-      try {
-        const mappedVenues = eventsDummy.map((event) => event.venue);
-        console.log("Mapped Venues:", mappedVenues);
-        setVenues(mappedVenues);
-      } catch (error) {
-        console.error("Failed to fetch venues:", error);
-      }
-    };
-
-    fetchVenues();
-  }, []);
-
-  console.log(eventsDummy.map((event) => event.venue));
-  const [formData, setFormData] = useState<Event>({
+  const { id } = useParams<{ id?: string }>();
+  const [currentEvent, setCurrentEvent] = useState<Event>({
     title: "",
+    image: "",
     startDate: "",
     endDate: "",
     startTime: "",
     endTime: "",
     venue: { name: "", address: "", location: "", rooms: [] },
     description: "",
+    sessions: [],
   });
+
+  // load event by id (title)
+  useEffect(() => {
+    if (!id) return;
+    const ev = eventsDummy.find((e) => e.title === id);
+    if (ev) setCurrentEvent(ev);
+    else console.error("Cannot find specified event");
+  }, [id]);
+
+  // populate venues list (unique by name) from eventsDummy
+  useEffect(() => {
+    const allVenues = eventsDummy.map((e) => e.venue).filter(Boolean) as Venue[];
+    const unique = Array.from(new Map(allVenues.map((v) => [v.name, v])).values());
+    setVenues(unique);
+  }, []);
 
   const [image, setImage] = useState<string>("");
   const [loading, setLoading] = useState<boolean>(false);
-
   const navigate = useNavigate();
-
-  // image handling
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
       const file = e.target.files[0];
       const previewUrl = URL.createObjectURL(file);
       setImage(previewUrl);
+      // keep currentEvent.image in sync with preview
+      setCurrentEvent((prev) => ({ ...prev, image: previewUrl }));
     }
   };
 
-  //api service function
-
   const handleChange = (
-    e: React.ChangeEvent<
-      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
-    >
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
     if (name === "venues") {
@@ -81,29 +70,30 @@ const EventForm = () => {
       }
       const selectedVenue = venues.find((venue) => venue.name === value);
       if (selectedVenue) {
-        setFormData((prev) => ({
+        setCurrentEvent((prev) => ({
           ...prev,
           venue: selectedVenue,
         }));
       }
     } else {
-      setFormData((prev) => ({
+      setCurrentEvent((prev) => ({
         ...prev,
         [name]: value,
       }));
     }
   };
+
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
 
     if (
       !image ||
-      !formData.title ||
-      !formData.startDate ||
-      !formData.endDate ||
-      !formData.venue ||
-      !formData.description
+      !currentEvent.title ||
+      !currentEvent.startDate ||
+      !currentEvent.endDate ||
+      !currentEvent.venue ||
+      !currentEvent.description
     ) {
       alert("all fields required");
       setLoading(false);
@@ -117,6 +107,7 @@ const EventForm = () => {
       navigate("/organizer/MyEvents");
     }, 1500);
   };
+
   const handleDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -124,11 +115,14 @@ const EventForm = () => {
       setLoading(false);
       alert("Event saved as draft!");
       navigate("/organizer/DraftEvents");
-    });
+    }, 1000);
   };
+
   const handleAddSession = (e: React.MouseEvent<HTMLButtonElement>) => {
+    e.preventDefault();
     navigate("/organizer/ManageSessions");
   };
+
   return (
     <div className="flex items-center md:ml-48 justify-center min-h-screen">
       <form
@@ -137,9 +131,9 @@ const EventForm = () => {
       >
         {/* Image Upload */}
         <div className="w-full h-64 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center relative">
-          {image ? (
+          {currentEvent.image ? (
             <img
-              src={image}
+              src={currentEvent.image}
               alt="Event preview"
               className="w-full h-full object-cover"
             />
@@ -163,7 +157,7 @@ const EventForm = () => {
             type="text"
             name="title"
             placeholder="Event title"
-            value={formData.title}
+            value={currentEvent.title}
             onChange={handleChange}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 text-lg font-bold focus:ring-orange-400 focus:border-orange-400"
             required
@@ -179,7 +173,7 @@ const EventForm = () => {
               <input
                 type="date"
                 name="startDate"
-                value={formData.startDate}
+                value={currentEvent.startDate}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                 required
@@ -190,22 +184,23 @@ const EventForm = () => {
               <input
                 type="date"
                 name="endDate"
-                value={formData.endDate}
+                value={currentEvent.endDate}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                 required
               />
             </div>
           </div>
-          <div className="flex flex-wrap gap-25 text-gray-600">
+
+          <div className="flex flex-wrap gap-6 text-gray-600">
             <div className="flex items-center gap-2">
               <Clock size={18} />
               <input
                 type="number"
                 name="startTime"
-                min="0"
-                max="23"
-                value={formData.startTime}
+                min={0}
+                max={23}
+                value={currentEvent.startTime}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                 required
@@ -216,9 +211,9 @@ const EventForm = () => {
               <input
                 type="number"
                 name="endTime"
-                min="0"
-                max="23"
-                value={formData.endTime}
+                min={0}
+                max={23}
+                value={currentEvent.endTime}
                 onChange={handleChange}
                 className="border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                 required
@@ -226,25 +221,23 @@ const EventForm = () => {
             </div>
           </div>
         </div>
+
+        {/* Venue */}
         <div className="flex items-center gap-2 text-gray-600">
           <MapPin size={18} />
           <select
             className="w-160 px-3 py-2 border border-gray-300 rounded-lg focus:ring-orange-400 focus:border-orange-400"
             name="venues"
-            id=""
-            value={formData.venue.name}
+            value={currentEvent.venue?.name || ""}
             onChange={handleChange}
             required
           >
             <option value="">Select Venue</option>
-            {venues &&
-              venues.map((venue, index) => {
-                return (
-                  <option value={venue.name} key={index}>
-                    {venue.name} - {venue.location}
-                  </option>
-                );
-              })}
+            {venues.map((venue, index) => (
+              <option value={venue.name} key={index}>
+                {venue.name} - {venue.location}
+              </option>
+            ))}
             <option value="Add">Add New Venue</option>
           </select>
         </div>
@@ -254,44 +247,52 @@ const EventForm = () => {
           <textarea
             placeholder="Event description"
             name="description"
-            value={formData.description}
+            value={currentEvent.description}
             onChange={handleChange}
             rows={5}
             className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
           />
         </div>
-        {/*  Create Session area */}
-        <div className="flex gap-2 items-center justify-center">
-          {/* placeholder for actual sessions */}
+
+        {/* Create Session area */}
+        <div className="flex flex-col gap-2 items-center justify-center">
           <button
-            className=" w-[350px] border border-gray-300 rounded-full px-4 py-4 hover:border-orange-400 flex gap-2 items-center justify-center bg-gray-300 transition transform duration-200 ease-in-out hover:-translate-y-2 hover:shadow-lg  "
+            type="button"
+            className="w-[350px] border border-gray-300 rounded-full px-4 py-4 hover:border-orange-400 flex gap-2 items-center justify-center bg-gray-300 transition transform duration-200 ease-in-out hover:-translate-y-2 hover:shadow-lg"
             onClick={handleAddSession}
           >
             <PlusCircle size={18} />
-            Add new session
+            <span>Add new session</span>
           </button>
-          {sessions.length === 0 ? (
-            <h2>No sessions have been added...</h2>
-          ) : (
-            <h2>Sessions have been added...</h2>
-          )}
+
+          <div className="w-full mt-4">
+            {currentEvent.sessions?.length === 0 ? (
+              <h2 className="text-center text-gray-500">No sessions have been added...</h2>
+            ) : (
+              currentEvent.sessions?.map((session: Session, index: number) => (
+                <SessionCard session={session} key={index} />
+              ))
+            )}
+          </div>
         </div>
+
         {/* Save as Draft Button */}
         <div>
           <button
-            type="submit"
+            type="button"
             disabled={loading}
+            onClick={handleDraft}
             className={cn(
               "h-10 w-full rounded-lg py-2 px-4 font-medium transition duration-300 ease-in-out",
               "inline-flex items-center justify-center gap-2",
               "bg-blue-500 text-white hover:bg-blue-600",
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
             )}
-            onClick={handleDraft}
           >
             Save as Draft
           </button>
         </div>
+
         {/* Submit */}
         <div>
           <button
@@ -304,19 +305,10 @@ const EventForm = () => {
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
             )}
           >
-            {loading ? (
-              <LoaderCircle
-                className="animate-spin"
-                color={loading ? "#9CA3AF" : "#fff"}
-              />
-            ) : (
-              "Create Event"
-            )}
+            {loading ? <LoaderCircle className="animate-spin" /> : "Create Event"}
           </button>
         </div>
       </form>
     </div>
   );
 };
-
-export default EventForm;

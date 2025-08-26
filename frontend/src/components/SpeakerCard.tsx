@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 import type { Speaker } from "../types/Speaker";
 import { eventsDummy } from "../data/events";
 import type { Session } from "../types/Session";
 import { Link } from "react-router-dom";
-import { UserRoundPlus } from "lucide-react";
+import { Edit, Trash, UserRoundPlus } from "lucide-react";
 const ViewSpeakers = () => {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
+  const navigate = useNavigate();
   useEffect(() => {
     const fetchSpeakers = async () => {
       const allSessions = eventsDummy.flatMap((event) => event.sessions ?? []);
@@ -23,7 +25,10 @@ const ViewSpeakers = () => {
     };
     fetchSpeakers();
   }, []);
-  console.log(speakers);
+  const handleonEditClick = (id: number | string) => {
+    navigate(`/organizer/EditSpeaker/${id}`);
+  };
+
   return (
     <div className="min-h-screen bg-gradient-to-br md:ml-48 flex flex-col items-center py-12">
       <h1 className="text-3xl font-extrabold text-orange-700 mb-10 drop-shadow-lg">
@@ -62,9 +67,19 @@ const ViewSpeakers = () => {
                 {speaker.bio}
               </p>
             </div>
+            <div className="flex gap-2 ">
+              <button>
+                <Edit
+                  className="text-blue-600 cursor-pointer"
+                  onClick={() => handleonEditClick(speaker.id ?? 0)}
+                />
+              </button>
+              <button>
+                <Trash className="text-red-600" />
+              </button>
+            </div>
           </div>
         ))}
-
       </div>
     </div>
   );

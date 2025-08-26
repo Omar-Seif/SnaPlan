@@ -127,80 +127,91 @@ export default function SessionsPage() {
   };
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
-      <Sidebar />
-      <h1 className="text-center text-3xl font-bold mb-6">Session Timetable</h1>
+    <div className="flex items-center justify-center flex-col">
+      <DndContext onDragEnd={handleDragEnd}>
+        <Sidebar />
+        <h1 className="text-center text-3xl font-bold mb-6">
+          Session Timetable
+        </h1>
 
-      {/* Day Selector */}
-      <div className="flex justify-center gap-3 mb-6">
-        {allDays.map((day) => (
-          <button
-            key={day}
-            onClick={() => handleDayChange(day)}
-            className={`px-4 py-2 rounded-lg font-semibold transition ${
-              selectedDay === day
-                ? "bg-blue-500 text-white"
-                : "bg-gray-200 hover:bg-gray-300"
-            }`}
-          >
-            {day}
-          </button>
-        ))}
-      </div>
+        {/* Day Selector */}
+        <div className="flex justify-center gap-3 mb-6">
+          {allDays.map((day) => (
+            <button
+              key={day}
+              onClick={() => handleDayChange(day)}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
+                selectedDay === day
+                  ? "bg-blue-500 text-white"
+                  : "bg-gray-200 hover:bg-gray-300"
+              }`}
+            >
+              {day}
+            </button>
+          ))}
+        </div>
 
-      {/* Layout: Time slots left, Unassigned right */}
-      <section className="flex flex-col md:flex-row gap-10 p-4 items-center justify-center w-full max-w-6xl mx-auto">
-        {/* Left: Time Slots */}
-        <div className="flex flex-col gap-6 w-full md:w-1/2 items-center">
-          {Object.entries(droppableSessions)
-            .filter(([id]) => id !== "unassigned")
-            .map(([id, sessions]) => (
-              <Droppable id={id} key={id}>
-                <h3 className="text-lg font-semibold mb-2 text-center">{id}</h3>
-                {sessions.length === 0 ? (
+        {/* Layout: Time slots left, Unassigned right */}
+        <section className="flex flex-col md:flex-row gap-10 p-4 items-center justify-center w-full max-w-6xl mx-auto">
+          {/* Left: Time Slots */}
+          <div className="flex flex-col gap-6 w-full md:w-1/2 items-center">
+            {Object.entries(droppableSessions)
+              .filter(([id]) => id !== "unassigned")
+              .map(([id, sessions]) => (
+                <Droppable id={id} key={id}>
+                  <h3 className="text-lg font-semibold mb-2 text-center">
+                    {id}
+                  </h3>
+                  {sessions.length === 0 ? (
+                    <p className="text-sm text-gray-500 text-center italic">
+                      Drop sessions here
+                    </p>
+                  ) : (
+                    sessions.map((session) => (
+                      <DraggableSessions
+                        key={session.id}
+                        session={session}
+                        day={selectedDay}
+                        time={id}
+                        isRoomsHidden={false}
+                      />
+                    ))
+                  )}
+                </Droppable>
+              ))}
+          </div>
+
+          {/* Right: Unassigned */}
+          <div className="w-full md:w-1/2 flex flex-col items-center justify-center mx-auto min-h-screen gap-1">
+            <SessionForm />
+            <div className="flex items-center justify-center">
+              <Droppable id="unassigned">
+                <h3 className="text-lg font-semibold mb-2 text-center">
+                  Unassigned
+                </h3>
+                {droppableSessions.unassigned.length === 0 ? (
                   <p className="text-sm text-gray-500 text-center italic">
-                    Drop sessions here
+                    No unassigned sessions
                   </p>
                 ) : (
-                  sessions.map((session) => (
+                  droppableSessions.unassigned.map((session) => (
                     <DraggableSessions
                       key={session.id}
                       session={session}
-                      day={selectedDay}
-                      time={id}
+                      day=""
+                      time=""
+                      isRoomsHidden={true}
                     />
                   ))
                 )}
               </Droppable>
-            ))}
-        </div>
-
-        {/* Right: Unassigned */}
-        <div className="w-full md:w-1/2 flex flex-col items-center justify-center mx-auto min-h-screen gap-1">
-          <SessionForm />
-          <div className="flex items-center justify-center">
-            <Droppable id="unassigned">
-              <h3 className="text-lg font-semibold mb-2 text-center">
-                Unassigned
-              </h3>
-              {droppableSessions.unassigned.length === 0 ? (
-                <p className="text-sm text-gray-500 text-center italic">
-                  No unassigned sessions
-                </p>
-              ) : (
-                droppableSessions.unassigned.map((session) => (
-                  <DraggableSessions
-                    key={session.id}
-                    session={session}
-                    day=""
-                    time=""
-                  />
-                ))
-              )}
-            </Droppable>
+            </div>
           </div>
-        </div>
-      </section>
-    </DndContext>
+        </section>
+        <button className="min-w-[300px] bg-blue-600 text-white text-center transition duration-150 transform hover:-transform-y-10 hover:cursor-pointer hover:bg-white hover:text-blue-500 mb-3 p-2 rounded-full border border-2">
+          Submit
+        </button>
+      </DndContext>
+    </div>
   );
 }
