@@ -5,8 +5,11 @@ import { eventsDummy } from "../data/events";
 import type { Session } from "../types/Session";
 import { Link } from "react-router-dom";
 import { Edit, Trash, UserRoundPlus } from "lucide-react";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const ViewSpeakers = () => {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
+  const MySwal = withReactContent(Swal)
   const navigate = useNavigate();
   useEffect(() => {
     const fetchSpeakers = async () => {
@@ -29,9 +32,21 @@ const ViewSpeakers = () => {
     navigate(`/organizer/EditSpeaker/${id}`);
   };
   const handleonDeleteClick = (id:number | string)=>{
-    setSpeakers(
-      speakers.filter((speaker)=>speaker.id!==id)
-    )
+     MySwal.fire({
+      title: "Are you sure?",
+      text: "You won't be able to undo this!",
+      icon: "warning",
+      showCancelButton: true,
+      confirmButtonText: "Yes , delete it!",
+    }).then((result) => {
+      if (result.isConfirmed) {
+        setSpeakers(
+          speakers.filter((speaker) => speaker.id !== id)
+        )
+
+        MySwal.fire("Deleted!", "Your event has been deleted.", "success");
+      }
+    });
   }
 
   return (

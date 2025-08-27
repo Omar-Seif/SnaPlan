@@ -4,7 +4,8 @@ import { CaseLower, DoorClosed, BookUser, MapPin } from "lucide-react";
 import type { Room } from "../types/Room";
 import { cn } from "../lib/utils";
 import { useNavigate } from "react-router-dom";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 export default function CreateVenueForm() {
   const [formData, setFormData] = useState<Venue>({
     name: "",
@@ -12,6 +13,7 @@ export default function CreateVenueForm() {
     location: "",
     rooms: [],
   });
+  const mySwal = withReactContent(Swal)
   const [rooms, setRooms] = useState<Room[]>([]);
   const navigate = useNavigate();
   const [roomCount, setRoomCount] = useState(1);
@@ -44,13 +46,31 @@ export default function CreateVenueForm() {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!formData.name || !formData.address || !formData.location || rooms.length === 0) {
-      alert("all fields required");
+      mySwal.fire({
+        title: "All fields are required!",
+        text: "Please enter data in all the given fields!",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonText: "Continue entering data...",
+      });
       return;
     }
     console.log("Venue created:", { ...formData, rooms });
     setTimeout(() => {
-      alert("Venue created successfully!");
-      navigate("/organizer/CreateEvent");
+      mySwal
+        .fire({
+          title: "Venue created!",
+          text: "Venue created and added successfully!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "Continue",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate("/organizer/CreateEvent");
+          }
+        });
+      
     }, 1500);
   }
   return (

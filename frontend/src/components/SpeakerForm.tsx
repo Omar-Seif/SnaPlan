@@ -3,8 +3,11 @@ import type { Speaker } from "../types/Speaker";
 import { Upload, ALargeSmall } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const SpeakerForm = () => {
   const navigate = useNavigate();
+  const mySwal = withReactContent(Swal)
   const [formData, setFormData] = useState<Speaker>({
     name: "",
     profile: "",
@@ -30,12 +33,29 @@ const SpeakerForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!image || !formData.name || !formData.bio) {
-      alert("all fields required");
+      mySwal.fire({
+        title: "All fields are required!",
+        text: "Please enter data in all the given fields!",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonText: "Continue entering data...",
+      });
       return;
     }
     setTimeout(() => {
-      alert("Speaker created successfully");
-      navigate("/organizer/Speakers");
+      mySwal
+        .fire({
+          title: "Speaker created!",
+          text: "Speaker created and added successfully!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "Continue",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate("/organizer/Speakers");  
+          }
+        });
     }, 1500);
   };
 

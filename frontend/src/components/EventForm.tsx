@@ -12,7 +12,8 @@ import type { Event } from "../types/Event";
 import type { Session } from "../types/Session";
 import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
-
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import { eventsDummy } from "../data/events";
 import type { Venue } from "../types/Venue";
 
@@ -55,6 +56,7 @@ const EventForm = () => {
   const [loading, setLoading] = useState<boolean>(false);
 
   const navigate = useNavigate();
+  const mySwal = withReactContent(Swal)
 
   // image handling
 
@@ -105,7 +107,13 @@ const EventForm = () => {
       !formData.venue ||
       !formData.description
     ) {
-      alert("all fields required");
+      mySwal.fire({
+        title:"All fields are required!",
+        text:"Please enter data in all the given fields!",
+        icon:"warning",
+        showCancelButton:false , 
+        confirmButtonText:"Continue entering data..."
+      })
       setLoading(false);
       return;
     }
@@ -113,8 +121,18 @@ const EventForm = () => {
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      alert("Event created successfully!");
-      navigate("/organizer/MyEvents");
+      mySwal.fire({
+        title:"Event Submitted!",
+        text:"Event created and submitted successfully!",
+        icon:"success",
+        showCancelButton:false , 
+        confirmButtonText:"Continue"
+      }).then((result)=>{
+        if(result.isConfirmed){
+          navigate("/organizer/MyEvents");
+        }
+      })
+      
     }, 1500);
   };
   const handleDraft = (e: React.MouseEvent<HTMLButtonElement>) => {
@@ -122,8 +140,18 @@ const EventForm = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Event saved as draft!");
-      navigate("/organizer/DraftEvents");
+      mySwal.fire({
+        title:"Event Saved!",
+        text:"Event Data has been saved successfully!",
+        icon:"success",
+        showCancelButton:false,
+        confirmButtonText:"Continue"
+      }).then((result)=>{
+        if(result.isConfirmed){
+          navigate("/organizer/DraftEvents");
+        }
+      })
+      
     });
   };
   const handleAddSession = (e: React.MouseEvent<HTMLButtonElement>) => {

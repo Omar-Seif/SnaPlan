@@ -4,6 +4,8 @@ import { eventsDummy } from "../data/events";
 import type { Speaker } from "../types/Speaker";
 import { Upload, ALargeSmall } from "lucide-react";
 import { cn } from "../lib/utils";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 const SpeakerForm = () => {
   const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
@@ -12,9 +14,11 @@ const SpeakerForm = () => {
     profile: "",
     bio: "",
   });
+  const mySwal = withReactContent(Swal)
   const [image, setImage] = useState<string>("");
   useEffect(() => {
     const fetchCurrentSpeaker = async () => {
+      
       const sessions = eventsDummy.flatMap((event) => event.sessions);
       const speakers = sessions
         .map((session) => session?.speaker)
@@ -53,14 +57,32 @@ const SpeakerForm = () => {
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     if (!image || !currentSpeaker.name || !currentSpeaker.bio) {
-      alert("all fields required");
+      mySwal.fire({
+        title: "All fields are required!",
+        text: "Please enter data in all the given fields!",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonText: "Continue entering data...",
+      });
       return;
     }
     setTimeout(() => {
-      alert("Speaker created successfully");
-      navigate("/organizer/Speakers");
+      mySwal
+        .fire({
+          title: "Speaker created!",
+          text: "Speaker created and added successfully!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "Continue",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate("/organizer/Speakers");
+          }
+        });
     }, 1500);
   };
+
   console.log(currentSpeaker);
   return (
     <>
@@ -83,7 +105,7 @@ const SpeakerForm = () => {
                 <label className=" p-4 flex flex-col items-center justify-center cursor-pointer text-black hover:underline">
                   Change picture
                   <input
-                    type="file" 
+                    type="file"
                     accept="image/*"
                     className="hidden"
                     onChange={handleImageChange}

@@ -7,8 +7,8 @@ export const eventsDummy: Event[] = [
     title: "Tech Innovation Summit 2023",
     startDate: "15/11/2025",
     endDate: "17/11/2025",
-    startTime: "",
-    endTime: "",
+    startTime: "11",
+    endTime: "13",
     // venue: Grand Convention Center, Dubai",
     venue: {
       name: "Grand Convention Center, Dubai",
@@ -33,8 +33,8 @@ export const eventsDummy: Event[] = [
         timeSlot: {
           id: 1,
           day: "Monday",
-          startDate: "",
-          endDate: "",
+          startDate: "15/11/2025",
+          endDate: "17/11/2025",
         },
         speaker: {
           id: 1,

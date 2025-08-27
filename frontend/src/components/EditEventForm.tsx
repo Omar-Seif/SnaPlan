@@ -2,6 +2,8 @@ import { eventsDummy } from "../data/events";
 import type { Event } from "../types/Event";
 import { useState, useEffect } from "react";
 import { useParams, useNavigate } from "react-router-dom";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 import {
   Calendar,
   LoaderCircle,
@@ -16,6 +18,7 @@ import { cn } from "../lib/utils";
 import type { Venue } from "../types/Venue";
 
 export const EditEventForm = () => {
+  const mySwal = withReactContent(Swal);
   const [venues, setVenues] = useState<Venue[]>([]);
   const { id } = useParams<{ id?: string }>();
   const [currentEvent, setCurrentEvent] = useState<Event>({
@@ -88,7 +91,12 @@ export const EditEventForm = () => {
       }));
     }
   };
-
+  const convertToInputDateFormat = (dateStr: string) => {
+    const [day, month, year] = dateStr.split("/").map(Number);
+    const dd = String(day).padStart(2, "0");
+    const mm = String(month).padStart(2, "0");
+    return `${year}-${mm}-${dd}`;
+  };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setLoading(true);
@@ -101,7 +109,13 @@ export const EditEventForm = () => {
       !currentEvent.venue ||
       !currentEvent.description
     ) {
-      alert("all fields required");
+      mySwal.fire({
+        title: "All fields are required!",
+        text: "Please enter data in all the given fields!",
+        icon: "warning",
+        showCancelButton: false,
+        confirmButtonText: "Continue entering data...",
+      });
       setLoading(false);
       return;
     }
@@ -109,8 +123,19 @@ export const EditEventForm = () => {
     // Simulate API call
     setTimeout(() => {
       setLoading(false);
-      alert("Event created successfully!");
-      navigate("/organizer/MyEvents");
+      mySwal
+        .fire({
+          title: "Event Submitted!",
+          text: "Event created and submitted successfully!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "Continue",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate("/organizer/MyEvents");
+          }
+        });
     }, 1500);
   };
 
@@ -119,7 +144,19 @@ export const EditEventForm = () => {
     setLoading(true);
     setTimeout(() => {
       setLoading(false);
-      alert("Event saved as draft!");
+      mySwal
+        .fire({
+          title: "Event Saved!",
+          text: "Event Data has been saved successfully!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "Continue",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate("/organizer/DraftEvents");
+          }
+        });
       navigate("/organizer/DraftEvents");
     }, 1000);
   };
@@ -308,7 +345,7 @@ export const EditEventForm = () => {
               "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
             )}
           >
-            Save as Draft
+            Save Changes
           </button>
         </div>
 
@@ -327,7 +364,7 @@ export const EditEventForm = () => {
             {loading ? (
               <LoaderCircle className="animate-spin" />
             ) : (
-              "Create Event"
+              "Submit Event Details"
             )}
           </button>
         </div>
