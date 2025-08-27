@@ -12,8 +12,9 @@ import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
 import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
 import LoginOrganizer from "./pages/Organizer/Login";
 import SessionsPage from "./pages/Organizer/SessionManagementPage"
-import { CreateSessionOrganizer } from "./pages/Organizer/CreateSession";
-
+import  {CreateSessionOrganizer} from "./pages/Organizer/CreateSession";
+import EditEvents from "./pages/Organizer/EditEvents"
+import { EditSpeaker } from "./pages/Organizer/EditSpeakers";
 
 // Attendee
 import RegisterAttendee from "./pages/Attendee/Register";
@@ -71,6 +72,8 @@ function App() {
             path="/organizer/ManageSessions"
             element={<SessionsPage />}
           />
+          <Route path="/organizer/EditEvent/:id" element={<EditEvents/>}/>
+          <Route path="/organizer/EditSpeaker/:id" element = {<EditSpeaker/>}/>
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/events" element={<AdminEvents />} />

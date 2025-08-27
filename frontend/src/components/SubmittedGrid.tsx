@@ -46,7 +46,7 @@ const SubmittedGrid = () => {
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">End Date</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Venue</th>
                                 <th className="p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200">Status</th>
-                                <th className="ml-3 p-3 text-left text-sm font-semibold text-gray-700 border-b border-gray-200"></th>
+                                <th className="ml-3 p-3 text-center text-sm font-semibold text-gray-700 border-b border-gray-200">Actions</th>
                             </tr>
                         </thead>
                         <tbody>

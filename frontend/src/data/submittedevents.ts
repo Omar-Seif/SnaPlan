@@ -2,7 +2,7 @@ import type { SubmittedEvent } from "../types/Event";
 
 export const submittedEventsDummy: SubmittedEvent[] = [
     {
-        title: "Introduction to AI",
+        title: "Tech Innovation Summit 2023",
         startDate: "15/11/2025",
         endDate: "17/11/2025",
         venue: "Dubai Plaza",

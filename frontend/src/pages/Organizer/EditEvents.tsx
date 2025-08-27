@@ -1,9 +1,12 @@
+import Sidebar from "../../components/Sidebar"
+import { EditEventForm } from "../../components/EditEventForm"
 
 const EditEvents = () => {
     return (
-        <div>
-
-        </div>
+        <>
+            <Sidebar/>
+            <EditEventForm/>
+        </>
     )
 }
 

@@ -8,6 +8,8 @@ export interface ViewEvent {
     title: string
     startDate: string
     endDate: string
+    startTime : string 
+    endTime : string
     venue: Venue
     status?: 'Active' | 'Pending' | 'Cancelled'
 }

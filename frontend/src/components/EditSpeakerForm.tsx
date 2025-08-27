@@ -1,24 +1,48 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { useNavigate, useParams } from "react-router-dom";
+import { eventsDummy } from "../data/events";
 import type { Speaker } from "../types/Speaker";
 import { Upload, ALargeSmall } from "lucide-react";
-import { useNavigate } from "react-router-dom";
 import { cn } from "../lib/utils";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const SpeakerForm = () => {
+  const { id } = useParams<{ id?: string }>();
   const navigate = useNavigate();
-  const mySwal = withReactContent(Swal)
-  const [formData, setFormData] = useState<Speaker>({
+  const [currentSpeaker, setCurrentSpeaker] = useState<Speaker>({
     name: "",
     profile: "",
     bio: "",
   });
+  const mySwal = withReactContent(Swal)
   const [image, setImage] = useState<string>("");
+  useEffect(() => {
+    const fetchCurrentSpeaker = async () => {
+      
+      const sessions = eventsDummy.flatMap((event) => event.sessions);
+      const speakers = sessions
+        .map((session) => session?.speaker)
+        .filter((speaker): speaker is Speaker => !!speaker);
+      console.log(speakers);
+      const speaker = speakers.find((speaker) => speaker.id === Number(id));
+      console.log(speaker);
+      if (speaker) {
+        setCurrentSpeaker({
+          name: speaker.name,
+          profile: speaker.profile,
+          bio: speaker.bio,
+        });
+        setImage(speaker.profile);
+      }
+    };
+    fetchCurrentSpeaker();
+  }, []);
+
   const handleChange = (
     e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
   ) => {
     const { name, value } = e.target;
-    setFormData((prev) => ({
+    setCurrentSpeaker((prev) => ({
       ...prev,
       [name]: value,
     }));
@@ -32,7 +56,7 @@ const SpeakerForm = () => {
   };
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!image || !formData.name || !formData.bio) {
+    if (!image || !currentSpeaker.name || !currentSpeaker.bio) {
       mySwal.fire({
         title: "All fields are required!",
         text: "Please enter data in all the given fields!",
@@ -53,12 +77,13 @@ const SpeakerForm = () => {
         })
         .then((result) => {
           if (result.isConfirmed) {
-            navigate("/organizer/Speakers");  
+            navigate("/organizer/Speakers");
           }
         });
     }, 1500);
   };
 
+  console.log(currentSpeaker);
   return (
     <>
       <div className="flex items-center md:ml-48 justify-center min-h-screen">
@@ -68,13 +93,25 @@ const SpeakerForm = () => {
           className="max-w-none my-10 mx-5 px-4 pb-8 pt-4 border-gray-200 rounded-lg shadow-sm space-y-8 md:w-[700px] lg:w-[900px]"
         >
           {/*Upload profile picture for speaker here */}
-          <div className="w-full h-64 rounder-lg overflow-hidden bg-gray-50 flex items-center justify-center relative">
+          {/* Upload profile picture for speaker here */}
+          <div className="w-full h-64 rounded-lg overflow-hidden mb-6 flex  items-center justify-center">
             {image ? (
-              <img
-                src={image}
-                alt="Speaker Profile picture"
-                className="w-full h-full object-cover"
-              />
+              <>
+                <img
+                  src={image}
+                  alt="Speaker Profile picture"
+                  className="w-full h-full object-contain"
+                />
+                <label className=" p-4 flex flex-col items-center justify-center cursor-pointer text-black hover:underline">
+                  Change picture
+                  <input
+                    type="file"
+                    accept="image/*"
+                    className="hidden"
+                    onChange={handleImageChange}
+                  />
+                </label>
+              </>
             ) : (
               <label className="flex flex-col items-center justify-center cursor-pointer text-gray-500">
                 <Upload size={32} />
@@ -90,6 +127,7 @@ const SpeakerForm = () => {
               </label>
             )}
           </div>
+
           {/* speaker name */}
           <div>
             <div className="flex items-center gap-2">
@@ -98,19 +136,19 @@ const SpeakerForm = () => {
                 type="text"
                 name="name"
                 placeholder="Speaker name"
-                value={formData.name}
+                value={currentSpeaker.name}
                 onChange={handleChange}
                 className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
                 required
               />
             </div>
           </div>
-          {/* Speaker bio */}
+          {/* currentSpeaker bio */}
           <div>
             <textarea
               placeholder="Speaker Biography"
               name="bio"
-              value={formData.bio}
+              value={currentSpeaker.bio}
               onChange={handleChange}
               rows={5}
               className="w-full border border-gray-300 rounded-lg px-3 py-2 focus:ring-orange-400 focus:border-orange-400"
@@ -125,7 +163,9 @@ const SpeakerForm = () => {
                 "bg-orange-500 text-white hover:bg-orange-600",
                 "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
               )}
-            >Create Speaker</button>
+            >
+              Submit changes
+            </button>
           </div>
         </form>
       </div>
