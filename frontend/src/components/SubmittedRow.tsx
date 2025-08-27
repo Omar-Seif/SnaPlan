@@ -2,10 +2,13 @@ import { Edit, Eye, Trash2 } from "lucide-react";
 import type { SubmittedEvent } from "../types/Event";
 
 type SubmittedRowProps = {
-  submittedEvent: SubmittedEvent;
+  submittedEvent: SubmittedEvent
+  handleOnViewClick:(id:string|number)=>void
+  handleOnEditClick : (id:string|number)=>void
+  handleOnUnSubmit : (id : string|number)=>void
 };
 
-const SubmittedRow = ({ submittedEvent }: SubmittedRowProps) => {
+const SubmittedRow = ({ submittedEvent ,handleOnViewClick,handleOnEditClick  ,handleOnUnSubmit }: SubmittedRowProps) => {
   const getStatusColor = () => {
     switch (submittedEvent.status) {
       case "Active":
@@ -40,18 +43,18 @@ const SubmittedRow = ({ submittedEvent }: SubmittedRowProps) => {
       <td className="p-3 pl-5 border-b border-gray-200">
         
         <div className="flex gap-3 items-center justify-center">
-          <button className="px-3 py-1.5 text-white rounded-md text-sm bg-orange-400  hover:bg-orange-500  transition-colors flex items-center justify-center gap-3  w-full md:w-1/2 hover:cursor-pointer">
+          <button className="px-3 py-1.5 text-white rounded-md text-sm bg-orange-400  hover:bg-orange-500  transition-colors flex items-center justify-center gap-3  w-full md:w-1/2 hover:cursor-pointer" onClick={()=>handleOnViewClick(submittedEvent.title)}>
             <Eye/>
             View Details
           </button>
           {
             submittedEvent.status === "Active" || submittedEvent.status==="Rejected" ? (
-                <button className="px-3 py-1.5 text-white rounded-md text-sm bg-green-400  hover:bg-green-500 transition-colors flex items-center justify-center gap-3  w-full md:w-1/2 hover:cursor-pointer">
+                <button className="px-3 py-1.5 text-white rounded-md text-sm bg-green-400  hover:bg-green-500 transition-colors flex items-center justify-center gap-3  w-full md:w-1/2 hover:cursor-pointer" onClick={()=>handleOnEditClick(submittedEvent.title)}>
                     <Edit/>
                     Edit Details
                 </button>
            ) : (
-                <button className="px-3 py-1.5 text-white rounded-md text-sm bg-red-400  hover:bg-red-500 transition-colors flex items-center justify-center gap-3 w-full md:w-1/2 hover:cursor-pointer">
+                <button className="px-3 py-1.5 text-white rounded-md text-sm bg-red-400  hover:bg-red-500 transition-colors flex items-center justify-center gap-3 w-full md:w-1/2 hover:cursor-pointer" onClick={()=>handleOnUnSubmit(submittedEvent.title)}>
                     <Trash2/> 
                     Unsubmit
                 </button>

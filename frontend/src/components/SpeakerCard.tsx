@@ -44,7 +44,7 @@ const ViewSpeakers = () => {
           speakers.filter((speaker) => speaker.id !== id)
         )
 
-        MySwal.fire("Deleted!", "Your event has been deleted.", "success");
+        MySwal.fire("Deleted!", "Your speaker has been deleted.", "success");
       }
     });
   }

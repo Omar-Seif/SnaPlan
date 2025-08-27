@@ -33,8 +33,8 @@ export const eventsDummy: Event[] = [
         timeSlot: {
           id: 1,
           day: "Monday",
-          startDate: "15/11/2025",
-          endDate: "17/11/2025",
+          startDate: "",
+          endDate: "",
         },
         speaker: {
           id: 1,
