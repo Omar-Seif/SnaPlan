@@ -11,6 +11,9 @@ import withReactContent from "sweetalert2-react-content";
 
 export default function EditVenueForm() {
   const {id} = useParams<{id ?: string}>()
+  const mySwal = withReactContent(Swal);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<Venue>({
     name: "",
     address: "",
@@ -24,13 +27,23 @@ export default function EditVenueForm() {
         if(venue){
             setFormData(venue)
             setRooms(venue.rooms)
-        }else {console.error("Error could not load this venue's data...")}
+        }else {
+            mySwal.fire({
+                title:"A problem occured",
+                text:"An error occurred while loading venue data!",
+                icon:"error",
+                showCancelButton:false , 
+                confirmButtonText:"Continue"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    navigate("/organizer/Venues")
+                }
+            })
+        }
     }
     fetchVenues();
   },[])
-  const mySwal = withReactContent(Swal);
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const navigate = useNavigate();
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
