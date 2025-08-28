@@ -1,19 +1,33 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import type { Venue } from "../types/Venue";
+import { venuesDummy } from "../data/venues";
 import { CaseLower, DoorClosed, BookUser, MapPin } from "lucide-react";
 import type { Room } from "../types/Room";
 import { cn } from "../lib/utils";
+import {useParams} from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function CreateVenueForm() {
+export default function EditVenueForm() {
+  const {id} = useParams<{id ?: string}>()
   const [formData, setFormData] = useState<Venue>({
     name: "",
     address: "",
     location: "",
     rooms: [],
   });
+  //dummy api logic 
+  useEffect(()=>{
+    const fetchVenues = async() =>{
+        const venue = venuesDummy.find((venue)=>venue.id===Number(id))
+        if(venue){
+            setFormData(venue)
+            setRooms(venue.rooms)
+        }else {console.error("Error could not load this venue's data...")}
+    }
+    fetchVenues();
+  },[])
   const mySwal = withReactContent(Swal);
   const [rooms, setRooms] = useState<Room[]>([]);
   const navigate = useNavigate();
@@ -185,7 +199,7 @@ export default function CreateVenueForm() {
                 "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
               )}
             >
-              Create Venue
+              Submit Changes
             </button>
           </div>
         </form>

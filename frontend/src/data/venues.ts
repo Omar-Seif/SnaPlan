@@ -2,6 +2,7 @@ import type { Venue } from "../types/Venue";
 
 export const venuesDummy: Venue[] = [
     {
+        id:1,
         name: "Venue A",
         address: "123 Main St",
         location: "City Center",
@@ -11,6 +12,7 @@ export const venuesDummy: Venue[] = [
         ]
     },
     {
+         id:2,
         name: "Venue B",
         address: "456 Main St",
         location: "Almaza",
@@ -20,6 +22,7 @@ export const venuesDummy: Venue[] = [
         ]
     },
     {
+        id:3,
         name: "Venue C",
         address: "123 Main St",
         location: "City Stars",

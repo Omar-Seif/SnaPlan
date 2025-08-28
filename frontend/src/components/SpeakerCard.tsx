@@ -5,6 +5,7 @@ import { eventsDummy } from "../data/events";
 import type { Session } from "../types/Session";
 import { Link } from "react-router-dom";
 import { Edit, Trash, UserRoundPlus } from "lucide-react";
+import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const ViewSpeakers = () => {
@@ -27,6 +28,10 @@ const ViewSpeakers = () => {
       setSpeakers(uniqueSpeakers);
     };
     fetchSpeakers();
+    // axios
+    //   .get("https://192.168.201.124:5001/api/Speakers")
+    //   .then((res)=>setSpeakers(res.data))
+    //   .catch((err)=>console.error(err))
   }, []);
   const handleonEditClick = (id: number | string) => {
     navigate(`/organizer/EditSpeaker/${id}`);

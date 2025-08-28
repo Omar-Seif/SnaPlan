@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import type { Speaker } from "../types/Speaker";
 import { Upload, ALargeSmall } from "lucide-react";
 import { useNavigate } from "react-router-dom";
@@ -42,6 +42,7 @@ const SpeakerForm = () => {
       });
       return;
     }
+
     setTimeout(() => {
       mySwal
         .fire({
@@ -132,4 +133,4 @@ const SpeakerForm = () => {
     </>
   );
 };
-export default SpeakerForm;
+export default SpeakerForm; 

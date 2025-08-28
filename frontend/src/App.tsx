@@ -16,6 +16,7 @@ import  {CreateSessionOrganizer} from "./pages/Organizer/CreateSession";
 import EditEvents from "./pages/Organizer/EditEvents"
 import { EditSpeaker } from "./pages/Organizer/EditSpeakers";
 import { ViewEventDetails } from "./pages/Organizer/ViewEventDetails";
+import { EditVenues } from "./pages/Organizer/EditVenues";
 
 // Attendee
 import RegisterAttendee from "./pages/Attendee/Register";
@@ -75,7 +76,9 @@ function App() {
           />
           <Route path="/organizer/EditEvent/:id" element={<EditEvents/>}/>
           <Route path="/organizer/EditSpeaker/:id" element = {<EditSpeaker/>}/>
+          <Route path="/organizer/EditVenue/:id" element={<EditVenues/>}/>
           <Route path="/organizer/ViewEventDetails/:id" element={<ViewEventDetails/>}/>
+          
           {/* Admin */}
           <Route path="/admin/home" element={<AdminHome />} />
           <Route path="/admin/events" element={<AdminEvents />} />

@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import VenueRow from "./VenueRow";
+import { useNavigate } from "react-router-dom";
 import type { Venue } from "../types/Venue";
 import { getVenuesMock } from "../services/VenueService";
 import { LoaderCircle } from "lucide-react";
@@ -9,7 +10,7 @@ const VenueGrid = () => {
     const [venues, setVenues] = useState<Venue[]>([])
     const [error, setError] = useState<null | string>(null)
     const [loading, setLoading] = useState(false)
-
+    const navigate = useNavigate();
     useEffect(() => {
         const fetchVenues = async () => {
             try {
@@ -28,6 +29,7 @@ const VenueGrid = () => {
     },
         [])
 
+    
     return (
         <>
             <div className="rounded-lg border border-gray-200 bg-white shadow-md overflow-hidden mt-5">
@@ -55,7 +57,7 @@ const VenueGrid = () => {
                             {loading ? <LoaderCircle className="animate-spin" color={loading ? "#9CA3AF" : "#fff"} /> :
                                 <>
                                     {venues.map((venue, index) => (
-                                        <VenueRow venue={venue} key={index} />
+                                        <VenueRow venue={venue} key={index}/>
                                     ))}
                                 </>
                             }
