@@ -26,7 +26,7 @@ const Step3ReviewSubmit: React.FC<Props> = ({ formData, sessions, image, prevSte
   const [loading, setLoading] = useState(false);
   const mySwal = withReactContent(Swal);
   const navigate = useNavigate();
-
+  console.log(sessions)
   const handleSubmit = async () => {
     setLoading(true);
     try {

@@ -34,6 +34,7 @@ const Step2Sessions: React.FC<Props> = ({
           endDay={endDate}
           startTime={startTime}
           endTime={endTime}
+          allSessions = {sessions}
           setAllSessions = {setAllSessions}
         />
       </div>

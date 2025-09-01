@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { DndContext, type DragEndEvent } from "@dnd-kit/core";
-import type { Session  } from "../../types/Session";
+import type { Session } from "../../types/Session";
 import DraggableSessions from "../../components/DraggableSessions";
 import Droppable from "../../components/DroppableSections";
 import SessionForm from "../../components/SessionForm";
@@ -10,6 +10,7 @@ interface Props {
   endDay: string;
   startTime: string;
   endTime: string;
+  allSessions: Session[];
   setAllSessions: (sessions: Session[]) => void;
 }
 
@@ -52,12 +53,8 @@ function generateTimeSlots(startTime: string, endTime: string): string[] {
   return slots;
 }
 
-// Helper function to parse time slot string into startDate and endDate
 function parseTimeSlot(timeSlotString: string): { startDate: string; endDate: string } {
-  if (timeSlotString === "unassigned") {
-    return { startDate: "", endDate: "" };
-  }
-  
+  if (timeSlotString === "unassigned") return { startDate: "", endDate: "" };
   const [start, end] = timeSlotString.split("-");
   return { startDate: start || "", endDate: end || "" };
 }
@@ -67,43 +64,33 @@ export default function SessionsPage({
   endDay,
   startTime,
   endTime,
+  allSessions,
   setAllSessions,
 }: Props) {
   const allDays = generateDays(startDay, endDay);
   const timeSlots = generateTimeSlots(startTime, endTime);
   const [selectedDay, setSelectedDay] = useState<string>(allDays[0]);
 
-  // Keep all sessions in one state
-  const [sessions, setSessions] = useState<Session[]>([]);
-
   // Filter sessions for the currently selected day
-  const sessionsForSelectedDay = sessions.filter(session => {
-    // Check if session is unassigned or assigned to selected day
-    return !session.timeSlot?.day || session.timeSlot.day === selectedDay;
-  });
+  const sessionsForSelectedDay = allSessions.filter(
+    (session) => !session.timeSlot?.day || session.timeSlot.day === selectedDay
+  );
 
-  // Derived droppable sessions for the selected day
+  // Derived droppable sessions
   const droppableSessions = sessionsForSelectedDay.reduce(
     (acc, session) => {
       if (!session.timeSlot || !session.timeSlot.day) {
-        // Unassigned session
         acc.unassigned.push(session);
       } else if (session.timeSlot.startDate && session.timeSlot.endDate) {
-        // Create time slot key (e.g., "09:00-10:00")
         const timeSlotKey = `${session.timeSlot.startDate}-${session.timeSlot.endDate}`;
-        if (timeSlotKey && acc[timeSlotKey]) {
-          acc[timeSlotKey].push(session);
-        }
+        if (timeSlotKey && acc[timeSlotKey]) acc[timeSlotKey].push(session);
       }
       return acc;
     },
-    {
-      unassigned: [],
-      ...Object.fromEntries(timeSlots.map((t) => [t, []])),
-    } as Record<string, Session[]>
+    { unassigned: [], ...Object.fromEntries(timeSlots.map((t) => [t, []])) } as Record<string, Session[]>
   );
 
-  // Drag & Drop handler
+  // Handle drag & drop
   const handleDragEnd = (event: DragEndEvent) => {
     const { active, over } = event;
     if (!over) return;
@@ -111,50 +98,29 @@ export default function SessionsPage({
     const activeId = String(active.id);
     const overId = String(over.id);
 
-    setSessions((prev) =>
-      prev.map((s) => {
-        if (String(s.id) === activeId) {
-          if (overId === "unassigned") {
-            // For unassigned sessions, clear timeSlot
-            return {
-              ...s,
-              timeSlot: { 
-                day: "", 
-                startDate: "", 
-                endDate: "" 
-              }
-            };
-          } else {
-            // For time slot assignments, set timeSlot
-            const { startDate, endDate } = parseTimeSlot(overId);
-            return {
-              ...s,
-              timeSlot: {
-                day: selectedDay,
-                startDate,
-                endDate
-              }
-            };
-          }
+    const updatedSessions = allSessions.map((s) => {
+      if (String(s.id) === activeId) {
+        if (overId === "unassigned") {
+          return { ...s, timeSlot: { day: "", startDate: "", endDate: "" } };
+        } else {
+          const { startDate, endDate } = parseTimeSlot(overId);
+          return { ...s, timeSlot: { day: selectedDay, startDate, endDate } };
         }
-        return s;
-      })
-    );
+      }
+      return s;
+    });
+
+    setAllSessions(updatedSessions);
   };
 
-  // Update parent component when sessions change
-  React.useEffect(() => {
-    setAllSessions(sessions);
-  }, [sessions, setAllSessions]);
-
-  // New session creation
-  const handleCreateSession = (newSession: Omit<Session, 'id' | 'timeSlot'>) => {
+  // Handle creating new sessions
+  const handleCreateSession = (newSession: Omit<Session, "id" | "timeSlot">) => {
     const enriched: Session = {
       ...newSession,
       id: Date.now().toString(),
-      timeSlot: { day: "", startDate: "", endDate: "" } // Empty timeSlot for unassigned
+      timeSlot: { day: "", startDate: "", endDate: "" },
     };
-    setSessions((prev) => [...prev, enriched]);
+    setAllSessions([...allSessions, enriched]);
   };
 
   return (
@@ -162,9 +128,7 @@ export default function SessionsPage({
       <div className="flex flex-col">
         {/* Day Selector */}
         <div className="p-6 bg-white border-b border-gray-200 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">
-            Select Day
-          </h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">Select Day</h2>
           <div className="flex gap-3 overflow-x-auto pb-2">
             {allDays.map((day) => (
               <button
@@ -185,7 +149,7 @@ export default function SessionsPage({
         {/* Timetable */}
         <DndContext onDragEnd={handleDragEnd}>
           <div className="p-6 grid grid-cols-1 lg:grid-cols-[1fr_400px] gap-6">
-            {/* Left: Time Slots */}
+            {/* Time Slots */}
             <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
               <h2 className="text-xl font-semibold text-gray-800 mb-6">
                 Time Slots - {selectedDay}
@@ -194,9 +158,7 @@ export default function SessionsPage({
                 {timeSlots.map((slot) => (
                   <Droppable key={slot} id={slot}>
                     <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 min-h-[220px] flex flex-col">
-                      <h3 className="font-semibold mb-4 text-gray-700 text-lg">
-                        {slot}
-                      </h3>
+                      <h3 className="font-semibold mb-4 text-gray-700 text-lg">{slot}</h3>
                       <div className="space-y-4 flex-1">
                         {droppableSessions[slot]?.map((s) => (
                           <DraggableSessions
@@ -208,8 +170,7 @@ export default function SessionsPage({
                             isRoomsHidden={true}
                           />
                         ))}
-                        {(!droppableSessions[slot] ||
-                          droppableSessions[slot].length === 0) && (
+                        {(!droppableSessions[slot] || droppableSessions[slot].length === 0) && (
                           <div className="text-center py-6 text-gray-400 bg-gray-100 rounded-md border border-dashed border-gray-300">
                             Drop sessions here
                           </div>
@@ -224,17 +185,13 @@ export default function SessionsPage({
             {/* Right: Create + Unassigned */}
             <div className="space-y-6">
               <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">
-                  Create New Session
-                </h2>
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">Create New Session</h2>
                 <SessionForm handleCreateSession={handleCreateSession} />
               </div>
 
               <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
                 <Droppable id="unassigned">
-                  <h3 className="font-semibold mb-3 text-gray-700 text-lg">
-                    Unassigned Sessions
-                  </h3>
+                  <h3 className="font-semibold mb-3 text-gray-700 text-lg">Unassigned Sessions</h3>
                   <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                     {droppableSessions["unassigned"]?.map((s) => (
                       <DraggableSessions
@@ -246,8 +203,7 @@ export default function SessionsPage({
                         isRoomsHidden={true}
                       />
                     ))}
-                    {(!droppableSessions["unassigned"] ||
-                      droppableSessions["unassigned"].length === 0) && (
+                    {(!droppableSessions["unassigned"] || droppableSessions["unassigned"].length === 0) && (
                       <div className="text-center py-8 text-gray-400 bg-gray-100 rounded-md border border-dashed border-gray-300">
                         No unassigned sessions
                       </div>
