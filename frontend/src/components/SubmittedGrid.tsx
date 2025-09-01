@@ -6,6 +6,7 @@ import SubmittedRow from "./SubmittedRow";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import {useNavigate} from "react-router-dom"
+import axios from "axios"
 const SubmittedGrid = () => {
   const [submittedEvents, setSubmittedEvents] = useState<SubmittedEvent[]>([]);
   const [error, setError] = useState<null | string>(null);
@@ -29,6 +30,10 @@ const SubmittedGrid = () => {
       }
     };
     fetchSubmittedEvents();
+    // axios
+    //   .get("https://192.168.201.124:5001/api/Organizer/submitted-events")
+    //   .then((res)=>setSubmittedEvents(res.data))
+    //   .catch((error)=>console.error(error))
   }, []);
   const handleOnViewClick = (id:string|number) =>{
     navigate(`/organizer/ViewEventDetails/${id}`)

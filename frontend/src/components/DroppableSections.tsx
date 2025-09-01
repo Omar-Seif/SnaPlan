@@ -1,18 +1,20 @@
-import { DndContext, useDraggable, useDroppable, type DragEndEvent } from "@dnd-kit/core";
-import { CSS } from "@dnd-kit/utilities";
+import { useDroppable } from "@dnd-kit/core";
 
 type DroppableProps = {
   id: string;
-  children: React.ReactNode;
+  children?: React.ReactNode;
 };
 
 export function Droppable({ id, children }: DroppableProps) {
   const { setNodeRef, isOver } = useDroppable({ id });
 
-  
-
   return (
-    <div ref={setNodeRef} className="bg-gray-200 p-5 ">
+    <div
+      ref={setNodeRef}
+      className={`p-4 border rounded min-h-[100px] transition-colors
+        ${isOver ? "bg-blue-200 border-blue-500" : "bg-gray-100 border-gray-300"}
+      `}
+    >
       {children}
     </div>
   );

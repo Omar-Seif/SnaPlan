@@ -37,44 +37,67 @@ export default function CreateVenueForm() {
   };
 
   const addRoom = () => {
-    setRooms((prev) => [
-      ...prev,
-      { id: prev.length, name: "", capacity: 1 },
-    ]);
+    setRooms((prev) => [...prev, { id: prev.length, name: "", capacity: 1 }]);
   };
 
   const removeRoom = (index: number) => {
     setRooms((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-    if (!formData.name || !formData.address || !formData.location || rooms.length === 0) {
+
+    if (
+      !formData.name ||
+      !formData.address ||
+      !formData.location ||
+      rooms.length === 0
+    ) {
       mySwal.fire({
         title: "All fields are required!",
         text: "Please enter data in all the given fields!",
         icon: "warning",
-        showCancelButton: false,
         confirmButtonText: "Continue entering data...",
       });
       return;
     }
-    console.log("Venue created:", { ...formData, rooms });
-    setTimeout(() => {
-      mySwal
-        .fire({
-          title: "Venue created!",
-          text: "Venue created and added successfully!",
-          icon: "success",
-          showCancelButton: false,
-          confirmButtonText: "Continue",
-        })
-        .then((result) => {
-          if (result.isConfirmed) {
-            navigate("/organizer/CreateEvent");
-          }
-        });
-    }, 1500);
+
+    const payload = {
+      ...formData,
+      rooms, // include rooms inside payload
+    };
+
+    try {
+      const res = await fetch("https://192.168.201.124:5001/api/Venues", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json", // backend expects JSON
+        },
+        body: JSON.stringify(payload),
+      });
+
+      if (!res.ok) {
+        throw new Error(`Error: ${res.statusText}`);
+      }
+
+      const data = await res.json();
+      console.log("Venue created successfully:", data);
+
+      mySwal.fire({
+        title: "Venue created!",
+        text: "Your venue has been successfully created.",
+        icon: "success",
+      });
+
+      navigate("/Organizer/Venues"); // navigate after success
+    } catch (error) {
+      console.error("Error creating venue:", error);
+      mySwal.fire({
+        title: "Error!",
+        text: "Something went wrong while creating the venue.",
+        icon: "error",
+      });
+    }
   };
 
   return (

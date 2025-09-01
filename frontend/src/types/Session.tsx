@@ -4,6 +4,6 @@ import type { TimeSlot } from "./TimeSlot"
 export interface Session {
     id?: string | number
     name: string
-    timeSlot: TimeSlot
+    timeSlot?: TimeSlot
     speaker: Speaker
 }

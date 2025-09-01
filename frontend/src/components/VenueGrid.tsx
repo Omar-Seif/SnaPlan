@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import type { Venue } from "../types/Venue";
 import { getVenuesMock } from "../services/VenueService";
 import { LoaderCircle } from "lucide-react";
+import axios from "axios";
 
 const VenueGrid = () => {
 
@@ -11,23 +12,44 @@ const VenueGrid = () => {
     const [error, setError] = useState<null | string>(null)
     const [loading, setLoading] = useState(false)
     const navigate = useNavigate();
+    // useEffect(() => {
+    //     const fetchVenues = async () => {
+    //         try {
+    //             setLoading(true)
+    //             setError(null)
+    //             // const venues = await getVenuesMock()
+    //             axios
+    //                 .get("https://192.168.201.124:5001/api/Venues")
+    //                 .then((res)=>setVenues(res.data))
+                    
+            
+    //         } catch (err) {
+    //             console.error(err)
+    //             setError(err instanceof Error ? err.message : "Failed to load events");
+    //         } finally {
+    //             setLoading(false)
+    //         }
+    //     }
+    //     fetchVenues();
+    // },
+    //     [])
     useEffect(() => {
-        const fetchVenues = async () => {
-            try {
-                setLoading(true)
-                setError(null)
-                const venues = await getVenuesMock()
-                setVenues(venues)
-            } catch (err) {
-                console.error(err)
-                setError(err instanceof Error ? err.message : "Failed to load events");
-            } finally {
-                setLoading(false)
-            }
-        }
-        fetchVenues();
-    },
-        [])
+  const fetchVenues = () => {
+    setLoading(true);
+    setError(null);
+
+    axios
+      .get<Venue[]>("https://192.168.201.124:5001/api/Venues")
+      .then((res) => setVenues(res.data))
+      .catch((err) => {
+        console.error(err);
+        setError(err instanceof Error ? err.message : "Failed to load venues");
+      })
+      .finally(() => setLoading(false));
+  };
+
+  fetchVenues();
+}, []);
 
     
     return (

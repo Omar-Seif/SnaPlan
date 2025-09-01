@@ -5,28 +5,32 @@ import { getDraftEventsMock } from "../services/EventService";
 import { LoaderCircle } from "lucide-react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
-
+import axios from "axios"
 const DraftsGrid = () => {
   const [draftEvents, setDraftEvents] = useState<DraftEvent[]>([]);
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const MySwal = withReactContent(Swal);
   useEffect(() => {
-    const fetchDraftEvents = async () => {
-      try {
-        setLoading(true);
-        setError(null);
-        const draftEvents: DraftEvent[] = await getDraftEventsMock();
-        setDraftEvents(draftEvents);
-      } catch (err) {
-        console.log(err);
-        setLoading(false);
-        setError(err instanceof Error ? err.message : "Failed to load events");
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchDraftEvents();
+    // const fetchDraftEvents = async () => {
+    //   try {
+    //     setLoading(true);
+    //     setError(null);
+    //     const draftEvents: DraftEvent[] = await getDraftEventsMock();
+    //     setDraftEvents(draftEvents);
+    //   } catch (err) {
+    //     console.log(err);
+    //     setLoading(false);
+    //     setError(err instanceof Error ? err.message : "Failed to load events");
+    //   } finally {
+    //     setLoading(false);
+    //   }
+    // };
+    // fetchDraftEvents();
+    axios
+      .get("https://192.168.201.124:5001/api/Organizer/draft-events")
+      .then((res)=>setDraftEvents(res.data))
+      .catch((error)=>console.error(error))
   }, []);
 
   const handleonDeleteClick = (id: string | number) => {

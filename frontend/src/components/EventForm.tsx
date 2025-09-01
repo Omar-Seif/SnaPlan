@@ -16,6 +16,7 @@ import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { eventsDummy } from "../data/events";
 import type { Venue } from "../types/Venue";
+import axios from "axios"
 
 const EventForm = () => {
   // const [image, setImage] = useState<string>("");
@@ -28,17 +29,21 @@ const EventForm = () => {
   const [venues, setVenues] = useState<Venue[]>([]);
   const [sessions, setSessions] = useState<Session[]>([]); //This will be filled up later , but because this is create event , it will always be empty in the beginning
   useEffect(() => {
-    const fetchVenues = async () => {
-      try {
-        const mappedVenues = eventsDummy.map((event) => event.venue);
-        console.log("Mapped Venues:", mappedVenues);
-        setVenues(mappedVenues);
-      } catch (error) {
-        console.error("Failed to fetch venues:", error);
-      }
-    };
+    // const fetchVenues = async () => {
+    //   try {
+    //     const mappedVenues = eventsDummy.map((event) => event.venue);
+    //     console.log("Mapped Venues:", mappedVenues);
+    //     setVenues(mappedVenues);
+    //   } catch (error) {
+    //     console.error("Failed to fetch venues:", error);
+    //   }
+    // };
 
-    fetchVenues();
+    // fetchVenues();
+    axios
+      .get("https://192.168.201.124:5001/api/Venues")
+      .then((res)=>setVenues(res.data))
+      .catch((err)=>console.error(err))
   }, []);
 
   console.log(eventsDummy.map((event) => event.venue));
@@ -348,3 +353,5 @@ const EventForm = () => {
 };
 
 export default EventForm;
+
+
