@@ -4,34 +4,47 @@ import type { Speaker } from "../types/Speaker";
 import { eventsDummy } from "../data/events";
 import type { Session } from "../types/Session";
 import { Link } from "react-router-dom";
-import { Edit, Trash, UserRoundPlus } from "lucide-react";
+import { Edit, Trash, Trophy, UserRoundPlus } from "lucide-react";
+import axios from "axios";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 const ViewSpeakers = () => {
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
   const MySwal = withReactContent(Swal)
   const navigate = useNavigate();
+  const handleDeleteSpeaker = async(speakerid : number) =>{
+    try{
+      await axios.delete(`https://192.168.201.124:5001/api/Speakers/${speakerid}`)
+      MySwal.fire("Deleted!", "Your speaker has been deleted.", "success");
+    } catch(err){
+      console.error("error deleting speaker")
+    }
+  }
   useEffect(() => {
-    const fetchSpeakers = async () => {
-      const allSessions = eventsDummy.flatMap((event) => event.sessions ?? []);
-      const allSpeakers = allSessions.map(
-        (session: Session) => session.speaker
-      );
-      // Filter unique speakers by name
-      const uniqueSpeakers = allSpeakers.filter(
-        (speaker, index, self) =>
-          speaker &&
-          speaker.name &&
-          index === self.findIndex((s) => s && s.name === speaker.name)
-      );
-      setSpeakers(uniqueSpeakers);
-    };
-    fetchSpeakers();
+    // const fetchSpeakers = async () => {
+    //   const allSessions = eventsDummy.flatMap((event) => event.sessions ?? []);
+    //   const allSpeakers = allSessions.map(
+    //     (session: Session) => session.speaker
+    //   );
+    //   // Filter unique speakers by name
+    //   const uniqueSpeakers = allSpeakers.filter(
+    //     (speaker, index, self) =>
+    //       speaker &&
+    //       speaker.name &&
+    //       index === self.findIndex((s) => s && s.name === speaker.name)
+    //   );
+    //   setSpeakers(uniqueSpeakers);
+    // };
+    // fetchSpeakers();
+    axios
+      .get("https://192.168.201.124:5001/api/Speakers")
+      .then((res)=>setSpeakers(res.data))
+      .catch((err)=>console.error(err))
   }, []);
-  const handleonEditClick = (id: number | string) => {
+  const handleonEditClick = (id: number) => {
     navigate(`/organizer/EditSpeaker/${id}`);
   };
-  const handleonDeleteClick = (id:number | string)=>{
+  const handleonDeleteClick = (id:number)=>{
      MySwal.fire({
       title: "Are you sure?",
       text: "You won't be able to undo this!",
@@ -40,12 +53,13 @@ const ViewSpeakers = () => {
       confirmButtonText: "Yes , delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setSpeakers(
-          speakers.filter((speaker) => speaker.id !== id)
-        )
-
-        MySwal.fire("Deleted!", "Your speaker has been deleted.", "success");
+        // setSpeakers(
+        //   speakers.filter((speaker) => speaker.id !== id)
+        // )
+        
+        // MySwal.fire("Deleted!", "Your speaker has been deleted.", "success");
       }
+      handleDeleteSpeaker(id)
     });
   }
 
@@ -91,11 +105,11 @@ const ViewSpeakers = () => {
               <button>
                 <Edit
                   className="text-blue-600 cursor-pointer"
-                  onClick={() => handleonEditClick(speaker.id ?? 0)}
+                  onClick={() => handleonEditClick(Number(speaker.id ?? 0))}
                 />
               </button>
               <button>
-                <Trash className="text-red-600" onClick={()=>handleonDeleteClick(speaker.id ?? 0)} />
+                <Trash className="text-red-600" onClick={()=>handleonDeleteClick(Number(speaker.id ?? 0))} />
               </button>
             </div>
           </div>

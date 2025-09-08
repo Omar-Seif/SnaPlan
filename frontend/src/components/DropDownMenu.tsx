@@ -1,7 +1,8 @@
 import React, { useState, useRef, useEffect } from "react";
 import type { Speaker } from "../types/Speaker";
-import {UserPlus} from "lucide-react"
+import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 type DropdownProps = {
   options: Speaker[];
   selected: Speaker | null;
@@ -17,7 +18,7 @@ export default function Dropdown({
 }: DropdownProps) {
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
-  const navigate = useNavigate()
+  const navigate = useNavigate();
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -31,7 +32,7 @@ export default function Dropdown({
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
-
+  
   return (
     <div ref={dropdownRef} className="relative w-64">
       {/* Button */}
@@ -57,8 +58,11 @@ export default function Dropdown({
       {/* Options */}
       {isOpen && (
         <ul className="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md z-10 max-h-60 overflow-y-auto">
-          <li className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2" onClick={()=>navigate('/organizer/createSpeaker')}>
-            <UserPlus size={18}/>
+          <li
+            className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
+            onClick={() => navigate("/organizer/createSpeaker")}
+          >
+            <UserPlus size={18} />
             Add new speaker...
           </li>
           {options.map((speaker) => (

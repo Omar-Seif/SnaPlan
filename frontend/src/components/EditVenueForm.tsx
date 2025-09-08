@@ -1,22 +1,49 @@
-import React, { useState } from "react";
+import React, { useState,useEffect } from "react";
 import type { Venue } from "../types/Venue";
+import { venuesDummy } from "../data/venues";
 import { CaseLower, DoorClosed, BookUser, MapPin } from "lucide-react";
 import type { Room } from "../types/Room";
 import { cn } from "../lib/utils";
+import {useParams} from "react-router-dom"
 import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 
-export default function CreateVenueForm() {
+export default function EditVenueForm() {
+  const {id} = useParams<{id ?: string}>()
+  const mySwal = withReactContent(Swal);
+  const [rooms, setRooms] = useState<Room[]>([]);
+  const navigate = useNavigate();
   const [formData, setFormData] = useState<Venue>({
     name: "",
     address: "",
     location: "",
     rooms: [],
   });
-  const mySwal = withReactContent(Swal);
-  const [rooms, setRooms] = useState<Room[]>([]);
-  const navigate = useNavigate();
+  //dummy api logic 
+  useEffect(()=>{
+    const fetchVenues = async() =>{
+        const venue = venuesDummy.find((venue)=>venue.id===Number(id))
+        if(venue){
+            setFormData(venue)
+            setRooms(venue.rooms)
+        }else {
+            mySwal.fire({
+                title:"A problem occured",
+                text:"An error occurred while loading venue data!",
+                icon:"error",
+                showCancelButton:false , 
+                confirmButtonText:"Continue"
+            }).then((result)=>{
+                if(result.isConfirmed){
+                    navigate("/organizer/Venues")
+                }
+            })
+        }
+    }
+    fetchVenues();
+  },[])
+  
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -37,67 +64,44 @@ export default function CreateVenueForm() {
   };
 
   const addRoom = () => {
-    setRooms((prev) => [...prev, { id: prev.length, name: "", capacity: 1 }]);
+    setRooms((prev) => [
+      ...prev,
+      { id: prev.length, name: "", capacity: 1 },
+    ]);
   };
 
   const removeRoom = (index: number) => {
     setRooms((prev) => prev.filter((_, i) => i !== index));
   };
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
-
-    if (
-      !formData.name ||
-      !formData.address ||
-      !formData.location ||
-      rooms.length === 0
-    ) {
+    if (!formData.name || !formData.address || !formData.location || rooms.length === 0) {
       mySwal.fire({
         title: "All fields are required!",
         text: "Please enter data in all the given fields!",
         icon: "warning",
+        showCancelButton: false,
         confirmButtonText: "Continue entering data...",
       });
       return;
     }
-
-    const payload = {
-      ...formData,
-      rooms, // include rooms inside payload
-    };
-
-    try {
-      const res = await fetch("https://192.168.201.124:5001/api/Venues", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json", // backend expects JSON
-        },
-        body: JSON.stringify(payload),
-      });
-
-      if (!res.ok) {
-        throw new Error(`Error: ${res.statusText}`);
-      }
-
-      const data = await res.json();
-      console.log("Venue created successfully:", data);
-
-      mySwal.fire({
-        title: "Venue created!",
-        text: "Your venue has been successfully created.",
-        icon: "success",
-      });
-
-      navigate("/Organizer/Venues"); // navigate after success
-    } catch (error) {
-      console.error("Error creating venue:", error);
-      mySwal.fire({
-        title: "Error!",
-        text: "Something went wrong while creating the venue.",
-        icon: "error",
-      });
-    }
+    console.log("Venue created:", { ...formData, rooms });
+    setTimeout(() => {
+      mySwal
+        .fire({
+          title: "Venue created!",
+          text: "Venue created and added successfully!",
+          icon: "success",
+          showCancelButton: false,
+          confirmButtonText: "Continue",
+        })
+        .then((result) => {
+          if (result.isConfirmed) {
+            navigate("/organizer/CreateEvent");
+          }
+        });
+    }, 1500);
   };
 
   return (
@@ -208,7 +212,7 @@ export default function CreateVenueForm() {
                 "disabled:bg-gray-200 disabled:text-gray-500 disabled:cursor-not-allowed"
               )}
             >
-              Create Venue
+              Submit Changes
             </button>
           </div>
         </form>

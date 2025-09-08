@@ -7,19 +7,10 @@ import type { Event } from "../types/Event";
 import type { Session } from "../types/Session";
 import type { Venue } from "../types/Venue";
 import axios from "axios";
-import { useParams } from "react-router-dom";
 
-// ✅ Helpers to normalize API data
-const toInputDate = (dateString: string) => {
-  if (!dateString) return "";
-  return new Date(dateString).toISOString().split("T")[0]; // YYYY-MM-DD
-};
-
-
-
-const EditEventWizard = () => {
+const EventWizard = () => {
   const [step, setStep] = useState(1);
-  const { id } = useParams<{ id?: string }>();
+
   const [venues, setVenues] = useState<Venue[]>([]);
   const [formData, setFormData] = useState<Event>({
     title: "",
@@ -29,35 +20,12 @@ const EditEventWizard = () => {
     endTime: "",
     venue: { name: "", address: "", location: "", rooms: [] },
     description: "",
-    sessions: [],
   });
 
   const [allSessions, setAllSessions] = useState<Session[]>([]);
   const [image, setImage] = useState<File | null>(null);
 
-  
-  useEffect(() => {
-    if (!id) return;
 
-    axios
-      .get(`https://192.168.201.124:5001/api/Events/draft/${id}`)
-      .then((res) => {
-        const event = res.data;
-        console.log(event)
-        setFormData({
-          ...event,
-          startDate: toInputDate(event.startDate),
-          endDate: toInputDate(event.endDate),
-          startTime: event.startTime, // assuming backend combines date+time
-          endTime: event.endTime,
-        });
-
-        setAllSessions(event.sessions || []);
-      })
-      .catch((err) => console.log(err));
-  }, [id]);
-
-  // ✅ Fetch venues once
   useEffect(() => {
     axios
       .get("https://192.168.201.124:5001/api/Venues")
@@ -85,9 +53,9 @@ const EditEventWizard = () => {
           sessions={allSessions}
           setAllSessions={setAllSessions}
           startDate={formData.startDate}
-          endDate={formData.endDate}
-          startTime={formData.startTime}
-          endTime={formData.endTime}
+          endDate = {formData.endDate}
+          startTime = {formData.startTime}
+          endTime = {formData.endTime}
           prevStep={prevStep}
           nextStep={nextStep}
         />
@@ -104,4 +72,4 @@ const EditEventWizard = () => {
   );
 };
 
-export default EditEventWizard;
+export default EventWizard;
