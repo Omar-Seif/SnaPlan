@@ -15,6 +15,7 @@ const Navbar = () => {
         { id: 1, text: 'Explore', path: '/attendee/Explore' },
         { id: 2, text: 'Booked Events', path: '/attendee/BookedEvents' },
         { id: 3, text: 'Account', path: '/attendee/Account' },
+        {id:4 , text:'Login' , path:'/organizer/login'}
     ];
 
     return (

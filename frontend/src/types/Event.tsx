@@ -22,10 +22,11 @@ export interface Event extends ViewEvent {
 
 
 export interface DraftEvent {
+    id?:string|number
     title: string
     startDate: string
     endDate: string
-    venue: string
+    venueName: string
 }
 
 export interface SubmittedEvent {

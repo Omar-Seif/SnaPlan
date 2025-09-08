@@ -9,8 +9,8 @@ import { cn } from "../lib/utils";
 interface Props {
   formData: Event;
   setFormData: React.Dispatch<React.SetStateAction<Event>>;
-  image: string;
-  setImage: React.Dispatch<React.SetStateAction<string>>;
+  image: File | null;
+  setImage: React.Dispatch<React.SetStateAction<File | null>>;
   venues: Venue[];
   nextStep: () => void;
 }
@@ -26,7 +26,9 @@ const Step1EventDetails: React.FC<Props> = ({
   const navigate = useNavigate();
 
   const handleChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+    e: React.ChangeEvent<
+      HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement
+    >
   ) => {
     const { name, value } = e.target;
     if (name === "venues") {
@@ -35,7 +37,8 @@ const Step1EventDetails: React.FC<Props> = ({
         return;
       }
       const selectedVenue = venues.find((v) => v.name === value);
-      if (selectedVenue) setFormData((prev) => ({ ...prev, venue: selectedVenue }));
+      if (selectedVenue)
+        setFormData((prev) => ({ ...prev, venue: selectedVenue }));
     } else {
       setFormData((prev) => ({ ...prev, [name]: value }));
     }
@@ -43,8 +46,7 @@ const Step1EventDetails: React.FC<Props> = ({
 
   const handleImageChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files && e.target.files[0]) {
-      const file = e.target.files[0];
-      setImage(URL.createObjectURL(file));
+      setImage(e.target.files[0]);
     }
   };
 
@@ -59,12 +61,21 @@ const Step1EventDetails: React.FC<Props> = ({
       {/* Image */}
       <div className="w-full h-64 rounded-lg overflow-hidden bg-gray-50 flex items-center justify-center relative">
         {image ? (
-          <img src={image} alt="Event" className="w-full h-full object-cover" />
+          <img
+            src={URL.createObjectURL(image)}
+            alt="Event"
+            className="w-full h-full object-cover"
+          />
         ) : (
           <label className="flex flex-col items-center justify-center cursor-pointer text-gray-500">
             <Upload size={32} />
             <span className="mt-2 text-sm">Click to upload event image</span>
-            <input type="file" accept="image/*" className="hidden" onChange={handleImageChange} />
+            <input
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={handleImageChange}
+            />
           </label>
         )}
       </div>
@@ -84,26 +95,59 @@ const Step1EventDetails: React.FC<Props> = ({
       <div className="flex gap-4">
         <div className="flex items-center gap-2">
           <Calendar size={18} />
-          <input type="date" name="startDate" value={formData.startDate} onChange={handleChange} required />
+          <input
+            type="date"
+            name="startDate"
+            value={formData.startDate}
+            onChange={handleChange}
+            required
+          />
         </div>
         <div className="flex items-center gap-2">
           <Calendar size={18} />
-          <input type="date" name="endDate" value={formData.endDate} onChange={handleChange} required />
+          <input
+            type="date"
+            name="endDate"
+            value={formData.endDate}
+            onChange={handleChange}
+            required
+          />
         </div>
         <div className="flex items-center gap-2">
           <Clock size={18} />
-          <input type="number" name="startTime" min="0" max="23" value={formData.startTime} onChange={handleChange} required />
+          <input
+            type="number"
+            name="startTime"
+            min="0"
+            max="23"
+            value={formData.startTime}
+            onChange={handleChange}
+            required
+          />
         </div>
         <div className="flex items-center gap-2">
           <Clock size={18} />
-          <input type="number" name="endTime" min="0" max="23" value={formData.endTime} onChange={handleChange} required />
+          <input
+            type="number"
+            name="endTime"
+            min="0"
+            max="23"
+            value={formData.endTime}
+            onChange={handleChange}
+            required
+          />
         </div>
       </div>
 
       {/* Venue */}
       <div className="flex items-center gap-2 text-gray-600">
         <MapPin size={18} />
-        <select className="w-160 px-3 py-2 border border-gray-300 rounded-lg" name="venues" value={formData.venue.name} onChange={handleChange} >
+        <select
+          className="w-160 px-3 py-2 border border-gray-300 rounded-lg"
+          name="venues"
+          value={formData.venue.name}
+          onChange={handleChange}
+        >
           <option value="">Select Venue</option>
           {venues.map((v, i) => (
             <option value={v.name} key={i}>
@@ -124,7 +168,10 @@ const Step1EventDetails: React.FC<Props> = ({
         className="w-full border border-gray-300 rounded-lg px-3 py-2"
       />
 
-      <button type="submit" className={cn("h-10 w-full bg-orange-500 text-white rounded")}>
+      <button
+        type="submit"
+        className={cn("h-10 w-full bg-orange-500 text-white rounded")}
+      >
         Next: Add Sessions
       </button>
     </form>

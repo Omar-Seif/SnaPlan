@@ -6,32 +6,36 @@ import { LoaderCircle } from "lucide-react";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import axios from "axios"
-const DraftsGrid = () => {
-  const [draftEvents, setDraftEvents] = useState<DraftEvent[]>([]);
+interface DraftsGridProps {
+  draftEvents: DraftEvent[];
+  setDraftEvents: (events: DraftEvent[]) => void;
+}
+
+const DraftsGrid = ({draftEvents , setDraftEvents} : DraftsGridProps) => {
   const [error, setError] = useState<null | string>(null);
   const [loading, setLoading] = useState<boolean>(false);
   const MySwal = withReactContent(Swal);
-  useEffect(() => {
-    // const fetchDraftEvents = async () => {
-    //   try {
-    //     setLoading(true);
-    //     setError(null);
-    //     const draftEvents: DraftEvent[] = await getDraftEventsMock();
-    //     setDraftEvents(draftEvents);
-    //   } catch (err) {
-    //     console.log(err);
-    //     setLoading(false);
-    //     setError(err instanceof Error ? err.message : "Failed to load events");
-    //   } finally {
-    //     setLoading(false);
-    //   }
-    // };
-    // fetchDraftEvents();
-    axios
-      .get("https://192.168.201.124:5001/api/Organizer/draft-events")
-      .then((res)=>setDraftEvents(res.data))
-      .catch((error)=>console.error(error))
-  }, []);
+  // useEffect(() => {
+  //   // const fetchDraftEvents = async () => {
+  //   //   try {
+  //   //     setLoading(true);
+  //   //     setError(null);
+  //   //     const draftEvents: DraftEvent[] = await getDraftEventsMock();
+  //   //     setDraftEvents(draftEvents);
+  //   //   } catch (err) {
+  //   //     console.log(err);
+  //   //     setLoading(false);
+  //   //     setError(err instanceof Error ? err.message : "Failed to load events");
+  //   //   } finally {
+  //   //     setLoading(false);
+  //   //   }
+  //   // };
+  //   // fetchDraftEvents();
+  //   axios
+  //     .get("https://192.168.201.124:5001/api/Organizer/draft-events")
+  //     .then((res)=>setDraftEvents(res.data))
+  //     .catch((error)=>console.error(error))
+  // }, []);
 
   const handleonDeleteClick = (id: string | number) => {
     MySwal.fire({
@@ -42,10 +46,8 @@ const DraftsGrid = () => {
       confirmButtonText: "Yes , delete it!",
     }).then((result) => {
       if (result.isConfirmed) {
-        setDraftEvents(
-          draftEvents.filter((draftEvent) => draftEvent.title !== id)
-        );
-
+        axios 
+          .delete(`https://192.168.201.124:5001/api/events/${id}`)
         MySwal.fire("Deleted!", "Your event has been deleted.", "success");
       }
     });
@@ -103,7 +105,7 @@ const DraftsGrid = () => {
             </tbody>
           </table>
         </div>
-
+            
         {/* Table Footer */}
         <div className="p-4 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
           <p className="text-sm text-gray-600">Showing 3 of 12 draft events</p>

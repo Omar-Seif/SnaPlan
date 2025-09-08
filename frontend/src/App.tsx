@@ -1,7 +1,10 @@
 import "./App.css";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
-
-// organizer
+import { AuthProvider } from "../src/Auth/Authentication"; // adjust path
+import ProtectedRoute from "../src/Auth/ProtectedRoutes"; // adjust path
+//General
+import UnauthorizedPage from "./pages/General/Unauthorized";
+// Organizer
 import CreateEventOrganizer from "./pages/Organizer/CreateEvent";
 import Home from "./pages/Organizer/Home";
 import DraftEvents from "./pages/Organizer/DraftEvents";
@@ -11,9 +14,9 @@ import Speakers from "./pages/Organizer/Speakers";
 import CreateVenueOrganizer from "./pages/Organizer/CreateVenue";
 import CreateSpeekerOrganizer from "./pages/Organizer/CreateSpeeker";
 import LoginOrganizer from "./pages/Organizer/Login";
-import SessionsPage from "./pages/Organizer/SessionManagementPage"
-import  {CreateSessionOrganizer} from "./pages/Organizer/CreateSession";
-import EditEvents from "./pages/Organizer/EditEvents"
+import SessionsPage from "./pages/Organizer/SessionManagementPage";
+import { CreateSessionOrganizer } from "./pages/Organizer/CreateSession";
+import EditEvents from "./pages/Organizer/EditEvents";
 import { EditSpeaker } from "./pages/Organizer/EditSpeakers";
 import { ViewEventDetails } from "./pages/Organizer/ViewEventDetails";
 import { EditVenues } from "./pages/Organizer/EditVenues";
@@ -32,62 +35,193 @@ import Organizers from "./pages/Admin/Organizers";
 import Settings from "./pages/Admin/Settings";
 import Login from "./pages/Admin/Login";
 
-
-// https://192.168.201.124:7096/api/Auth/login
-
 function App() {
   return (
-    <>
+    <AuthProvider>
       <BrowserRouter>
+  
         <Routes>
+          {/* Unauthorized */}
+          <Route path="/unauthorized" element={<UnauthorizedPage/>}/>
           {/* Attendee */}
-
           <Route path="/attendee/register" element={<RegisterAttendee />} />
-          <Route path="/attendee/Explore" element={<ExploreAttendee />} />
-          <Route path="/attendee/BookedEvents" element={<BookedAttendee />} />
-          <Route path="/attendee/Account" element={<AccountAttendee />} />
+          <Route
+            path="/attendee/Explore"
+            element={
+
+                <ExploreAttendee />
+    
+            }
+          />
+          <Route
+            path="/attendee/BookedEvents"
+            element={
+              <ProtectedRoute requiredRole="Attendee">
+                <BookedAttendee />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/attendee/Account"
+            element={
+              <ProtectedRoute requiredRole="Attendee">
+                <AccountAttendee />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/attendee/EventDetails/:id"
-            element={<EventDetailsAttendee />}
+            element={
+              <ProtectedRoute requiredRole="Attendee">
+                <EventDetailsAttendee />
+              </ProtectedRoute>
+            }
           />
 
           {/* Organizer */}
-
-
           <Route path="/organizer/login" element={<LoginOrganizer />} />
           <Route
             path="/organizer/CreateEvent"
-            element={<CreateEventOrganizer />}
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <CreateEventOrganizer />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/organizer/Home" element={<Home />} />
-          <Route path="/organizer/DraftEvents" element={<DraftEvents />} />
-          <Route path="/organizer/SubmittedEvents" element={<SubmittedEvents />} />
-          <Route path="/organizer/Venues" element={<Venues />} />
-          <Route path="/organizer/Speakers" element={<Speakers />} />
+          <Route
+            path="/organizer/Home"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <Home />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/DraftEvents"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <DraftEvents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/SubmittedEvents"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <SubmittedEvents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/Venues"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <Venues />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/Speakers"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <Speakers />
+              </ProtectedRoute>
+            }
+          />
           <Route
             path="/organizer/CreateVenue"
-            element={<CreateVenueOrganizer />}
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <CreateVenueOrganizer />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/organizer/CreateSpeaker" element={<CreateSpeekerOrganizer />} />
-          <Route path="/organizer/CreateSession" element={<CreateSessionOrganizer />} />
           <Route
-            path="/organizer/ManageSessions"
-            element={<SessionsPage />}
+            path="/organizer/CreateSpeaker"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <CreateSpeekerOrganizer />
+              </ProtectedRoute>
+            }
           />
-          <Route path="/organizer/EditEvent/:id" element={<EditEvents/>}/>
-          <Route path="/organizer/EditSpeaker/:id" element = {<EditSpeaker/>}/>
-          <Route path="/organizer/EditVenue/:id" element={<EditVenues/>}/>
-          <Route path="/organizer/ViewEventDetails/:id" element={<ViewEventDetails/>}/>
-          
+          <Route
+            path="/organizer/CreateSession"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <CreateSessionOrganizer />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/EditEvent/:id"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <EditEvents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/EditSpeaker/:id"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <EditSpeaker />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/EditVenue/:id"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <EditVenues />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/organizer/ViewEventDetails/:id"
+            element={
+              <ProtectedRoute requiredRole="Organizer">
+                <ViewEventDetails />
+              </ProtectedRoute>
+            }
+          />
+
           {/* Admin */}
-          <Route path="/admin/home" element={<AdminHome />} />
-          <Route path="/admin/events" element={<AdminEvents />} />
-          <Route path="/admin/organizers" element={<Organizers />} />
-          <Route path="/admin/settings" element={<Settings />} />
           <Route path="/admin/Login" element={<Login />} />
+          <Route
+            path="/admin/home"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminHome />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/events"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <AdminEvents />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/organizers"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <Organizers />
+              </ProtectedRoute>
+            }
+          />
+          <Route
+            path="/admin/settings"
+            element={
+              <ProtectedRoute requiredRole="Admin">
+                <Settings />
+              </ProtectedRoute>
+            }
+          />
         </Routes>
       </BrowserRouter>
-    </>
+    </AuthProvider>
   );
 }
 

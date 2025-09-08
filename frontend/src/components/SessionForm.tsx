@@ -5,6 +5,7 @@ import type { Speaker } from "../types/Speaker";
 import { eventsDummy } from "../data/events";
 import { cn } from "../lib/utils";
 import DropDownMenu from "./DropDownMenu";
+import axios from "axios"
 
 interface Props {
   handleCreateSession: (newSession: Session) => void;
@@ -80,10 +81,11 @@ export const SessionForm = ({ handleCreateSession }: Props) => {
 
   // Fetch speakers from dummy events
   useEffect(() => {
-    const allSessions = eventsDummy.flatMap((event) => event.sessions ?? []);
-    const speakersList = allSessions.map((session: Session) => session.speaker);
-    setSpeakers(speakersList);
-  }, []);
+    axios
+      .get("https://192.168.201.124:5001/api/Speakers")
+      .then((res) => setSpeakers(res.data))
+      .catch((err) => console.error(err));
+  });
 
   return (
     <div className="flex items-center justify-center min-h-screen">

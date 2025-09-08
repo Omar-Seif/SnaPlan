@@ -23,7 +23,8 @@ const EventWizard = () => {
   });
 
   const [allSessions, setAllSessions] = useState<Session[]>([]);
-  const [image, setImage] = useState<string>("");
+  const [image, setImage] = useState<File | null>(null);
+
 
   useEffect(() => {
     axios
