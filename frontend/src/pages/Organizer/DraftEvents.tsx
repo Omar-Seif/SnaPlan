@@ -36,7 +36,7 @@ const DraftEvents = () => {
         <div className="p-5 md:p-6">
           {/* Stats Cards */}
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mt-6">
-            <StatusCard title="Total Drafts" info="12" />
+            <StatusCard title="Total Drafts" info={`${draftEvents.length}`} />
             <StatusCard title="Last Updates" info="3 days ago" />
           </div>
 

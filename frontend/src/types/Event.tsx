@@ -30,11 +30,12 @@ export interface DraftEvent {
 }
 
 export interface SubmittedEvent {
-    title: string
-    startDate: string
-    endDate: string
-    venue: string
-    status: 'Active' | 'Pending' | 'Rejected'
+  id: number | string;
+  title: string;
+  description?: string;
+  startDate: string;
+  endDate: string;
+  status: string;
+  venue: Venue | string; // <-- allow either an object or just a name
 }
-
 

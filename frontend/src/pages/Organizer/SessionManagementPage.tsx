@@ -53,7 +53,10 @@ function generateTimeSlots(startTime: string, endTime: string): string[] {
   return slots;
 }
 
-function parseTimeSlot(timeSlotString: string): { startDate: string; endDate: string } {
+function parseTimeSlot(timeSlotString: string): {
+  startDate: string;
+  endDate: string;
+} {
   if (timeSlotString === "unassigned") return { startDate: "", endDate: "" };
   const [start, end] = timeSlotString.split("-");
   return { startDate: start || "", endDate: end || "" };
@@ -87,7 +90,10 @@ export default function SessionsPage({
       }
       return acc;
     },
-    { unassigned: [], ...Object.fromEntries(timeSlots.map((t) => [t, []])) } as Record<string, Session[]>
+    {
+      unassigned: [],
+      ...Object.fromEntries(timeSlots.map((t) => [t, []])),
+    } as Record<string, Session[]>
   );
 
   // Handle drag & drop
@@ -114,7 +120,9 @@ export default function SessionsPage({
   };
 
   // Handle creating new sessions
-  const handleCreateSession = (newSession: Omit<Session, "id" | "timeSlot">) => {
+  const handleCreateSession = (
+    newSession: Omit<Session, "id" | "timeSlot">
+  ) => {
     const enriched: Session = {
       ...newSession,
       id: Date.now().toString(),
@@ -128,11 +136,14 @@ export default function SessionsPage({
       <div className="flex flex-col">
         {/* Day Selector */}
         <div className="p-6 bg-white border-b border-gray-200 shadow-sm">
-          <h2 className="text-xl font-semibold text-gray-800 mb-4">Select Day</h2>
+          <h2 className="text-xl font-semibold text-gray-800 mb-4">
+            Select Day
+          </h2>
           <div className="flex gap-3 overflow-x-auto pb-2">
             {allDays.map((day) => (
               <button
                 key={day}
+                type="button"
                 className={`px-5 py-3 flex items-center rounded-lg font-medium transition-all duration-200 whitespace-nowrap ${
                   selectedDay === day
                     ? "bg-blue-600 text-white shadow-md"
@@ -158,7 +169,9 @@ export default function SessionsPage({
                 {timeSlots.map((slot) => (
                   <Droppable key={slot} id={slot}>
                     <div className="bg-gray-50 p-6 rounded-xl border border-gray-200 min-h-[220px] flex flex-col">
-                      <h3 className="font-semibold mb-4 text-gray-700 text-lg">{slot}</h3>
+                      <h3 className="font-semibold mb-4 text-gray-700 text-lg">
+                        {slot}
+                      </h3>
                       <div className="space-y-4 flex-1">
                         {droppableSessions[slot]?.map((s) => (
                           <DraggableSessions
@@ -170,7 +183,8 @@ export default function SessionsPage({
                             isRoomsHidden={true}
                           />
                         ))}
-                        {(!droppableSessions[slot] || droppableSessions[slot].length === 0) && (
+                        {(!droppableSessions[slot] ||
+                          droppableSessions[slot].length === 0) && (
                           <div className="text-center py-6 text-gray-400 bg-gray-100 rounded-md border border-dashed border-gray-300">
                             Drop sessions here
                           </div>
@@ -185,13 +199,17 @@ export default function SessionsPage({
             {/* Right: Create + Unassigned */}
             <div className="space-y-6">
               <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
-                <h2 className="text-xl font-semibold text-gray-800 mb-4">Create New Session</h2>
+                <h2 className="text-xl font-semibold text-gray-800 mb-4">
+                  Create New Session
+                </h2>
                 <SessionForm handleCreateSession={handleCreateSession} />
               </div>
 
               <div className="bg-white rounded-xl shadow-sm p-6 border border-gray-200">
                 <Droppable id="unassigned">
-                  <h3 className="font-semibold mb-3 text-gray-700 text-lg">Unassigned Sessions</h3>
+                  <h3 className="font-semibold mb-3 text-gray-700 text-lg">
+                    Unassigned Sessions
+                  </h3>
                   <div className="space-y-3 max-h-96 overflow-y-auto pr-2">
                     {droppableSessions["unassigned"]?.map((s) => (
                       <DraggableSessions
@@ -203,7 +221,8 @@ export default function SessionsPage({
                         isRoomsHidden={true}
                       />
                     ))}
-                    {(!droppableSessions["unassigned"] || droppableSessions["unassigned"].length === 0) && (
+                    {(!droppableSessions["unassigned"] ||
+                      droppableSessions["unassigned"].length === 0) && (
                       <div className="text-center py-8 text-gray-400 bg-gray-100 rounded-md border border-dashed border-gray-300">
                         No unassigned sessions
                       </div>

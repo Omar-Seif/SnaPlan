@@ -2,20 +2,24 @@
 import React, { useState, useEffect } from "react";
 import Step1EventDetails from "../components/StageOneEventCreation";
 import Step2Sessions from "../components/StageTwoEventCreation";
-import Step3ReviewSubmit from "../components/StageThreeEventCreation";
+import Step3ReviewSubmit from "../components/StageThreeEventUpdating";
 import type { Event } from "../types/Event";
 import type { Session } from "../types/Session";
 import type { Venue } from "../types/Venue";
 import axios from "axios";
 import { useParams } from "react-router-dom";
 
-// ✅ Helpers to normalize API data
+// ✅ Fixed helper to normalize API data with proper timezone handling
 const toInputDate = (dateString: string) => {
   if (!dateString) return "";
-  return new Date(dateString).toISOString().split("T")[0]; // YYYY-MM-DD
+
+  const date = new Date(dateString);
+  const year = date.getFullYear();
+  const month = String(date.getMonth() + 1).padStart(2, "0");
+  const day = String(date.getDate()).padStart(2, "0");
+
+  return `${year}-${month}-${day}`;
 };
-
-
 
 const EditEventWizard = () => {
   const [step, setStep] = useState(1);
@@ -35,7 +39,6 @@ const EditEventWizard = () => {
   const [allSessions, setAllSessions] = useState<Session[]>([]);
   const [image, setImage] = useState<File | null>(null);
 
-  
   useEffect(() => {
     if (!id) return;
 
@@ -43,18 +46,19 @@ const EditEventWizard = () => {
       .get(`https://192.168.201.124:5001/api/Events/draft/${id}`)
       .then((res) => {
         const event = res.data;
-        console.log(event)
+        console.log("Fetched event data:", event);
+
         setFormData({
           ...event,
           startDate: toInputDate(event.startDate),
           endDate: toInputDate(event.endDate),
-          startTime: event.startTime, // assuming backend combines date+time
-          endTime: event.endTime,
+          startTime: event.startTime || "",
+          endTime: event.endTime || "",
         });
 
         setAllSessions(event.sessions || []);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log("Error fetching event:", err));
   }, [id]);
 
   // ✅ Fetch venues once
@@ -62,7 +66,7 @@ const EditEventWizard = () => {
     axios
       .get("https://192.168.201.124:5001/api/Venues")
       .then((res) => setVenues(res.data))
-      .catch((err) => console.error(err));
+      .catch((err) => console.error("Error fetching venues:", err));
   }, []);
 
   const nextStep = () => setStep((prev) => Math.min(prev + 1, 3));
@@ -98,6 +102,7 @@ const EditEventWizard = () => {
           sessions={allSessions}
           image={image}
           prevStep={prevStep}
+          id = {id}
         />
       )}
     </div>

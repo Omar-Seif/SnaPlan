@@ -108,7 +108,7 @@ const DraftsGrid = ({draftEvents , setDraftEvents} : DraftsGridProps) => {
             
         {/* Table Footer */}
         <div className="p-4 border-t border-gray-200 bg-gray-50 flex justify-between items-center">
-          <p className="text-sm text-gray-600">Showing 3 of 12 draft events</p>
+          <p className="text-sm text-gray-600">Showing {draftEvents.length} of {draftEvents.length} draft events</p>
           <div className="flex space-x-2">
             <button className="px-3 py-1.5 border border-gray-300 rounded-md text-sm text-gray-700 hover:bg-gray-100">
               Previous

@@ -1,8 +1,12 @@
 import Sidebar from '../../components/Sidebar'
 import StatusCard from '../../components/StatusCard'
 import SubmittedGrid from '../../components/SubmittedGrid'
-
+import {useState , useEffect} from "react"
+import type { Event } from '../../types/Event'
+import axios from 'axios'
 const SubmittedEvents = () => {
+    const [submittedEvents , setSubmittedEvents] = useState<Event[]>([])
+    
     return (
         <div className="flex min-h-screen bg-gray-50">
             <Sidebar />

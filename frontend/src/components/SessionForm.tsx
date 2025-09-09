@@ -1,11 +1,9 @@
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 import type { Session } from "../types/Session";
 import type { Speaker } from "../types/Speaker";
-import { eventsDummy } from "../data/events";
 import { cn } from "../lib/utils";
 import DropDownMenu from "./DropDownMenu";
-import axios from "axios"
+import axios from "axios";
 
 interface Props {
   handleCreateSession: (newSession: Session) => void;
@@ -28,7 +26,6 @@ export const SessionForm = ({ handleCreateSession }: Props) => {
 
   const [speakers, setSpeakers] = useState<Speaker[]>([]);
   const [selectedSpeaker, setSelectedSpeaker] = useState<Speaker | null>(null);
-  const navigate = useNavigate();
 
   // Handle input changes (for text inputs)
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -55,10 +52,11 @@ export const SessionForm = ({ handleCreateSession }: Props) => {
   // Handle form submit
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
+    e.stopPropagation();
 
     if (!formData.name || !formData.speaker.name) {
       alert("Please fill all the required fields");
-      return;
+      return false;
     }
 
     handleCreateSession(formData);
@@ -76,22 +74,23 @@ export const SessionForm = ({ handleCreateSession }: Props) => {
       },
     });
     alert("Session created successfully!");
-    navigate("/organizer/CreateEvent");
+    return false;
   };
 
-  // Fetch speakers from dummy events
+  // Fetch speakers from API
   useEffect(() => {
     axios
       .get("https://192.168.201.124:5001/api/Speakers")
       .then((res) => setSpeakers(res.data))
       .catch((err) => console.error(err));
-  });
+  }, []);
 
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
         className="max-w-[350px] my-10 mx-5 px-4 pb-8 pt-4 border border-gray-200 rounded-lg shadow-sm space-y-8 md:w-[700px] lg:w-[900px]"
         onSubmit={handleSubmit}
+        onClick={(e) => e.stopPropagation()}
       >
         {/* Session Title */}
         <div>
