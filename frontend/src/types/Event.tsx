@@ -11,7 +11,7 @@ export interface ViewEvent {
     startTime : string 
     endTime : string
     venue: Venue
-    status?: 'Active' | 'Pending' | 'Cancelled'
+    status?: string
 }
 
 export interface Event extends ViewEvent {

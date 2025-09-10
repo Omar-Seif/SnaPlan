@@ -100,7 +100,7 @@ const Step3ReviewSubmit: React.FC<Props> = ({
           confirmButtonText: "Go to My Events",
           confirmButtonColor: "#FF6B35",
         })
-        .then(() => navigate("/organizer/MyEvents"));
+        .then(() => navigate("/organizer/Home"));
     } catch (err) {
       console.error("Full error:", err);
       if (axios.isAxiosError(err)) {
@@ -199,7 +199,7 @@ const Step3ReviewSubmit: React.FC<Props> = ({
           confirmButtonText: "Go to My Events",
           confirmButtonColor: "#FF6B35",
         })
-        .then(() => navigate("/organizer/home"));
+        .then(() => navigate("/organizer/Home"));
     } catch (err) {
       console.error("Full error:", err);
       if (axios.isAxiosError(err)) {
