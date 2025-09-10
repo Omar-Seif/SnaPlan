@@ -18,6 +18,7 @@ interface Props {
   sessions: Session[];
   image: File | null;
   prevStep: () => void;
+  id: string | undefined;
 }
 
 const Step3ReviewSubmit: React.FC<Props> = ({
@@ -25,6 +26,7 @@ const Step3ReviewSubmit: React.FC<Props> = ({
   sessions,
   image,
   prevStep,
+  id,
 }) => {
   const [loading, setLoading] = useState(false);
   const mySwal = withReactContent(Swal);
@@ -86,7 +88,7 @@ const Step3ReviewSubmit: React.FC<Props> = ({
         console.log(key, value);
       }
 
-      await axios.post("https://192.168.201.124:5001/api/Events", data, {
+      await axios.put(`https://192.168.201.124:5001/api/Events/${id}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
@@ -122,6 +124,12 @@ const Step3ReviewSubmit: React.FC<Props> = ({
     } finally {
       setLoading(false);
     }
+  };
+  const fetchEventDetails = async (id: string | number) => {
+    const res = await axios.get(
+      `https://192.168.201.124:5001/api/Events/${id}`
+    );
+    return res.data;
   };
 
   const handleSave = async () => {
@@ -179,14 +187,14 @@ const Step3ReviewSubmit: React.FC<Props> = ({
         console.log(key, value);
       }
 
-      await axios.post("https://192.168.201.124:5001/api/Events", data, {
+      await axios.put(`https://192.168.201.124:5001/api/Events/${id}`, data, {
         headers: { "Content-Type": "multipart/form-data" },
       });
 
       mySwal
         .fire({
-          title: "🎉 Event saved",
-          text: "Your event has been successfully saved.",
+          title: "🎉 Event Edited And Saved",
+          text: "Your event has been successfully Saved And Editted.",
           icon: "success",
           confirmButtonText: "Go to My Events",
           confirmButtonColor: "#FF6B35",
@@ -198,7 +206,7 @@ const Step3ReviewSubmit: React.FC<Props> = ({
         console.error("Server response:", err.response?.data);
         mySwal.fire({
           title: "Error",
-          text: `Failed to save event: ${
+          text: `Failed to create event: ${
             err.response?.data?.errors?.Title?.[0] || err.message
           }`,
           icon: "error",

@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from "react";
 import type { Speaker } from "../types/Speaker";
 import { UserPlus } from "lucide-react";
 import { useNavigate } from "react-router-dom";
-import axios from "axios";
+
 type DropdownProps = {
   options: Speaker[];
   selected: Speaker | null;
@@ -19,6 +19,7 @@ export default function Dropdown({
   const [isOpen, setIsOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
   const navigate = useNavigate();
+  
   // Close dropdown when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -33,11 +34,32 @@ export default function Dropdown({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
   
+  const handleButtonClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen((prev) => !prev);
+  };
+
+  const handleAddSpeaker = (e: React.MouseEvent) => {
+    e.preventDefault();
+    e.stopPropagation();
+    setIsOpen(false);
+    navigate("/organizer/createSpeaker");
+  };
+
+  const handleSpeakerSelect = (e: React.MouseEvent, speaker: Speaker) => {
+    e.preventDefault();
+    e.stopPropagation();
+    onSelect(speaker);
+    setIsOpen(false);
+  };
+
   return (
     <div ref={dropdownRef} className="relative w-64">
       {/* Button */}
       <button
-        onClick={() => setIsOpen((prev) => !prev)}
+        type="button"
+        onClick={handleButtonClick}
         className="w-full bg-white border border-gray-300 rounded-md p-2 flex items-center justify-between"
       >
         {selected ? (
@@ -57,10 +79,13 @@ export default function Dropdown({
 
       {/* Options */}
       {isOpen && (
-        <ul className="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md z-10 max-h-60 overflow-y-auto">
+        <ul 
+          className="absolute left-0 mt-1 w-full bg-white border border-gray-300 rounded-md shadow-md z-10 max-h-60 overflow-y-auto"
+          onClick={(e) => e.preventDefault()} // Prevent any clicks in the dropdown
+        >
           <li
             className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
-            onClick={() => navigate("/organizer/createSpeaker")}
+            onClick={handleAddSpeaker}
           >
             <UserPlus size={18} />
             Add new speaker...
@@ -68,10 +93,7 @@ export default function Dropdown({
           {options.map((speaker) => (
             <li
               key={speaker.id}
-              onClick={() => {
-                onSelect(speaker);
-                setIsOpen(false);
-              }}
+              onClick={(e) => handleSpeakerSelect(e, speaker)}
               className="p-2 hover:bg-gray-100 cursor-pointer flex items-center gap-2"
             >
               <img
