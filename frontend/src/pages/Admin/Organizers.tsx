@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import {
   Edit,
   Trash2,
@@ -11,58 +11,7 @@ import {
 } from "lucide-react";
 import SideBarComponent from "../Admin/SideBar";
 
-const initialOrganizers = [
-  {
-    id: 1,
-    name: "Ahmed Hassan",
-    email: "ahmed.hassan@techcairo.com",
-    joinedDate: "2024-01-15",
-    status: "active",
-    eventsCount: 12,
-    location: "Cairo",
-    phone: "+20 100 123 4567",
-  },
-  {
-    id: 2,
-    name: "Fatima El-Sharif",
-    email: "fatima.elsharif@eventshub.eg",
-    joinedDate: "2024-02-20",
-    status: "active",
-    eventsCount: 8,
-    location: "Alexandria",
-    phone: "+20 101 234 5678",
-  },
-  {
-    id: 3,
-    name: "Omar Mahmoud",
-    email: "omar.mahmoud@confmanager.com",
-    joinedDate: "2024-03-10",
-    status: "banned",
-    eventsCount: 5,
-    location: "Giza",
-    phone: "+20 102 345 6789",
-  },
-  {
-    id: 4,
-    name: "Yasmin Abdel Rahman",
-    email: "yasmin.abdelrahman@eventspro.eg",
-    joinedDate: "2024-04-05",
-    status: "active",
-    eventsCount: 15,
-    location: "Sharm El Sheikh",
-    phone: "+20 103 456 7890",
-  },
-  {
-    id: 5,
-    name: "Khaled Farouk",
-    email: "khaled.farouk@meetingpoint.com",
-    joinedDate: "2024-05-12",
-    status: "active",
-    eventsCount: 3,
-    location: "Hurghada",
-    phone: "+20 104 567 8901",
-  },
-];
+const API_BASE_URL = "https://192.168.201.124:5001/api/Admin";
 
 const initialPendingOrganizers = [
   {
@@ -95,7 +44,7 @@ const initialPendingOrganizers = [
 ];
 
 function Organizers() {
-  const [organizers, setOrganizers] = useState(initialOrganizers);
+  const [organizers, setOrganizers] = useState([]);
   const [pendingOrganizers, setPendingOrganizers] = useState(
     initialPendingOrganizers
   );
@@ -103,6 +52,71 @@ function Organizers() {
   const [editForm, setEditForm] = useState({});
   const [showPending, setShowPending] = useState(false);
   const [searchTerm, setSearchTerm] = useState("");
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Fetch organizers from API
+  const fetchOrganizers = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const response = await fetch(`${API_BASE_URL}/organizers`);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+
+      // Transform API data to match component structure
+      const transformedData = data.map((org) => ({
+        id: org.id,
+        name: `${org.firstName} ${org.lastName}`,
+        email: org.email,
+        joinedDate: org.createdAt
+          ? org.createdAt.split("T")[0]
+          : new Date().toISOString().split("T")[0],
+        status: org.isActive ? "active" : "inactive",
+        eventsCount: 0, // This would need to come from another API endpoint
+        location: org.organization || "N/A",
+        phone: "N/A", // Not provided in API response
+        organization: org.organization,
+        lastLoginAt: org.lastLoginAt,
+        role: org.role,
+      }));
+
+      setOrganizers(transformedData);
+    } catch (err) {
+      console.error("Error fetching organizers:", err);
+      setError("Failed to load organizers. Please try again.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Delete organizer via API
+  const deleteOrganizerAPI = async (id) => {
+    try {
+      const response = await fetch(`${API_BASE_URL}/organizers/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Remove from local state after successful API call
+      setOrganizers(organizers.filter((org) => org.id !== id));
+    } catch (err) {
+      console.error("Error deleting organizer:", err);
+      alert("Failed to delete organizer. Please try again.");
+    }
+  };
+
+  // Load organizers on component mount
+  useEffect(() => {
+    fetchOrganizers();
+  }, []);
 
   // Handle edit
   const startEdit = (organizer) => {
@@ -111,6 +125,7 @@ function Organizers() {
   };
 
   const saveEdit = () => {
+    // TODO: Implement API call for updating organizer
     setOrganizers(
       organizers.map((org) => (org.id === editingId ? editForm : org))
     );
@@ -126,16 +141,20 @@ function Organizers() {
   // Handle delete
   const deleteOrganizer = (id) => {
     if (window.confirm("Are you sure you want to delete this organizer?")) {
-      setOrganizers(organizers.filter((org) => org.id !== id));
+      deleteOrganizerAPI(id);
     }
   };
 
   // Handle ban/unban
   const toggleBan = (id) => {
+    // TODO: Implement API call for banning/unbanning organizer
     setOrganizers(
       organizers.map((org) =>
         org.id === id
-          ? { ...org, status: org.status === "banned" ? "active" : "banned" }
+          ? {
+              ...org,
+              status: org.status === "inactive" ? "active" : "inactive",
+            }
           : org
       )
     );
@@ -172,6 +191,36 @@ function Organizers() {
       org.location.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
+  if (loading) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <SideBarComponent />
+        <div className="flex justify-center items-center min-h-96">
+          <div className="text-lg text-gray-600">Loading organizers...</div>
+        </div>
+      </div>
+    );
+  }
+
+  if (error) {
+    return (
+      <div className="p-6 max-w-7xl mx-auto">
+        <SideBarComponent />
+        <div className="flex justify-center items-center min-h-96">
+          <div className="text-center">
+            <div className="text-lg text-red-600 mb-4">{error}</div>
+            <button
+              onClick={fetchOrganizers}
+              className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600"
+            >
+              Retry
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="p-6 max-w-7xl mx-auto">
       <SideBarComponent />
@@ -193,80 +242,16 @@ function Organizers() {
         />
         <div className="flex gap-2">
           <button
-            onClick={() => setShowPending(!showPending)}
-            className={`px-4 py-2 rounded-lg font-medium transition-colors ${
-              showPending
-                ? "bg-orange-500 text-white hover:bg-orange-600"
-                : "bg-gray-100 text-gray-700 hover:bg-gray-200"
-            }`}
+            onClick={fetchOrganizers}
+            className="px-4 py-2 bg-blue-500 text-white rounded-lg hover:bg-blue-600 transition-colors"
           >
-            Pending Accounts ({pendingOrganizers.length})
+            Refresh
           </button>
         </div>
       </div>
 
-      {/* Pending Organizers Section */}
-      {showPending && (
-        <div className="mb-8 bg-orange-50 rounded-lg p-6">
-          <h2 className="text-xl font-semibold text-orange-800 mb-4">
-            Pending Accounts
-          </h2>
-          {pendingOrganizers.length === 0 ? (
-            <p className="text-orange-600">No pending applications</p>
-          ) : (
-            <div className="space-y-4">
-              {pendingOrganizers.map((org) => (
-                <div
-                  key={org.id}
-                  className="bg-white rounded-lg p-4 border border-orange-200"
-                >
-                  <div className="flex flex-col lg:flex-row lg:items-center justify-between gap-4">
-                    <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 flex-1">
-                      <div>
-                        <p className="font-medium text-gray-900">{org.name}</p>
-                        <p className="text-sm text-gray-500">{org.email}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">
-                          Applied: {org.appliedDate}
-                        </p>
-                        <p className="text-sm text-gray-600">{org.location}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">{org.phone}</p>
-                      </div>
-                      <div>
-                        <p className="text-sm text-gray-600">
-                          {org.experience}
-                        </p>
-                      </div>
-                    </div>
-                    <div className="flex gap-2">
-                      <button
-                        onClick={() => approveOrganizer(org)}
-                        className="flex items-center gap-1 px-3 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors"
-                      >
-                        <Check size={16} />
-                        Approve
-                      </button>
-                      <button
-                        onClick={() => rejectOrganizer(org.id)}
-                        className="flex items-center gap-1 px-3 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors"
-                      >
-                        <X size={16} />
-                        Reject
-                      </button>
-                    </div>
-                  </div>
-                </div>
-              ))}
-            </div>
-          )}
-        </div>
-      )}
-
       {/* Summary Stats */}
-      <div className="mt-6 grid grid-cols-1 md:grid-cols-4 gap-4 mb-10">
+      <div className="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4 mb-10">
         <div className="bg-blue-50 rounded-lg p-4">
           <div className="text-2xl font-bold text-blue-600">
             {organizers.filter((o) => o.status === "active").length}
@@ -275,16 +260,16 @@ function Organizers() {
         </div>
         <div className="bg-red-50 rounded-lg p-4">
           <div className="text-2xl font-bold text-red-600">
-            {organizers.filter((o) => o.status === "banned").length}
+            {organizers.filter((o) => o.status === "inactive").length}
           </div>
-          <div className="text-sm text-red-600">Banned Organizers</div>
+          <div className="text-sm text-red-600">Inactive Organizers</div>
         </div>
-        <div className="bg-orange-50 rounded-lg p-4">
-          <div className="text-2xl font-bold text-orange-600">
-            {pendingOrganizers.length}
-          </div>
-          <div className="text-sm text-orange-600">Pending Applications</div>
-        </div>
+        {/* <div className="bg-orange-50 rounded-lg p-4">
+            <div className="text-2xl font-bold text-orange-600">
+              {pendingOrganizers.length}
+            </div>
+            <div className="text-sm text-orange-600">Pending Applications</div>
+          </div> */}
         <div className="bg-green-50 rounded-lg p-4">
           <div className="text-2xl font-bold text-green-600">
             {organizers.reduce((sum, org) => sum + org.eventsCount, 0)}
@@ -297,7 +282,7 @@ function Organizers() {
       <div className="bg-white rounded-lg shadow-sm border border-gray-200">
         <div className="px-6 py-4 border-b border-gray-200">
           <h2 className="text-lg font-semibold text-gray-900">
-            Active Organizers ({filteredOrganizers.length})
+            Organizers ({filteredOrganizers.length})
           </h2>
         </div>
 
@@ -309,10 +294,13 @@ function Organizers() {
                   Organizer
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                  Organization
+                </th>
+                <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Joined Date
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
-                  Events
+                  Last Login
                 </th>
                 <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
                   Status
@@ -346,47 +334,25 @@ function Organizers() {
                           className="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
                           placeholder="Email"
                         />
-                        <input
-                          type="text"
-                          value={editForm.location || ""}
-                          onChange={(e) =>
-                            setEditForm({
-                              ...editForm,
-                              location: e.target.value,
-                            })
-                          }
-                          className="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                          placeholder="Location"
-                        />
-                        <input
-                          type="text"
-                          value={editForm.phone || ""}
-                          onChange={(e) =>
-                            setEditForm({
-                              ...editForm,
-                              phone: e.target.value,
-                            })
-                          }
-                          className="block w-full px-3 py-2 border border-gray-300 rounded-md text-sm"
-                          placeholder="Phone No."
-                        />
                       </div>
                     ) : (
                       <div>
-                        <div className="text-xl font-medium text-gray-900">
+                        <div className="text-sm font-medium text-gray-900">
                           {organizer.name}
                         </div>
                         <div className="text-sm text-gray-500">
                           {organizer.email}
                         </div>
-                        <div className="text-sm text-gray-500">
-                          {organizer.location}
-                        </div>
-                        <div className="text-sm text-gray-500">
-                          {organizer.phone}
+                        <div className="text-xs text-gray-400">
+                          {organizer.role}
                         </div>
                       </div>
                     )}
+                  </td>
+                  <td className="px-6 py-4 whitespace-nowrap">
+                    <div className="text-sm text-gray-900">
+                      {organizer.organization || "N/A"}
+                    </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm text-gray-900">
@@ -394,11 +360,10 @@ function Organizers() {
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
-                    <div className="flex items-center gap-2">
-                      <Calendar size={16} className="text-gray-400" />
-                      <span className="text-sm font-medium text-gray-900">
-                        {organizer.eventsCount} events
-                      </span>
+                    <div className="text-sm text-gray-900">
+                      {organizer.lastLoginAt
+                        ? new Date(organizer.lastLoginAt).toLocaleDateString()
+                        : "Never"}
                     </div>
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
@@ -440,12 +405,14 @@ function Organizers() {
                         <button
                           onClick={() => toggleBan(organizer.id)}
                           className={`transition-colors ${
-                            organizer.status === "banned"
+                            organizer.status === "inactive"
                               ? "text-green-600 hover:text-green-900"
                               : "text-yellow-600 hover:text-yellow-900"
                           }`}
                           title={
-                            organizer.status === "banned" ? "Unban" : "Ban"
+                            organizer.status === "inactive"
+                              ? "Activate"
+                              : "Deactivate"
                           }
                         >
                           <Ban size={16} />

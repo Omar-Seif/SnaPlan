@@ -1,14 +1,24 @@
-import { useState } from "react";
-import { Calendar, Building, Building2, Frown } from "lucide-react";
+import { useState, useEffect } from "react";
+import {
+  Building,
+  Building2,
+  LoaderCircle,
+  PersonStanding,
+  Map,
+  Flame,
+} from "lucide-react";
 import SideBar from "./SideBar";
 import { useNavigate } from "react-router-dom";
 import SearchAndFilter from "./SearchAndFilter";
 import Table from "./EventsTable";
+import axios from "axios";
+import Swal from "sweetalert2";
+import withReactContent from "sweetalert2-react-content";
 
 interface Conference {
-  id: string;
+  id: string | number;
   name: string;
-  status: "upcoming" | "ongoing" | "completed" | "cancelled";
+  status: string;
   state: "Accepted" | "Rejected" | "Not Assigned";
   companyName: string;
   organizerName: string;
@@ -16,17 +26,143 @@ interface Conference {
   lastUpdated: string;
 }
 
+interface DashboardData {
+  totalEvents: number;
+  activeEvents: number;
+  pendingEvents: number;
+  submittedEvents: number;
+  draftEvents: number;
+  totalOrganizers: number;
+  totalAttendees: number;
+  totalVenues: number;
+  recentEvents: Array<{
+    id: string | number;
+    title: string;
+    imageUrl?: string;
+    startDate?: string;
+    endDate?: string;
+    status: string;
+    organizerName: string;
+    venueName: string;
+    createdDate: string;
+    lastUpdated: string;
+    sessionCount?: number;
+  }>;
+}
+
 const AdminHome: React.FC = () => {
   const [searchTerm, setSearchTerm] = useState("");
-  const [statusFilter, setStatusFilter] = useState<
-    "all" | Conference["status"]
-  >("all");
+  const [statusFilter, setStatusFilter] = useState<"all" | string>("all");
+  const [conferences, setConferences] = useState<Conference[]>([]);
+  const [dashboard, setDashboard] = useState<DashboardData | null>(null);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState("");
 
-  const [conferences] = useState<Conference[]>([
+  const navigate = useNavigate();
+  const mySwal = withReactContent(Swal);
+
+  useEffect(() => {
+    const fetchDashboard = async () => {
+      try {
+        setLoading(true);
+        setError("");
+
+        const response = await axios.get(
+          "https://192.168.201.124:5001/api/Admin/dashboard",
+          { headers: { "Content-Type": "application/json" } }
+        );
+
+        const data: DashboardData = response.data;
+        setDashboard(data);
+
+        const mappedConferences: Conference[] = (data.recentEvents || []).map(
+          (event: any) => ({
+            id: event.id ?? `CONF-${Math.random().toString(36).substr(2, 9)}`,
+            name: event.title || "Untitled Event",
+            status: event.status || "Draft",
+            state: mapEventState(
+              event.state || event.approval_status || "pending"
+            ),
+            organizerName: event.organizerName || "Unknown Organizer",
+            companyName: event.organizerName || "Unknown Company",
+            createdDate: formatDate(event.createdDate),
+            lastUpdated: formatDate(event.lastUpdated || event.createdDate),
+          })
+        );
+
+        setConferences(mappedConferences);
+      } catch (err: any) {
+        setError("Failed to load dashboard");
+        setConferences(getDummyData());
+        setDashboard({
+          totalEvents: 6,
+          activeEvents: 2,
+          pendingEvents: 0,
+          submittedEvents: 2,
+          draftEvents: 2,
+          totalOrganizers: 3,
+          totalAttendees: 6,
+          totalVenues: 3,
+          recentEvents: [],
+        });
+
+        mySwal.fire({
+          icon: "error",
+          title: "Error Loading Data",
+          text:
+            err.response?.data?.message ||
+            "Failed to fetch dashboard from server. Using sample data.",
+          confirmButtonColor: "#1E293B",
+        });
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchDashboard();
+  }, []);
+
+  const mapEventState = (apiState: string): Conference["state"] => {
+    if (!apiState) return "Not Assigned";
+    const stateMap: { [key: string]: Conference["state"] } = {
+      approved: "Accepted",
+      accepted: "Accepted",
+      rejected: "Rejected",
+      declined: "Rejected",
+      pending: "Not Assigned",
+      not_assigned: "Not Assigned",
+      submitted: "Not Assigned",
+    };
+    return stateMap[apiState.toLowerCase()] || "Not Assigned";
+  };
+
+  const formatDate = (dateString: string): string => {
+    if (!dateString) return "Unknown";
+    try {
+      const date = new Date(dateString);
+      const now = new Date();
+      const diffTime = Math.abs(now.getTime() - date.getTime());
+      const diffDays = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+
+      if (diffDays === 0) return "Today";
+      if (diffDays === 1) return "Yesterday";
+      if (diffDays <= 7) return `${diffDays} days ago`;
+
+      return date.toLocaleDateString("en-US", {
+        month: "short",
+        day: "numeric",
+        year: "numeric",
+      });
+    } catch {
+      return "Unknown";
+    }
+  };
+
+  const getDummyData = (): Conference[] => [
     {
       id: "CONF-001",
       name: "Tech Summit 2024",
-      status: "upcoming",
+      status: "Draft",
       state: "Rejected",
       companyName: "Tech Innovators",
       organizerName: "Ahmed Hassan",
@@ -36,221 +172,57 @@ const AdminHome: React.FC = () => {
     {
       id: "CONF-002",
       name: "Guc Dr Hany Ai Lecture",
-      status: "ongoing",
+      status: "Active",
       state: "Accepted",
       companyName: "GUC AI Research",
       organizerName: "Fatima El-Sayed",
       createdDate: "Mar 29, 2024",
       lastUpdated: "Yesterday",
     },
-    {
-      id: "CONF-003",
-      name: "Verto Wave Meeting",
-      status: "completed",
-      state: "Not Assigned",
-      companyName: "VertoWave Ltd.",
-      organizerName: "Omar Mahmoud",
-      createdDate: "Feb 10, 2024",
-      lastUpdated: "Feb 21, 2024",
-    },
-    {
-      id: "CONF-004",
-      name: "Cairo International Book Fair",
-      status: "completed",
-      state: "Accepted",
-      companyName: "CIBF Organizers",
-      organizerName: "Mona Abdel-Rahman",
-      createdDate: "Jan 25, 2024",
-      lastUpdated: "Feb 5, 2024",
-    },
-    {
-      id: "CONF-005",
-      name: "Egypt Economic Forum",
-      status: "upcoming",
-      state: "Accepted",
-      companyName: "Egypt Economic Board",
-      organizerName: "Khaled Ibrahim",
-      createdDate: "Aug 2, 2024",
-      lastUpdated: "Aug 10, 2024",
-    },
-    {
-      id: "CONF-006",
-      name: "Alexandria Film Festival",
-      status: "ongoing",
-      state: "Rejected",
-      companyName: "AlexFilm Productions",
-      organizerName: "Nadia Farouk",
-      createdDate: "Aug 9, 2024",
-      lastUpdated: "Today",
-    },
-    {
-      id: "CONF-007",
-      name: "Aswan Cultural Week",
-      status: "cancelled",
-      state: "Not Assigned",
-      companyName: "Aswan Cultural Council",
-      organizerName: "Youssef Ali",
-      createdDate: "Jun 14, 2024",
-      lastUpdated: "Jun 20, 2024",
-    },
-    {
-      id: "CONF-008",
-      name: "Going to the Pyramids",
-      status: "upcoming",
-      state: "Accepted",
-      companyName: "Pyramids Tours",
-      organizerName: "Sarah Mohamed",
-      createdDate: "Sep 15, 2024",
-      lastUpdated: "Sep 16, 2024",
-    },
-    {
-      id: "CONF-009",
-      name: "El Gouna Startup Summit",
-      status: "completed",
-      state: "Accepted",
-      companyName: "El Gouna Ventures",
-      organizerName: "Hassan Mostafa",
-      createdDate: "May 3, 2024",
-      lastUpdated: "May 12, 2024",
-    },
-    {
-      id: "CONF-010",
-      name: "me4 3arf",
-      status: "ongoing",
-      state: "Accepted",
-      companyName: "Me4 3arf Co.",
-      organizerName: "Layla Nasser",
-      createdDate: "Aug 5, 2024",
-      lastUpdated: "Yesterday",
-    },
-    {
-      id: "CONF-011",
-      name: "Cairo Tech Expo",
-      status: "upcoming",
-      state: "Accepted",
-      companyName: "Cairo Expo Center",
-      organizerName: "Mohamed Gamal",
-      createdDate: "Oct 1, 2024",
-      lastUpdated: "Oct 2, 2024",
-    },
-    {
-      id: "CONF-012",
-      name: "Nile Innovation Forum",
-      status: "ongoing",
-      state: "Accepted",
-      companyName: "Nile Ventures",
-      organizerName: "Amira Shawky",
-      createdDate: "Sep 20, 2024",
-      lastUpdated: "Today",
-    },
-    {
-      id: "CONF-013",
-      name: "Egyptian Developers Meetup",
-      status: "completed",
-      state: "Accepted",
-      companyName: "DevEgypt",
-      organizerName: "Tarek Zidan",
-      createdDate: "Jul 10, 2024",
-      lastUpdated: "Jul 15, 2024",
-    },
-    {
-      id: "CONF-014",
-      name: "Smart Cities Conference",
-      status: "upcoming",
-      state: "Not Assigned",
-      companyName: "Smart Egypt",
-      organizerName: "Rana Helmy",
-      createdDate: "Nov 5, 2024",
-      lastUpdated: "Nov 6, 2024",
-    },
-    {
-      id: "CONF-015",
-      name: "Suez Canal Business Summit",
-      status: "ongoing",
-      state: "Accepted",
-      companyName: "Suez Biz Group",
-      organizerName: "Mahmoud Saeed",
-      createdDate: "Aug 28, 2024",
-      lastUpdated: "Yesterday",
-    },
-    {
-      id: "CONF-016",
-      name: "Red Sea Tourism Conference",
-      status: "upcoming",
-      state: "Accepted",
-      companyName: "Red Sea Tourism",
-      organizerName: "Hala Kamal",
-      createdDate: "Dec 1, 2024",
-      lastUpdated: "Dec 2, 2024",
-    },
-    {
-      id: "CONF-017",
-      name: "Digital Marketing Summit",
-      status: "completed",
-      state: "Accepted",
-      companyName: "Digital Egypt",
-      organizerName: "Ramy Fouad",
-      createdDate: "Jun 5, 2024",
-      lastUpdated: "Jun 10, 2024",
-    },
-    {
-      id: "CONF-018",
-      name: "Fintech Cairo",
-      status: "ongoing",
-      state: "Not Assigned",
-      companyName: "FinTech Hub",
-      organizerName: "Dina Mansour",
-      createdDate: "Nov 15, 2024",
-      lastUpdated: "Today",
-    },
-    {
-      id: "CONF-019",
-      name: "Healthcare Innovation Forum",
-      status: "upcoming",
-      state: "Accepted",
-      companyName: "MedTech Egypt",
-      organizerName: "Ayman Salah",
-      createdDate: "Jan 10, 2025",
-      lastUpdated: "Jan 11, 2025",
-    },
-    {
-      id: "CONF-020",
-      name: "Renewable Energy Expo",
-      status: "cancelled",
-      state: "Rejected",
-      companyName: "Green Energy Co.",
-      organizerName: "Yasmin Othman",
-      createdDate: "Mar 15, 2024",
-      lastUpdated: "Mar 20, 2024",
-    },
-  ]);
+  ];
 
-  const navigate = useNavigate();
-
-  const goToEventManager = () => {
-    navigate("/admin/events");
-  };
+  const goToEventManager = () => navigate("/admin/events");
 
   const filteredConferences = conferences.filter((conf) => {
-    const q = searchTerm.trim().toLowerCase();
+    const q = (searchTerm || "").trim().toLowerCase();
     const matchesSearch =
       q === "" ||
-      conf.name.toLowerCase().includes(q) ||
-      conf.id.toLowerCase().includes(q) ||
-      conf.companyName.toLowerCase().includes(q) ||
-      conf.organizerName.toLowerCase().includes(q);
+      conf.name?.toLowerCase().includes(q) ||
+      conf.id?.toString().toLowerCase().includes(q) ||
+      conf.companyName?.toLowerCase().includes(q) ||
+      conf.organizerName?.toLowerCase().includes(q);
     const matchesStatus =
-      statusFilter === "all" || conf.status === statusFilter;
+      statusFilter === "all" ||
+      conf.status?.toLowerCase() === (statusFilter || "").toLowerCase();
     return matchesSearch && matchesStatus;
   });
 
+  if (loading) {
+    return (
+      <div className="min-h-screen flex md:flex-row">
+        <SideBar />
+        <main className="flex-1 p-3 md:p-8 min-w-0 overflow-auto">
+          <div className="flex items-center justify-center min-h-96">
+            <div className="text-center">
+              <LoaderCircle className="animate-spin w-12 h-12 mx-auto mb-4 text-gray-500" />
+              <p className="text-gray-600">Loading dashboard...</p>
+            </div>
+          </div>
+        </main>
+      </div>
+    );
+  }
+
   return (
     <div className="min-h-screen flex md:flex-row ">
-      {/* Sidebar */}
       <SideBar />
-      {/* Main Content */}
       <main className="flex-1 p-3 md:p-8 min-w-0 overflow-auto">
-        {/* Search + Filter */}
+        {error && (
+          <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-6">
+            <strong>Error:</strong> {error}
+          </div>
+        )}
+
         <SearchAndFilter
           searchTerm={searchTerm}
           setSearchTerm={setSearchTerm}
@@ -262,54 +234,42 @@ const AdminHome: React.FC = () => {
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
           <div className="relative bg-green-300 rounded-lg p-6 overflow-hidden">
             <div>
-              <h3 className="text-sm opacity-90 mb-2">Total Upcoming Events</h3>
+              <h3 className="text-sm opacity-90 mb-2">Total Venues</h3>
               <p className="text-2xl md:text-3xl font-bold">
-                {
-                  filteredConferences.filter(
-                    (conf) => conf.status === "upcoming"
-                  ).length
-                }
+                {dashboard?.totalVenues ?? 0}
               </p>
-              <p className="text-sm opacity-90">Events</p>
+              <p className="text-sm opacity-90">Venues</p>
             </div>
-            <Calendar className="w-12 h-12 opacity-30 absolute top-6 right-6" />
+            <Map className="w-12 h-12 opacity-30 absolute top-6 right-6" />
           </div>
 
           <div className="relative bg-orange-300 rounded-lg p-6 overflow-hidden">
             <div>
               <h3 className="text-sm opacity-90 mb-2">Total Events</h3>
               <p className="text-2xl md:text-3xl font-bold">
-                {filteredConferences.length}
+                {dashboard?.totalEvents ?? 0}
               </p>
               <p className="text-sm opacity-90">Events</p>
             </div>
-            <Building2 className="w-12 h-12 opacity-30 absolute top-6 right-6" />
+            <Flame className="w-12 h-12 opacity-30 absolute top-6 right-6" />
           </div>
 
-          <div className="relative bg-purple-300  rounded-lg p-6 overflow-hidden">
+          <div className="relative bg-purple-300 rounded-lg p-6 overflow-hidden">
             <div>
-              <h3 className="text-sm opacity-90 mb-2">Events Pending</h3>
+              <h3 className="text-sm opacity-90 mb-2">Total Attendees</h3>
               <p className="text-2xl md:text-3xl font-bold">
-                {
-                  filteredConferences.filter(
-                    (conf) => conf.state === "Not Assigned"
-                  ).length
-                }
+                {dashboard?.totalAttendees ?? 0}
               </p>
-              <p className="text-sm opacity-90">Events</p>
+              <p className="text-sm opacity-90">People</p>
             </div>
-            <Frown className="w-12 h-12 opacity-30 absolute top-6 right-6" />
+            <PersonStanding className="w-12 h-12 opacity-30 absolute top-6 right-6" />
           </div>
 
-          <div className="relative bg-blue-300  rounded-lg p-6 overflow-hidden">
+          <div className="relative bg-blue-300 rounded-lg p-6 overflow-hidden">
             <div>
               <h3 className="text-sm opacity-90 mb-2">Active Events</h3>
               <p className="text-2xl md:text-3xl font-bold">
-                {
-                  filteredConferences.filter(
-                    (conf) => conf.status === "ongoing"
-                  ).length
-                }
+                {dashboard?.activeEvents ?? 0}
               </p>
               <p className="text-sm opacity-90">Running</p>
             </div>
@@ -317,11 +277,47 @@ const AdminHome: React.FC = () => {
           </div>
         </div>
 
-        {/* Pending Events Table */}
+        {/* More Stats */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+          <div className="relative bg-yellow-300 rounded-lg p-6 overflow-hidden">
+            <div>
+              <h3 className="text-sm opacity-90 mb-2">Pending Events</h3>
+              <p className="text-2xl md:text-3xl font-bold">
+                {dashboard?.pendingEvents ?? 0}
+              </p>
+              <p className="text-sm opacity-90">Awaiting Review</p>
+            </div>
+            <Building2 className="w-12 h-12 opacity-30 absolute top-6 right-6" />
+          </div>
+
+          <div className="relative bg-indigo-300 rounded-lg p-6 overflow-hidden">
+            <div>
+              <h3 className="text-sm opacity-90 mb-2">Submitted Events</h3>
+              <p className="text-2xl md:text-3xl font-bold">
+                {dashboard?.submittedEvents ?? 0}
+              </p>
+              <p className="text-sm opacity-90">Under Review</p>
+            </div>
+            <Building2 className="w-12 h-12 opacity-30 absolute top-6 right-6" />
+          </div>
+
+          <div className="relative bg-gray-300 rounded-lg p-6 overflow-hidden">
+            <div>
+              <h3 className="text-sm opacity-90 mb-2">Draft Events</h3>
+              <p className="text-2xl md:text-3xl font-bold">
+                {dashboard?.draftEvents ?? 0}
+              </p>
+              <p className="text-sm opacity-90">In Progress</p>
+            </div>
+            <Building2 className="w-12 h-12 opacity-30 absolute top-6 right-6" />
+          </div>
+        </div>
+
+        {/* Table */}
         <Table
           conferences={filteredConferences}
-          title="Pending Events"
-          showFullPageButton={true}
+          title="Recent Events"
+          showFullPageButton
           onFullPageClick={goToEventManager}
           limit={6}
         />

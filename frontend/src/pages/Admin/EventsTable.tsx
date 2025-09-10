@@ -9,22 +9,6 @@ interface ConferencesTableProps {
   onFullPageClick?: () => void;
   maxHeight?: string;
   limit?: number;
-  enableEditing?: boolean;
-  enableActions?: boolean;
-  onEdit?: (id: string, field: keyof Conference, value: string) => void;
-  onDelete?: (id: string) => void;
-  editingCell?: { rowId: string; field: keyof Conference } | null;
-  editValue?: string;
-  onStartEdit?: (
-    rowId: string,
-    field: keyof Conference,
-    currentValue: string
-  ) => void;
-  onSaveEdit?: () => void;
-  onCancelEdit?: () => void;
-  onEditValueChange?: (value: string) => void;
-  showDeleteConfirm?: string | null;
-  onShowDeleteConfirm?: (id: string | null) => void;
 }
 
 const ConferencesTable: React.FC<ConferencesTableProps> = ({
@@ -37,6 +21,12 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
 }) => {
   const getStatusColor = (status: Conference["status"]): string => {
     switch (status) {
+      case "Submitted":
+        return "bg-blue-100 text-blue-800 border-blue-200";
+      case "Active":
+        return "bg-green-100 text-green-800 border-green-200";
+      case "Draft":
+        return "bg-gray-100 text-gray-800 border-gray-200";
       case "upcoming":
         return "bg-yellow-100 text-yellow-800 border-yellow-200";
       case "ongoing":
@@ -52,6 +42,12 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
 
   const getStatusText = (status: Conference["status"]): string => {
     switch (status) {
+      case "Submitted":
+        return "SUBMITTED";
+      case "Active":
+        return "ACTIVE";
+      case "Draft":
+        return "DRAFT";
       case "upcoming":
         return "UPCOMING";
       case "ongoing":
@@ -65,7 +61,29 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
     }
   };
 
-  // Apply limit if specified
+  const getStateEmoji = (
+    status: Conference["status"],
+    state: Conference["state"]
+  ): string => {
+    switch (status) {
+      case "Draft":
+        return "🔍";
+      case "Submitted":
+        return "⏰";
+      case "Active":
+        return "✅";
+      default:
+        switch (state) {
+          case "Accepted":
+            return "✅";
+          case "Rejected":
+            return "❌";
+          default:
+            return "🔎";
+        }
+    }
+  };
+
   const displayedConferences = limit
     ? conferences.slice(0, limit)
     : conferences;
@@ -80,7 +98,7 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
         {showFullPageButton && onFullPageClick && (
           <button
             onClick={onFullPageClick}
-            className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 flex items-center space-x-2 cursor-pointer transition-colors"
+            className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm hover:bg-indigo-700 flex items-center space-x-2 transition-colors"
           >
             <Eye className="w-4 h-4" />
             <span>Full Page</span>
@@ -88,7 +106,7 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
         )}
       </div>
 
-      {/* Table Container with optional max height and scroll */}
+      {/* Table */}
       <div
         className="overflow-x-auto overflow-y-auto min-w-0"
         style={maxHeight ? { maxHeight } : {}}
@@ -141,11 +159,7 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
                   </span>
                 </td>
                 <td className="py-4 px-6 text-sm md:text-base text-gray-600">
-                  {conference.state === "Accepted"
-                    ? "✅"
-                    : conference.state === "Rejected"
-                    ? "❌"
-                    : "🔎"}
+                  {getStateEmoji(conference.status, conference.state)}
                 </td>
                 <td className="py-4 px-6 text-sm md:text-base text-gray-600">
                   {conference.createdDate}
@@ -163,7 +177,7 @@ const ConferencesTable: React.FC<ConferencesTableProps> = ({
         </table>
       </div>
 
-      {/* footer showing count info */}
+      {/* Footer */}
       {limit && conferences.length > limit && (
         <div className="px-6 py-3 bg-gray-50 border-t border-gray-200">
           <p className="text-sm text-gray-600 text-center">

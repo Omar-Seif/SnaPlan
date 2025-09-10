@@ -1,11 +1,11 @@
-import Navbar from "../../components/Navbar"
+import Navbar from "../../components/Navbar";
 
 const HomeOrganizer = () => {
-    return (
-        <>
-            <Navbar />
-        </>
-    )
-}
+  return (
+    <>
+      <Navbar />
+    </>
+  );
+};
 
-export default HomeOrganizer
+export default HomeOrganizer;
